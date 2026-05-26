@@ -1,0 +1,122 @@
+{
+  "description": "",
+  "image": "rack_003.png",
+  "rack_offset_x": 2,
+  "rack_offset_y": 3,
+  "tile_size_x": 50,
+  "tile_size_y": 51,
+  "tiles": [
+    {
+      "row": 0,
+      "col": 0,
+      "letter": "J",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 0,
+      "col": 1,
+      "letter": "I",
+      "gem": "none",
+      "status": "plague"
+    },
+    {
+      "row": 0,
+      "col": 2,
+      "letter": "F",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "row": 0,
+      "col": 3,
+      "letter": "?",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 0,
+      "letter": "S",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 1,
+      "letter": "A",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 0,
+      "letter": "R",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 1,
+      "letter": "R",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "letter": "A",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 3,
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 3,
+      "col": 0,
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "letter": "E",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "row": 3,
+      "col": 3,
+      "letter": "Y",
+      "gem": "none",
+      "status": "plague"
+    }
+  ]
+}

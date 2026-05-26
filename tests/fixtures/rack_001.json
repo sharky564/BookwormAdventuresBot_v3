@@ -1,0 +1,122 @@
+{
+  "description": "",
+  "image": "rack_001.png",
+  "rack_offset_x": 0,
+  "rack_offset_y": 3,
+  "tile_size_x": 50,
+  "tile_size_y": 51,
+  "tiles": [
+    {
+      "row": 0,
+      "col": 0,
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 0,
+      "col": 1,
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 0,
+      "col": 2,
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 0,
+      "col": 3,
+      "letter": "L",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 0,
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 1,
+      "letter": "A",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "letter": "A",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "letter": "K",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 0,
+      "letter": "A",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 1,
+      "letter": "L",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "letter": "W",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 3,
+      "letter": "A",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 3,
+      "col": 0,
+      "letter": "T",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "letter": "C",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "letter": "U",
+      "gem": "none",
+      "status": "plague"
+    },
+    {
+      "row": 3,
+      "col": 3,
+      "letter": "I",
+      "gem": "crystal",
+      "status": "normal"
+    }
+  ]
+}

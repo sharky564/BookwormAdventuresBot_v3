@@ -1,0 +1,1235 @@
+{
+  "schema": 4,
+  "entries": [
+    {
+      "hash": "00000fe00fe007c007c007c007c007c007c007c007c007c007c007c00fe007c0",
+      "letter": "I",
+      "gem": "none"
+    },
+    {
+      "hash": "000007f00ff81f3c3e1c3f003fc01ff01ff80ffc23fc70fc38783ff81ff007c0",
+      "letter": "S",
+      "gem": "none"
+    },
+    {
+      "hash": "000003e00ffc1ffe3e3e7c1e7c0e7c047c007c007e003f0e3ffc1ffc0ff803c0",
+      "letter": "C",
+      "gem": "none"
+    },
+    {
+      "hash": "0000f7f3f7f3e3e1f3f1f3f3f3fbfffffffffe7e7e7e7e7e7c3c3c3c3c3c1818",
+      "letter": "W",
+      "gem": "none"
+    },
+    {
+      "hash": "00003ff87ffc77dc77ce67cc07c007c007c007c007c007c007c007c00fe007e0",
+      "letter": "T",
+      "gem": "none"
+    },
+    {
+      "hash": "000007e01ff03ff87cfc787ef87ef83ef83efc3efc3e7e3e7f7c3ff81ff007c0",
+      "letter": "O",
+      "gem": "none"
+    },
+    {
+      "hash": "00000ff81ffc3e7c7c3c7818f800f800f87ffc7efc3c7e3c7f7c3ff81ff003c0",
+      "letter": "G",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fc1ffc1f7e3e7e3e7f7e7f7e7ffe7ffe6ffe679e679e639ee33ff13ff03f",
+      "letter": "M",
+      "gem": "none"
+    },
+    {
+      "hash": "00003ffc3ffc1e0e1e041e201e301ff01ff01e301e201e021e063f0e3ffe3ffc",
+      "letter": "E",
+      "gem": "none"
+    },
+    {
+      "hash": "0000038007c007c007e007e00ff00df01cf81cf81ffc3ffc387e707ef8fff87f",
+      "letter": "A",
+      "gem": "none"
+    },
+    {
+      "hash": "0000ff3ffe3e7e383f701fe00fc00fc00780078007800780078007800fc00fc0",
+      "letter": "Y",
+      "gem": "none"
+    },
+    {
+      "hash": "0000f81ffc1f7e0e7f0e7f8e7fce7ffe77fe63fe61fe60fe607ef03ef01cf00c",
+      "letter": "N",
+      "gem": "none"
+    },
+    {
+      "hash": "0001fff1fffc7c7e7c3e7c3e7c1f7c1f7c1f7c1f7c1f7c1e7c3e7c7cfff8ffe0",
+      "letter": "D",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000fe1f7e1f7c0e7c0e7c0e7c0e7c0e7c0e7c0e7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "00000fe00fe007c007c007c007c007c007c007c007c007c007c007c00fe007e0",
+      "letter": "I",
+      "gem": "ruby"
+    },
+    {
+      "hash": "00003ff03ff81e3c1e3c1e3e1e3c1e3c1ffc1ff01e001e001e001e003f003f00",
+      "letter": "P",
+      "gem": "none"
+    },
+    {
+      "hash": "00003f801f801f001f001f001f001f001f001f001f001f041f041f0c3ffc3ff8",
+      "letter": "L",
+      "gem": "none"
+    },
+    {
+      "hash": "0001038307c307c307e307e10ff10df11cf91cf91ffc3ffc387e707ef8fff87f",
+      "letter": "A",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000f81ffc1ffe0e7f0e7f8e7fce7ffe77fe63fe61fe60fe607ef03ef01cf00c",
+      "letter": "N",
+      "gem": "ruby"
+    },
+    {
+      "hash": "000001fc01fc00f800f800f800f800f800f818f03cf87cf03cf03ff01fe00780",
+      "letter": "J",
+      "gem": "none"
+    },
+    {
+      "hash": "00010fe31ff13ff97cfc787ef87ef83efc3efc3efc3e7e3e7f7c3ff81ff087c0",
+      "letter": "O",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000fe7ffe7f7c3e7c3e7c3e7ffe7ffe7ffe7c3e7c3e7c3e7c3e7c3efe7f7c7e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fff0fffc7c7c7c3e7c3e7c1f7c1f7c1f7c1f7c1f7c1e7c3e7c7cfff8ffe0",
+      "letter": "D",
+      "gem": "none"
+    },
+    {
+      "hash": "00017ff13ff91e3c1e3c1e3e1e3e1e3c1ff91ff11e011e031e031e033f083f20",
+      "letter": "P",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "000101fd01fd00f900f900f900f900f900f918f93cf97cf13cf33ff31fe08780",
+      "letter": "J",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000ffe0fff07cf87cf87cf87cf87df07fe07ff07cf87cfc7c7c7c7cfe3f7e1e",
+      "letter": "R",
+      "gem": "none"
+    },
+    {
+      "hash": "00003ffc3ffc1e0e1e041e201e301ff01ff01e301e201e001e003e003f003f00",
+      "letter": "F",
+      "gem": "none"
+    },
+    {
+      "hash": "0000ff1ffe1f7e0c3e1c3e183f381f301ff00fe00fe007c007c007c003800100",
+      "letter": "V",
+      "gem": "none"
+    },
+    {
+      "hash": "00003ffc3ffc31f821f803f003e007e007c00fc00f801f861f063ffe3ffe3ffc",
+      "letter": "Z",
+      "gem": "none"
+    },
+    {
+      "hash": "00007ff07ff83e783e783e783ef03ff03ff83e7c3e7c3e7e3e7c3e7c7ff87ff0",
+      "letter": "B",
+      "gem": "none"
+    },
+    {
+      "hash": "7800fc00ff00df008f808f8087388779877987f9c779ef79fe79fc3ff83fff98",
+      "letter": "Q",
+      "gem": "none"
+    },
+    {
+      "hash": "0000ff7eff7e3f703fe01fc00fc00fc007e007f00ff01df818fc38fcfcfff8fe",
+      "letter": "X",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fefcfefc7c707ce07dc07fc07fe07fe07ff07ff87cfc7cfe7c7efe3f7e1f",
+      "letter": "K",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe1ffe1f7c0e7c0e7c0e7c0e7c0e7c0e7c0e7c0e7e0c3f3c3ffc1ff807e0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "00003f801f801f001f001f001f001f001f001f001f001f041f061f0c3ffc3ff8",
+      "letter": "L",
+      "gem": "none"
+    },
+    {
+      "hash": "00000fe40fe407c207c007c007c007c007c007c007c007c087c107c34fe707e4",
+      "letter": "I",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000fe1f7e1f7c0e7c0e7c0e7c0e7c0e7c0e7c0c7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe1f7e1e7c0e7c0e7c0e7c0c7c0c7c0c7c0c7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe1ffe1f7c0e7c0e7c0e7c0e7c0e7c0e7c0e7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "garnet"
+    },
+    {
+      "hash": "000007f81ffc3e7c7c3c7818f800f800f87ffc7efc3c7e3c7f7c3ff81ff003c0",
+      "letter": "G",
+      "gem": "diamond"
+    },
+    {
+      "hash": "00000fe01ff03ff87cfc787ef87ef83ef83efc3efc3e7e3e7f7c3ff81ff007c0",
+      "letter": "O",
+      "gem": "ruby"
+    },
+    {
+      "hash": "000007f00ff81f3c3e1c3f003fc01ff01ff80ffc23fc70fc387c3ff81ff007c0",
+      "letter": "S",
+      "gem": "diamond"
+    },
+    {
+      "hash": "00013ff97ffc7fde77ce67cc07c107c107c107c107c127c327c307c36fe0e7e0",
+      "letter": "T",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000f81ffc1e7e0e7f0e7f8e7fcc7ffc77fc63fe61fe60fe607ef03cf01cf00c",
+      "letter": "N",
+      "gem": "none"
+    },
+    {
+      "hash": "0000f7f3f7f3e3e1f3f1f3f3fbfbfffffffffe7f7e7e7e7e7c3e3c3c3c3c1818",
+      "letter": "W",
+      "gem": "ruby"
+    },
+    {
+      "hash": "0000f81ffc1e7e0e7f0e7f8e7fce7ffe77fe63fe61fe60fe607ef03ef01cf00c",
+      "letter": "N",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fefcfefc7c707ce07dc07fc07fe07fe07ff07ff87dfc7cfe7c7efe3ffe1f",
+      "letter": "K",
+      "gem": "emerald"
+    },
+    {
+      "hash": "0000f81ffc1ffe0e7f0e7f8e7fce7ffe77fe63fe61fe60fe607ef03ef21cf30c",
+      "letter": "N",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "000007e01ff03ff87cfc787cf87ef83ef83efc3efc3e7e3c7f7c3ff81ff007c0",
+      "letter": "O",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fff07ffc7c7c7c3e7c3e7c1f7c1f7c1f7c1f7c1f7c1e7c3e7c7cfff8ffe0",
+      "letter": "D",
+      "gem": "crystal"
+    },
+    {
+      "hash": "00010fe30fe307c307c307c107c107c107c107c107c127c327c307c36fe0e7e0",
+      "letter": "I",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0018038807c407c207e007e00ff00df01cf81cf81ffc3ffc387e707ef8fff87f",
+      "letter": "A",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "00000fe00fe007c007c007c007c007c007c007c007c007c007c087c00fe007e0",
+      "letter": "I",
+      "gem": "diamond"
+    },
+    {
+      "hash": "0000fc1ffc1f7e3f7e3e7f7e7f7e7ffe7ffe67de679e679e639ee33ff13ff03f",
+      "letter": "M",
+      "gem": "crystal"
+    },
+    {
+      "hash": "00003ffc3ffc1e0c1e041e201e301ff01ff01e301e201e001e003e003f003f00",
+      "letter": "F",
+      "gem": "crystal"
+    },
+    {
+      "hash": "0000fe1f7e1e7c0e7c0e7c0e7c0e7c0e7c0e7c0e7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "00013ffc3ffd71f921f903f103e107e107c10fc10f801f861f063ffe3ffe7ffc",
+      "letter": "Z",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000fe1ffe1f7c0e7c0e7c0e7c0e7c0e7c0e7c0e7c0e7e0c3f3c3ffc1ff887e0",
+      "letter": "U",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000fe1ffe1f7c0e7c0e7c0e7c0e7c0e7c0e7c0e7c0e3e0c3f3c3ffc1ff807e0",
+      "letter": "U",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "00000fe007e007c007c007c007c007c007c007c007c007c007c007c00fe007c0",
+      "letter": "I",
+      "gem": "crystal"
+    },
+    {
+      "hash": "0000fe7ffe7f7c3e7c3e7c3e7ffe7ffe7ffe7c3e7c3e7c3e7c3e7c3efe7f7e7e",
+      "letter": "H",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000ff1ffe1e7e0c3e1c3e183f381f301ff00fe00fe007c007c007c003800100",
+      "letter": "V",
+      "gem": "none"
+    },
+    {
+      "hash": "0000038007c007c007e007e00ff00df01cf81cf81ffc3ffc387e707ef8fff07f",
+      "letter": "A",
+      "gem": "none"
+    },
+    {
+      "hash": "000001fc01fc00f800f800f800f800f800f818f83cf87cf03cf03ff01fe00780",
+      "letter": "J",
+      "gem": "ruby"
+    },
+    {
+      "hash": "00003ffc3ffc1e0e1e041e211e311ff11ff11e311e201e021e063f0e3ffe3ffc",
+      "letter": "E",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000fe1f7e1f7c0e7c0e7c0e7c0e7c0e7c0e7c0c7c0e7e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "diamond"
+    },
+    {
+      "hash": "000107f10ff91f3d3e1d3f013fc11ff11ff90ffd23fc70fc38793ff81ff087c0",
+      "letter": "S",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000ff3ffe3e7e383f701fe00fc00fc00780078007800780078007800fc00780",
+      "letter": "Y",
+      "gem": "none"
+    },
+    {
+      "hash": "00003ff87ffc77dc77ce67cc07c007c007c007c007c007c087c107c34fe707e4",
+      "letter": "T",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000fefc7efc7c707ce07dc03fc03fe03fe07ff07ff87cfc7cfe7c7efe3f7e1f",
+      "letter": "K",
+      "gem": "none"
+    },
+    {
+      "hash": "00007ff07ff83e783e783e783ef03ff03ff83e7c3e7c3e7c3e7c3e7c7ff87ff0",
+      "letter": "B",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fff07ffc7c7c7c3e7c3e7c1f3c1f7c1f7c1f7c1f7c1e7c3e7c7cfff8ffe0",
+      "letter": "D",
+      "gem": "ruby"
+    },
+    {
+      "hash": "00003ff87ffc77dc77ce67cc07c007c007c007c007c007c087c107c34fe607e4",
+      "letter": "T",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "00003ff87ffc7fdc77ce67cc07c007c007c007c007c007c007c007c00fe007e0",
+      "letter": "T",
+      "gem": "emerald"
+    },
+    {
+      "hash": "00000fe01ff03ff87cfc787ef87ef83ef83efc3efc3e7e3e7f7c3ff81ff00380",
+      "letter": "O",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000ff3ffe3e7e383f701fe00fc00fc00780078007800780078087800fc00fc0",
+      "letter": "Y",
+      "gem": "diamond"
+    },
+    {
+      "hash": "7800fc00ff00df008f808f8087388779877987f9c779ef79fe79fc3ff83ffe98",
+      "letter": "Q",
+      "gem": "none"
+    },
+    {
+      "hash": "000007e01ff03ff87cfc787ef87ef83ef83efc3e7c3e7e3e7f7c3ff81ff007c0",
+      "letter": "O",
+      "gem": "none"
+    },
+    {
+      "hash": "000003e00ffc1ffe3e3e7c1e7c0e7c047c007c007e003f0c3ffc1ffc0ff803c0",
+      "letter": "C",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe1f7e1f7c0e7c0e7c0e7c0e7c0e7c0e7c0e7c0c3e0c3f3c3ffc0ff003c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "00003ff83ffc77dc77ce67cc07c007c007c007c007c007c007c007c00fe007e0",
+      "letter": "T",
+      "gem": "none"
+    },
+    {
+      "hash": "000007e01ff03ff87cfc787ef87ef83ef83efc3efc3e7e3e7f7c3ff81ff00380",
+      "letter": "O",
+      "gem": "none"
+    },
+    {
+      "hash": "000007f00ff81f7c3e1c3f003fc01ff01ff80ffc23fc70fc38783ff91ff307c0",
+      "letter": "S",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "000007f00ff81f3c3e1c3f003fc01ff01ff80ffc23fc30fc38783ff81ff007c0",
+      "letter": "S",
+      "gem": "none"
+    },
+    {
+      "hash": "00003ffc3ffc1e0c1e041e201e301ff01ff01e301e201e021e063f0e3ffe3ffc",
+      "letter": "E",
+      "gem": "none"
+    },
+    {
+      "hash": "000007e01ff03ff87cfc787ef87ef83ef83efc3efc3e7e3c7f7c3ff81ff007c0",
+      "letter": "O",
+      "gem": "none"
+    },
+    {
+      "hash": "00003ff03ff81e3c1e3c1e3c1e3c1e3c1f781ff01e001e001e001e003f003f00",
+      "letter": "P",
+      "gem": "diamond"
+    },
+    {
+      "hash": "0000fff0fffc7c7c7c3e7c3e7c1f7c1f7c1f7c1f7c1f7c1e7c3e7c7cfff87fe0",
+      "letter": "D",
+      "gem": "none"
+    },
+    {
+      "hash": "000003e00ffc1ffe3e3e7c1e7c0e7c047c007c007e003f0e3ffc1ffc0ff801c0",
+      "letter": "C",
+      "gem": "none"
+    },
+    {
+      "hash": "0000f81ffc1f7e0e7f0e7f8e7fce7ffe77fe63fe61fe60fe607ef03ef01cf004",
+      "letter": "N",
+      "gem": "none"
+    },
+    {
+      "hash": "0000ffe0fff07cf87cf87cf87cf87df07fe07ff07cf87cfc7c7c7c7cfe3f7c1c",
+      "letter": "R",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe1e7e1e7c0e7c0c7c0e7c0e7c0e7c0e7c0e7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fefcfefc7c707ce07dc07fc07fe07fe07ff07ff87cfc7cfe7c7efe3f7c1f",
+      "letter": "K",
+      "gem": "none"
+    },
+    {
+      "hash": "00003ffc3ffc1e0e1e041e301e301ff01ff01e301e201e021e063f0e3ffe3ffc",
+      "letter": "E",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "00003ff87ffc77dc77ce67cc07c007c007c007c007c007c007c007c00fe007c0",
+      "letter": "T",
+      "gem": "none"
+    },
+    {
+      "hash": "0018038807c407c007e007e00ff00df01cf81cf81ffc3ffc387e707ef8fff87f",
+      "letter": "A",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "00003ff03ff81e3c1e3c1e3e1e3c1e3c1f781ff01e001e001e001e003f003f00",
+      "letter": "P",
+      "gem": "garnet"
+    },
+    {
+      "hash": "0000038007c007c007e007e00ff00df01cf81cf81ffc3ffc387e707ef87ff07e",
+      "letter": "A",
+      "gem": "none"
+    },
+    {
+      "hash": "00000ff81ffc3e7c7c3c7818f800f800f8fffc7efc3c7e3c7f7c3ff91ff303c0",
+      "letter": "G",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000fe1f7e1e7c0e7c0e7c0e7c0e7c0e7c0e7c0c7c0e7e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "diamond"
+    },
+    {
+      "hash": "00007ff03ff81e3c1e3c1e3e1e3c1e3c1ffc1ff01e001e001e001e003f003f00",
+      "letter": "P",
+      "gem": "emerald"
+    },
+    {
+      "hash": "00013ffc3ffc1e0e1e041e211e311ff11ff11e311e211e031e033e037f083f20",
+      "letter": "F",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "00003ff03ff81e3c1e3c1e3c1e3c1e3c1ff81ff01e001e001e001e003f003f00",
+      "letter": "P",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe7ffe7e7c3e7c3e7c3e7ffe7ffe7ffe7c3e7c3e7c3e7c3e7c3efe7f7c7e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "0080f81ffc1ffe0e7f0e7f8e7fce7ffe77fe63fe61fe60fe607ef03ef01cf00c",
+      "letter": "N",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000fc1ffc1f7e3e7e3e7f7e7f7e7ffe7ffe67de679e679e639ee33ff13ff03f",
+      "letter": "M",
+      "gem": "diamond"
+    },
+    {
+      "hash": "0000fe1f7e1f7c0e3c0e7c0e7c0e7c0e7c0e7c0e7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "00003f801f801f001f001f001f001f001f001f001f001f041f041f0c1ffc1ff8",
+      "letter": "L",
+      "gem": "none"
+    },
+    {
+      "hash": "00003ff87ffc77dc77ce67cc07c007c007c007c007c007c007c087c00fe007e0",
+      "letter": "T",
+      "gem": "diamond"
+    },
+    {
+      "hash": "00000ff81ffc3e7c7c3c7818f800f800f87ffc7efc3c7e3c7f7c3ff80ff003c0",
+      "letter": "G",
+      "gem": "none"
+    },
+    {
+      "hash": "0000ffe0fff07cf87cf87cf87cf87df07fe07ff07cf87cfc7c7c7c7cfe3f7c1e",
+      "letter": "R",
+      "gem": "none"
+    },
+    {
+      "hash": "7800fc00ff00df008f808f8087388779877987f9c779ef79fe79fc3ff83ffc98",
+      "letter": "Q",
+      "gem": "none"
+    },
+    {
+      "hash": "00007ff07ff83e783e783e783ef03ff03ff83e7c3e7c3e7e3e7c3e7c7ff87fe0",
+      "letter": "B",
+      "gem": "none"
+    },
+    {
+      "hash": "000003e00ffc1ffe3e3e7c1e7c0e7c047c007c007e007f0e3ffc1ffc0ff803c0",
+      "letter": "C",
+      "gem": "emerald"
+    },
+    {
+      "hash": "0000ffe07ff07cf87cf87cf87cf87df07fe07ff07cf87cfc7c7c7c7cfe3f7e1e",
+      "letter": "R",
+      "gem": "none"
+    },
+    {
+      "hash": "0080f81ffc1f7e0e7f0e7f8e7fce7ffe77fe63fe61fe60fe607ef03ef01cf00c",
+      "letter": "N",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "7800fc00ff00df008f808f8087388779877887f8c778ef78fe79fc3df83fff98",
+      "letter": "Q",
+      "gem": "none"
+    },
+    {
+      "hash": "000007f00ff81f3c3e1c3f003fc01ff01ff80ffc63fc70fc387c3ff81ff007c0",
+      "letter": "S",
+      "gem": "emerald"
+    },
+    {
+      "hash": "0000fe1ffe1e7c0e7c0e7c0e7c0e7c0e7c0e7c0c7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe1f7e1f7c0e3c0e7c0e3c0e3c0e7c0e7c0e7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe7ffe7f7c3e7c3e7c3e7ffe7ffe7ffe7c3e7c3e7c3e7c3e7c3efe7f7c3e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fff07ffc7c7c3c3e7c3e3c1f3c1f3c1f7c1f7c1f7c1e7c3e7c7cfff8ffe0",
+      "letter": "D",
+      "gem": "none"
+    },
+    {
+      "hash": "00000fe40fe407c207c007c007c007c007c007c007c007c087c107c34fe707c4",
+      "letter": "I",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000fe1f7e1e7c0e7c0c7c0c7c0c7c0c7c0c7c0c7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "000007f81ffc3e7c7c3c7818f800f800f87ffc7e7c3c7e3c3f7c3ff81ff003c0",
+      "letter": "G",
+      "gem": "garnet"
+    },
+    {
+      "hash": "000003e00ffc1ffe3e3e7c1e7c0e7c047c007e007e003f0e3ffc1ffc0ff803c0",
+      "letter": "C",
+      "gem": "ruby"
+    },
+    {
+      "hash": "00000ff81ffc3e7c7c3c7818f800f800f87ffc7e7c3c7e3c7f7c3ff81ff003c0",
+      "letter": "G",
+      "gem": "none"
+    },
+    {
+      "hash": "0000f7f3f7f3e3e1f3f1f3f3f3fbfffffffffe7f7e7e7e7e7c3e3c3c3c3c1818",
+      "letter": "W",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "00007ff07ff83ef83e783e783ef03ff03ff83e7c3e7c3e7e3e7c3e7c7ff87ff0",
+      "letter": "B",
+      "gem": "ruby"
+    },
+    {
+      "hash": "0000fe1ffe1f7c0e7c0e7c0e7c0e7c0e7c0e7c0e7c0e7e0c3f3c3ffc1ff803e0",
+      "letter": "U",
+      "gem": "ruby"
+    },
+    {
+      "hash": "0000ff3ffe3e7e383f701fe00fc00fc0078007800780078007800f800fc00fc0",
+      "letter": "Y",
+      "gem": "emerald"
+    },
+    {
+      "hash": "0000fe1ffe1f7c0e7c0e7c0e7c0e7c0e7c0e7c0e7c0c7e0c3f3c3ffc1ff803e0",
+      "letter": "U",
+      "gem": "ruby"
+    },
+    {
+      "hash": "0000ff1ffe1f7e0c3e1c3e183f381f301ff00fe00fe007e007c007c003800100",
+      "letter": "V",
+      "gem": "none"
+    },
+    {
+      "hash": "00000fe01ff03ff87cfc787ef87ef83efc3efc3efc3e7e3e7f7c3ff81ff007c0",
+      "letter": "O",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fff0fffc7c7c7c3e7c3e7c1f7c1f7c1f7c1f7c1e7c1e7c3e7c7cfff8ffe0",
+      "letter": "D",
+      "gem": "none"
+    },
+    {
+      "hash": "000007e01ff03ff87cfc787ef87ef83ef83efc3efc3e7e3e7f7c3ff81ff003c0",
+      "letter": "O",
+      "gem": "none"
+    },
+    {
+      "hash": "0001ffe3fff37cf97cf97cf97cf97df17fe17ff17cf97cfc7c7c7c7cfe3f7e1e",
+      "letter": "R",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "00003ff87ffc77dc77cc67cc07c007c007c007c007c007c007c007c00fe007e0",
+      "letter": "T",
+      "gem": "none"
+    },
+    {
+      "hash": "0000ff1ffe1f7e0c3e1c3e183f381fb01ff00fe00fe007c087c107c34387211c",
+      "letter": "V",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000fff0fffc7c7e7c3e7c3e7c1f7c1f7c1f7c1f7c1f7c1e7c3e7c7cfff8ffe0",
+      "letter": "D",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "00003ffc3ffc1e0e1e041e201e301ff01ff01e301e201e021e063f0e3ffc3ffc",
+      "letter": "E",
+      "gem": "none"
+    },
+    {
+      "hash": "0080f81ffc1efe0e7f0e7f8e7fce7ffe77fe63fe61fe60fe607ef03ef01cf00c",
+      "letter": "N",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000f81ffc1e7e0e7f0e7f8e7fce7ffe77fe63fe61fe60fe607ef03cf01cf00c",
+      "letter": "N",
+      "gem": "none"
+    },
+    {
+      "hash": "0000f81ffc1e7e0e7f0e7f8c7fcc7ffc77fc63fe61fe60fe607ef03cf01cf00c",
+      "letter": "N",
+      "gem": "none"
+    },
+    {
+      "hash": "0000ffe07ff07cf87cf87cf83cf83df03fe07ff07cf87cfc7c7c7c7cfe3f7e1e",
+      "letter": "R",
+      "gem": "none"
+    },
+    {
+      "hash": "000007f00ff81f3c3e1c3f003fc01ff01ff80ffc23fc70fc38783ff81ff00780",
+      "letter": "S",
+      "gem": "none"
+    },
+    {
+      "hash": "00000ff81ffc3e7c7c3c7818f800f800f8fffc7efc3c7e3c7f7c3ff81ff003c0",
+      "letter": "G",
+      "gem": "none"
+    },
+    {
+      "hash": "000107f10ff91f3d3e1d3f013fc11ff11ff90ffd23fc70fc38793ff83ff087c0",
+      "letter": "S",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000fff07ffc7c7c3c3e7c3e7c1f7c1f7c1f7c1f7c1f7c1e7c3e7c7cfff8ffe0",
+      "letter": "D",
+      "gem": "none"
+    },
+    {
+      "hash": "0000dfe0fff07cf07cf87cf87cb87cf07fe07ff07cf878e47c7c4c7c5e3d5e1c",
+      "letter": "R",
+      "gem": "none"
+    },
+    {
+      "hash": "00183f881f841f021f001f001f001f001f001f001f001f049f061f0c3ffc3ff8",
+      "letter": "L",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000fc1ffc1f7e3f7e3e7f7e7f7e7ffe7ffe6ffe679e679e639ee33ff33ff03f",
+      "letter": "M",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000ffe07ff07cf83cf87cf83cf83df03fe07ff07cf87cfc7c7c7c7cfe3f7e1e",
+      "letter": "R",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fff07ffc7c7c3c3e3c3e3c1f3c1f3c1f7c1f7c1f7c1e7c3e7c7cfff8ffe0",
+      "letter": "D",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fff07ffc7c7c3c3e7c3e3c1f3c1f7c1f7c1f7c1f7c1e7c3e7c7cfff8ffe0",
+      "letter": "D",
+      "gem": "none"
+    },
+    {
+      "hash": "00013f833f831f031f031f011f011f011f011f011f011f041f061f0c3ffc3ff8",
+      "letter": "L",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "000007e01ff03ff87cfc787cf87ef83ef83efc3efc3e7e3e7f7c3ff81ff007c0",
+      "letter": "O",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe7efe7e7c3e7c3e7c3e7ffe7ffe7ffe7c3e7c3e7c3e7c3e7c3efe7f7c7e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "0000f7f3f7f3e3e1f3f1f3f3fbfbfffffffffe7f7e7e7e7e7c3e3c3c3c3c1918",
+      "letter": "W",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "00003f801f801f001f001f001f001f001f001f001f001f041f069f0c3ffc3ff8",
+      "letter": "L",
+      "gem": "diamond"
+    },
+    {
+      "hash": "0000ff3ffe3e7e383f701fe00fc00fc00780078007800780078007800fc007c0",
+      "letter": "Y",
+      "gem": "none"
+    },
+    {
+      "hash": "000001fc01fc00f800f800f800f800f800f818f83cf87cf03cf13ff31fe7078c",
+      "letter": "J",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "00007e7f7e7f7c3e7c3e7c3e7ffe7ffe7ffe7c3e7c3e7c3e7c3e7c3efe7f7c7e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe1f7e1e7c0e7c0e7c0e7c0e7c0c7c0e7c0c7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "0000038007c007c007e007e00ff00df01cf81cf81ffc3ffc387e707ef87ff07f",
+      "letter": "A",
+      "gem": "none"
+    },
+    {
+      "hash": "0000f81ffc1e7e0e7f0c7f8e7fce7ffe77fe63fe61fe60fe607ef03ef01cf00c",
+      "letter": "N",
+      "gem": "diamond"
+    },
+    {
+      "hash": "00003ff03ffc1e3c1e3c1e3e1e3c1e3c1ffc1ff01e001e001e011e033f073f1c",
+      "letter": "P",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000fe1f7e1e7c0e7c0c7c0e7c0e7c0e7c0e7c0e7c0c3e0c3f3c3ffc0ff003c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "00000ff81ffc3e7c7c3c7818f800f800f87ffc7efc3c7e3c7f7c3ff80ff00380",
+      "letter": "G",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe1f7e1e7c0e7c0e7c0e7c0e7c0e7c0e7c0c7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe1f7e1e7c0e7c0e7c0e7c0c7c0c7c0e7c0c7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe7f7e7f7c3e7c3e7c3e7ffe3ffe3ffe7c3e7c3e7c3e7c3e7c3efe7f7c7e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "0000038807c407c207e007e00ff00df01cf81cf81ffc3ffc387e707ef8fff87f",
+      "letter": "A",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000fe7f7e7f7c3e3c3e7c3e3ffe3ffe3ffe7c3e7c3e7c3e7c3e7c3efe7f7c7e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe7f7e7f7c3e3c3e7c3e3ffe3ffe3ffe3c3e7c3e7c3e7c3e7c3efe7f7c7e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "0010038807c407c207e007e00ff00df01cf81cf81ffc3ffc387e707ef8fff87f",
+      "letter": "A",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000fe7ffe7f7c3e7c3e7c3e7ffe3ffe3ffe7c3e7c3e7c3e7c3e7c3efe7f7c7e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe7f7e7f7c3e7c3e7c3e7ffe7ffe7ffe7c3e7c3e7c3e7c3e7c3efe7f7c7e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "00003ffc3ffc1e0e1e041e201e301ff01ff01e301e201e021e063e0e3ffc3ffc",
+      "letter": "E",
+      "gem": "none"
+    },
+    {
+      "hash": "0000ff1ffe1f7e0c3e1c3e183f381f301ff00fe00fe007c007c087c003800100",
+      "letter": "V",
+      "gem": "diamond"
+    },
+    {
+      "hash": "0000f81ffc1e7e0e7f0e7f8c7fcc7ffc77fc63fc61fc60fe607ef03cf01cf00c",
+      "letter": "N",
+      "gem": "none"
+    },
+    {
+      "hash": "0000f81ffc1efe0e7f0e7f8e7fcc7ffc77fc63fe61fe60fe607ef03ef01cf00c",
+      "letter": "N",
+      "gem": "emerald"
+    },
+    {
+      "hash": "0000f81ffc1e7e0e7f0e7f8e7fce7ffc77fe63fe61fe60fe607ef03ef01cf00c",
+      "letter": "N",
+      "gem": "none"
+    },
+    {
+      "hash": "0000f81ffc1e7e0e7f0e7f8e7fcc7ffe77fe63fe61fe60fe607ef03cf01cf00c",
+      "letter": "N",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fc1ffc1f7e3f7e3e7f7e7f7e7ffe7ffe6ffe679e679e639ee33ff13ff03f",
+      "letter": "M",
+      "gem": "ruby"
+    },
+    {
+      "hash": "0000fe1f7e1e7c0e7c0c7c0e7c0e7c0e7c0e7c0e7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe1ffe1f7c0e7c0e7c0e7c0e7c0e7c0e7c0e7c0c7e0c3f3c3ffc1ff807e0",
+      "letter": "U",
+      "gem": "ruby"
+    },
+    {
+      "hash": "00003ff03ffc1e3c1e3c1e3e1e3c1e3c1ffc1ff01e001e001e001e003f003f08",
+      "letter": "P",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "7800fc00ff00df009f808f8087398779877987f9c779ef79fe79fc3ff83fff98",
+      "letter": "Q",
+      "gem": "none"
+    },
+    {
+      "hash": "00013ffc3ffc1e0e1e041e211e311ff11ff11e311e201e021e063f0e3ffe3ffc",
+      "letter": "E",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "00017ff37ff93ef93e793e793ef13ff13ff93e7c3e7e3e7e3e7c3e7c7ff87ff0",
+      "letter": "B",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "00003ffc3ffc1e0e1e041e201e301ff01ff01e301e201e001e003e003f003e00",
+      "letter": "F",
+      "gem": "none"
+    },
+    {
+      "hash": "00000fe01ff03ff87cfc787ef87ef83ef83efc3e7c3e7e3e7f7c3ff81ff007c0",
+      "letter": "O",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000ff7efe7e3f703fe01fc00fc00fc007e007f00ff01df818fc38fcfcfff8fe",
+      "letter": "X",
+      "gem": "crystal"
+    },
+    {
+      "hash": "0000fefcfefc7c707ce07dc07fc07fe07fe07ff07ff87cfc7cfe7c7efe3ffe1f",
+      "letter": "K",
+      "gem": "garnet"
+    },
+    {
+      "hash": "0000de18fe137c067c0e7c0e7c0e7c0e7c0e7c0e7c0e7a043f3c0ffc0ff807e0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "00010ff91ffd3e7c7c3d7819f801f800f8fffc7ffc3c7e3c7f7c3ff81ff087c0",
+      "letter": "G",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000f7f3f7f3e3e1f3f1f3f3f3fbfffffffffe7f7e7e7e7e7c3c3c3c3c3c1818",
+      "letter": "W",
+      "gem": "garnet"
+    },
+    {
+      "hash": "0000ffe07ff07cf83cf87cf87cf87df07fe07ff07cf87cfc7c7c7c7cfe3f7e1e",
+      "letter": "R",
+      "gem": "none"
+    },
+    {
+      "hash": "00003ffc3ffc31f821f003f003e007e007c00fc00f801f861f063ffe3ffe3ffc",
+      "letter": "Z",
+      "gem": "diamond"
+    },
+    {
+      "hash": "00003f801f801f001f001f001f001f001f001f001f001f041f041f0c1ffc3ff8",
+      "letter": "L",
+      "gem": "none"
+    },
+    {
+      "hash": "00007fe07ff07cf83cf87cf87cf87df07fe07ff07cf87cfc7c7c7c7cfe3f7e1e",
+      "letter": "R",
+      "gem": "none"
+    },
+    {
+      "hash": "0000f81ffc1e7e0e7f0e7f8c7fcc7ffc77fc63fe61fc60fe607ef03cf01cf00c",
+      "letter": "N",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe1f7e1f7c0e7c0e7c0e7c0e7c0e7c0e7c0c7c0e7e0c3f3c3ffc1ff807c0",
+      "letter": "U",
+      "gem": "diamond"
+    },
+    {
+      "hash": "0000fff07ffc7c7c3c3e7c3e7c1f3c1f7c1f7c1f7c1f7c1e7c3e7c7cfff8ffe0",
+      "letter": "D",
+      "gem": "none"
+    },
+    {
+      "hash": "00010fe31ff13ff87cfc787ef87ef83efc3efc3efc3e7e3e7f7c3ff81ff087c0",
+      "letter": "O",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000ff1ffe1f7e0c3e1c3e183f381ff01ff00fe00fe007c087c007c34386211c",
+      "letter": "V",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000fe1f7e1f7c0e3c0e3c0e3c0e3c0e7c0e7c0e7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "00007ff03ff81e3c1e3c1e3e1e3e1e3c1ffc1ff01e001e001e001e003f003f00",
+      "letter": "P",
+      "gem": "emerald"
+    },
+    {
+      "hash": "0000fefc7efc7c707ce03dc03fc03fe03fe03ff07ff87cfc7cfe7c7efe3f7e1f",
+      "letter": "K",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe7ffe7e7c3e7c3e7c3e7ffc7ffc7ffc7c3c7c3c7c3e7c3e7c3efe7f7c7e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe7ffe7e7c3e7c3e7c3e7ffc7ffc7ffc7c3c7c3e7c3e7c3e7c3efe7f7c7e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "00007e7f7e7f7c3e3c3e7c3e7ffe7ffe7ffe7c3e7c3e7c3e7c3e7c3efe7f7c7e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "0000ff3efe3e7e383f701fe00fc00fc00780078007800780078007800fc00fc0",
+      "letter": "Y",
+      "gem": "none"
+    },
+    {
+      "hash": "0080fc1ffc1f7e3f7e3e7f7e7f7e7ffe7ffe6ffe679e679e639ee33ff13ff03f",
+      "letter": "M",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "00003ff03ff81e3c1e3c1e3e1e3c1e3c1ffc1ff01e001e001e001e003f003e00",
+      "letter": "P",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fefefefc7c717ce17dc17fc17fe17fe17ff17ff97dfc7cfe7c7efe3ffe1f",
+      "letter": "K",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "00000fe00fe407c007c007c007c007c007c007c007c007c087c107c34fe707e4",
+      "letter": "I",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000ffe0fff07cf87cf87cf87cf87df07fe07ff07cf87c7c7c7c7c7cfe3f7e1e",
+      "letter": "R",
+      "gem": "diamond"
+    },
+    {
+      "hash": "0000fc1ffc1f7e3f7e3e7f7e7f7e7ffe7ffe67fe679e679e639ee33ff13ff03f",
+      "letter": "M",
+      "gem": "garnet"
+    },
+    {
+      "hash": "0000fe7f7e7f7c3e3c3e3c3e3ffe3ffe3ffe3c3e3c3e7c3e7c3e7c3efe7f7c7e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "00000ff81ffc3e7c7c3c7818f800f800f87ffc7e7c3c7e3c7f7c3ff80ff003c0",
+      "letter": "G",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fefcfefc7c707ce07dc07fc07fe07fe07ff07ff87cfc7cfc7c7efe3f7e1f",
+      "letter": "K",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe1ffe1f7c0e7c0e7c0e7c0e7c0e7c0e7c0e7c0e7e0c3f3c3ffc1ff883c0",
+      "letter": "U",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "00003ff03ff81e3c1e3c1e3c1e3c1e3c1ffc1ff01e001e001e001e003f003f00",
+      "letter": "P",
+      "gem": "none"
+    },
+    {
+      "hash": "0000ffe07ff07cf83cf83cf83cf83df03fe07ff07cf87cfc7c7c7c7cfe3f7e1e",
+      "letter": "R",
+      "gem": "none"
+    },
+    {
+      "hash": "0000ff1ffe1f7e0c3e1c3e193f391f311ff10fe10fe107e327c307c37388f300",
+      "letter": "V",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000ff1ffe1e7e0c3e1c3e193f391f311ff10fe10fe107e327c307c37380f300",
+      "letter": "V",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000ff1ffe1f7e0c3e1c3e193f391f311ff10fe10fe107e327c307c37380f300",
+      "letter": "V",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000ff1ffe1f7e0c3e1c3e193f391f311ff10fe10fe107e327c307c27380f300",
+      "letter": "V",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000fe1ffe1f7c0e7c0e7c0e7c0e7c0e7c0e7c0e7c0c3e0c3f3c3ffc1ff807e0",
+      "letter": "U",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "00001ffc3ffc71f821f803f003e007e007c00fc00f801f861f063ffe3ffe7ffc",
+      "letter": "Z",
+      "gem": "emerald"
+    },
+    {
+      "hash": "0000ffe07ff07cf87cf87cf87cf83df03fe07ff07cf87cfc7c7c7c7cfe3f7c1e",
+      "letter": "R",
+      "gem": "none"
+    },
+    {
+      "hash": "00013ff87ffc7fdc77ce67cc07c107c107c107c107c127c327c307c26fe0e7e0",
+      "letter": "T",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "000007e01ff03ff87cfc787cf87ef83ef83efc3e7c3e7e3c7f7c3ff81ff007c0",
+      "letter": "O",
+      "gem": "none"
+    },
+    {
+      "hash": "0000f81ffc1e7e0e7f0e7f8e7fce7ffc77fe63fe61fe60fe607ef03cf01cf00c",
+      "letter": "N",
+      "gem": "none"
+    },
+    {
+      "hash": "7800fc00ff00df008f808f8087388779877987f8c779ef79fe79fc3ff83fff98",
+      "letter": "Q",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe7ffe7e7c3e7c3e7c3e7ffe7ffc7ffc7c3e7c3e7c3e7c3e7c3efe7f7c7e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe7ffe7e7c3e7c3e7c3e7ffe7ffc7ffc7c3c7c3e7c3e7c3e7c3efe7f7c7e",
+      "letter": "H",
+      "gem": "none"
+    },
+    {
+      "hash": "00003ffc3ffc31f821f803f003e007e007c00fc00f801f861f063ffe3ffe7ffc",
+      "letter": "Z",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000fe1f7e1e7c0e3c0e7c0e7c0c7c0c7c0e7c0c7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe1f7e1e7c0e3c0e7c0e7c0c7c0c7c0c7c0c7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fe1f7e1e7c0e3c0e7c0e3c0c7c0c7c0c7c0c7c0c3e0c3f3c3ffc1ff803c0",
+      "letter": "U",
+      "gem": "none"
+    },
+    {
+      "hash": "0000ff3fff3e7e383f701fe00fc00fc00780078007800780878107834fc70fcc",
+      "letter": "Y",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "0000f81ffc1e7e0e7f0e7f8e7fce7ffe77fe63fe61fe60fe607ef03ef01cf004",
+      "letter": "N",
+      "gem": "none"
+    },
+    {
+      "hash": "0000fff0fffc7c7c7c3e7c3e7c1f7c1f7c1f7c1f7c1f7c1e7c3e7c7cfff87fc0",
+      "letter": "D",
+      "gem": "none"
+    }
+  ]
+}

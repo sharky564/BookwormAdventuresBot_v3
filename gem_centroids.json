@@ -1,0 +1,53 @@
+{
+  "_comment": "RGB centroids per gem. Refit with `python tests/test_recognition.py --learn-centroids`.",
+  "centroids": {
+    "none": {
+      "r": 240,
+      "g": 221,
+      "b": 156,
+      "n": 137
+    },
+    "emerald": {
+      "r": 68,
+      "g": 181,
+      "b": 78,
+      "n": 4
+    },
+    "diamond": {
+      "r": 253,
+      "g": 251,
+      "b": 250,
+      "n": 3
+    },
+    "crystal": {
+      "r": 255,
+      "g": 218,
+      "b": 255,
+      "n": 4
+    },
+    "amethyst": {
+      "r": 252,
+      "g": 133,
+      "b": 254,
+      "n": 2
+    },
+    "ruby": {
+      "r": 248,
+      "g": 46,
+      "b": 45,
+      "n": 6
+    },
+    "sapphire": {
+      "r": 41,
+      "g": 117,
+      "b": 247,
+      "n": 4
+    },
+    "garnet": {
+      "r": 253,
+      "g": 147,
+      "b": 49,
+      "n": 3
+    }
+  }
+}

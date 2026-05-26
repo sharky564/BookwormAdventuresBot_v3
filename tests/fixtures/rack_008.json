@@ -1,0 +1,122 @@
+{
+  "description": "",
+  "image": "rack_008.png",
+  "rack_offset_x": 2,
+  "rack_offset_y": 2,
+  "tile_size_x": 50,
+  "tile_size_y": 51,
+  "tiles": [
+    {
+      "row": 0,
+      "col": 0,
+      "letter": "L",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 0,
+      "col": 1,
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 0,
+      "col": 2,
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 0,
+      "col": 3,
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 0,
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 1,
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "letter": "D",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 0,
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 1,
+      "letter": "E",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "letter": "E",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 3,
+      "letter": "P",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "row": 3,
+      "col": 0,
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "letter": "B",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 3,
+      "col": 3,
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    }
+  ]
+}

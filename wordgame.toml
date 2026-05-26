@@ -1,0 +1,42 @@
+[engine]
+exe = "solver.exe"
+dict = "game_data/ba1-dictionary.txt"
+n = 8
+horizon = 2
+max_sims = 300
+
+[rack]
+manual_calibrate = false
+rack_offset_x = 304
+rack_offset_y = 335
+tile_size_x = 50
+tile_size_y = 51
+
+[capture]
+focus_click = true
+focus_click_x = 300
+focus_click_y = 300
+focus_click_button = "right"
+focus_settle_delay = 0.5
+focus_delay = 3.0
+
+[play]
+click_delay = 0.00
+pre_delay = 0.20
+mouse_move_speed = 0.00
+post_word_delay = 0.10
+focus_click_first = true
+
+[reset]
+menu_delay = 0.0
+quit_delay = 0.0
+confirm_delay = 1.1
+# TODO: Auto mode still broken
+delay_read = 1.0
+delay_kill_to_reset = 3.0
+delay_overkill_to_reset = 5.0
+delay_post_reset = 5.0
+
+[overlay]
+x = "auto"
+y = "auto"

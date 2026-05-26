@@ -1,0 +1,122 @@
+{
+  "description": "",
+  "image": "rack_007.png",
+  "rack_offset_x": 1,
+  "rack_offset_y": 1,
+  "tile_size_x": 50,
+  "tile_size_y": 51,
+  "tiles": [
+    {
+      "row": 0,
+      "col": 0,
+      "letter": "A",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 0,
+      "col": 1,
+      "letter": "D",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 0,
+      "col": 2,
+      "letter": "A",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "row": 0,
+      "col": 3,
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 0,
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 1,
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 2,
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 1,
+      "col": 3,
+      "letter": "G",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 0,
+      "letter": "R",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 1,
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 2,
+      "letter": "E",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "row": 2,
+      "col": 3,
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 3,
+      "col": 0,
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 3,
+      "col": 1,
+      "letter": "B",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 3,
+      "col": 2,
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "row": 3,
+      "col": 3,
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    }
+  ]
+}
