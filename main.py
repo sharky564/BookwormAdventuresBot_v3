@@ -227,7 +227,13 @@ def main() -> int:
         if manual_chapter_override:
             return
         preset = active_chapter_preset(prog)
-        power = power_at(prog)
+        # Read power from the overlay rather than from prog directly. On
+        # progress changes, autofill_fields_for_current_enemy() runs first
+        # and sets the overlay power to power_at(prog), so the value here
+        # matches the new enemy. When the user manually edits the power
+        # field (and fires on_power_changed → here), we use their value
+        # instead. This makes the field a true override.
+        power = overlay.get_power()
         base_damage_bonus = base_damage_bonus_at(prog)
         _, armour = monster_at(prog)
         treasure_equipped = is_treasure_equipped(prog)
@@ -242,6 +248,12 @@ def main() -> int:
             weakness_boost=weakness_boost,
         )
 
+    # Prime the overlay's power field with the default for the current
+    # progress before the first config push. push_engine_config_for_progress
+    # reads overlay.get_power(), so we need the overlay primed first or
+    # we'd send power=0 to the engine on startup. The full autofill (HP
+    # + power) runs later — this is just the bit we need pre-push.
+    overlay.set_power(power_at(prog))
     push_engine_config_for_progress()
 
     def refresh_progress_display() -> None:
