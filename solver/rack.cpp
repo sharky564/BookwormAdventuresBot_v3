@@ -91,8 +91,67 @@ void Rack::regenerateTilesCRN(Gem gem, bool wildcard, const int* draws)
 
 void Rack::playWord(const Word& word)
 {
-    for (const auto& tile : word.getTiles())
-        removeTile(tile);
+    const TileList& word_tiles = word.getTiles();
+    std::array<std::uint8_t, 26> demand_no_gem{};
+    int demand_wild = 0;
+    std::array<std::pair<std::int8_t, Gem>, MAX_WORD_LEN> gem_demands{};
+    int n_gem_demands = 0;
+
+    for (const Tile& t : word_tiles)
+    {
+        if (t.isWildcard())
+            ++demand_wild;
+        else if (t.getGem() == Gem::NONE)
+            ++demand_no_gem[t.getLetter() - 'A'];
+        else
+            gem_demands[n_gem_demands++] = {static_cast<std::int8_t>(t.getLetter() - 'A'), t.getGem()};
+    }
+
+    auto out = mTiles.begin();
+    for (auto it = mTiles.begin(); it != mTiles.end(); ++it)
+    {
+        const Tile& t = *it;
+        bool consumed = false;
+        if (t.isWildcard())
+        {
+            if (demand_wild > 0)
+            {
+                --demand_wild;
+                consumed = true;
+            }
+        }
+        else
+        {
+            const int li = t.getLetter() - 'A';
+            if (t.getGem() == Gem::NONE)
+            {
+                if (demand_no_gem[li] > 0)
+                {
+                    --demand_no_gem[li];
+                    consumed = true;
+                }
+            }
+            else if (n_gem_demands > 0)
+            {
+                for (int k = 0; k < n_gem_demands; ++k)
+                {
+                    if (gem_demands[k].first == li && gem_demands[k].second == t.getGem())
+                    {
+                        gem_demands[k] = gem_demands[--n_gem_demands];
+                        consumed = true;
+                        break;
+                    }
+                }
+            }
+        }
+        if (!consumed)
+        {
+            if (out != it)
+                *out = t;
+            ++out;
+        }
+    }
+    mTiles.erase(out, mTiles.end());
 }
 
 void Rack::playWord(const Word& word, std::mt19937& rng)

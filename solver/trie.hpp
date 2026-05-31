@@ -22,8 +22,9 @@ struct TrieNode
     std::uint8_t finish_mask;
     std::uint8_t subtree_bonuses;
     std::uint8_t _pad;
+    float max_subtree_points;
 };
-static_assert(sizeof(TrieNode) == 12, "TrieNode must be 12 bytes");
+static_assert(sizeof(TrieNode) == 16, "TrieNode must be 16 bytes");
 
 inline constexpr std::uint8_t WORD_FINISHED_BIT = 1u << 0;
 inline constexpr int NUM_BONUS_CATS = 5;
@@ -279,6 +280,7 @@ void Trie<size>::finalize()
         nodes[i].finish_mask = fm;
         nodes[i].subtree_bonuses = 0;
         nodes[i]._pad = 0;
+        nodes[i].max_subtree_points = 0.0f;
         total_edges += std::popcount(bm);
     }
 
@@ -307,6 +309,26 @@ void Trie<size>::finalize()
     }
 
     compute_subtree_bonuses(ROOT);
+
+    {
+        const auto& lp = config().letter_points;
+        const int nn = static_cast<int>(nodes.size());
+        for (int i = nn - 1; i >= 0; --i)
+        {
+            float best = 0.0f;
+            const std::uint32_t cnt = std::popcount(nodes[i].bitmap);
+            const std::uint32_t bs = nodes[i].children_offset;
+            for (std::uint32_t k = 0; k < cnt; ++k)
+            {
+                const int child = children[bs + k];
+                const int letter = child_letters[bs + k];
+                const float promise = static_cast<float>(lp[letter]) + nodes[child].max_subtree_points;
+                if (promise > best)
+                    best = promise;
+            }
+            nodes[i].max_subtree_points = best;
+        }
+    }
 
     struct Entry
     {

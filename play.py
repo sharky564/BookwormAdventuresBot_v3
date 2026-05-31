@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import pyautogui
 import time
+from functools import wraps
 from collections.abc import Sequence
 
 from engine import Tile
@@ -13,6 +14,14 @@ MENU_COORDS = (666, 606)
 MENU_QUIT_COORDS = (424, 340)
 MENU_QUIT_CONFIRM_COORDS = (334, 413)
 GAME_START_COORDS = (237, 346)
+
+def reset_position(func):
+    @wraps(func)
+    def wrapper(*args, **kwargs):
+        x, y = pyautogui.position()
+        func(*args, **kwargs)
+        pyautogui.moveTo(x, y)
+    return wrapper
 
 
 def resolve_positions(
@@ -53,7 +62,7 @@ def resolve_positions(
 
     return positions
 
-
+@reset_position
 def play_word(
     positions: Sequence[int],
     rack_box: RackBox,
@@ -81,7 +90,7 @@ def play_word(
 
     pyautogui.press("enter")
 
-
+@reset_position
 def reset_game(
     window_left: int,
     window_top: int,

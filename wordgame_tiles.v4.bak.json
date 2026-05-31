@@ -1230,6 +1230,61 @@
       "hash": "0000fff0fffc7c7c7c3e7c3e7c1f7c1f7c1f7c1f7c1f7c1e7c3e7c7cfff87fc0",
       "letter": "D",
       "gem": "none"
+    },
+    {
+      "hash": "0000f81ffc1e7e0e7f0e7f8c7fcc7ffc77fc63fc61fe60fe607ef03cf01cf00c",
+      "letter": "N",
+      "gem": "none"
+    },
+    {
+      "hash": "0000ff3ffe3f7e383f711fe10fc10fc1078107810781278307830f835fc8cfc0",
+      "letter": "Y",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000f81ffc1e7e0e7f0e7f8c7fcc7ffc77fc63fc61fc60fc607ef03cf01cf00c",
+      "letter": "N",
+      "gem": "none"
+    },
+    {
+      "hash": "00000fe01ff03ff87cfc787ef87ef83ef83efc3efc3e7e3e7f7c3ff81ff003c0",
+      "letter": "O",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "00003ffc3ffc1e0e1e041e201e301ff01ff01e301e201e001e013e037f073f1c",
+      "letter": "F",
+      "gem": "amethyst"
+    },
+    {
+      "hash": "00000ff81ffc3e7c7c3c7818f800f800f87ffc7e7c3c7e3c3f7c3ff81ff003c0",
+      "letter": "G",
+      "gem": "none"
+    },
+    {
+      "hash": "0000f81ffc1f7e0e7f0e7f8e7fce7ffe77fe63fe61fe60fe607ef03ef21cf30c",
+      "letter": "N",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "7801fc03ff03df039f818f8087398779877987f9c779ef79fe79fc3ff83fff98",
+      "letter": "Q",
+      "gem": "sapphire"
+    },
+    {
+      "hash": "0000f81ffc1e7e0e7f0e7f8e7fcc7ffc77fc63fc61fe60fe607ef03ef01cf00c",
+      "letter": "N",
+      "gem": "none"
+    },
+    {
+      "hash": "000001fc01f800f800f800f800f800f800f818f03cf07cf03cf03ff01fe00780",
+      "letter": "J",
+      "gem": "crystal"
+    },
+    {
+      "hash": "7800fc00ff00df009f808f8087388779877987f9c779ef79fe79fc3ff83fff98",
+      "letter": "Q",
+      "gem": "none"
     }
   ]
 }

@@ -34,6 +34,9 @@
 #include "constants.hpp"
 #include "utils.hpp"
 #include "tile.hpp"
+#include "mc.hpp"
+#include "serve.hpp"
+#include "json_mini.hpp"
 
 #include <algorithm>
 #include <chrono>
@@ -45,6 +48,7 @@
 #include <fstream>
 #include <iostream>
 #include <numeric>
+#include <random>
 #include <span>
 #include <sstream>
 #include <string>
@@ -187,6 +191,9 @@ struct Stats
     double min_ms = 0;
     double med_ms = 0;
     double mean_ms = 0;
+    double stddev_ms = 0;
+    double mad_ms = 0;
+    double rel_err = 0;
     int n = 0;
 };
 
@@ -198,20 +205,49 @@ Stats compute_stats(std::vector<double> ms)
     s.min_ms = ms.front();
     s.med_ms = ms[ms.size() / 2];
     s.mean_ms = std::accumulate(ms.begin(), ms.end(), 0.0) / ms.size();
+    if (s.n > 1)
+    {
+        double sumsq = 0.0;
+        for (double x : ms)
+        {
+            const double d = x - s.mean_ms;
+            sumsq += d * d;
+        }
+        s.stddev_ms = std::sqrt(sumsq / (s.n - 1));
+        s.rel_err = s.stddev_ms / std::max(s.mean_ms, 1e-9);
+    }
+    std::vector<double> dev;
+    dev.reserve(s.n);
+    for (double x : ms)
+        dev.push_back(std::abs(x - s.med_ms));
+    std::sort(dev.begin(), dev.end());
+    s.mad_ms = dev[dev.size() / 2];
     return s;
 }
 
 template <typename F>
-Stats time_it(int iter, F&& fn)
+Stats time_it(int min_iter, F&& fn, int max_iter = -1, double target_cv = 0.03)
 {
+    if (max_iter < 0)
+        max_iter = min_iter * 8;
     fn();
-    std::vector<double> samples; samples.reserve(iter);
-    for (int i = 0; i < iter; ++i)
+    fn();
+    std::vector<double> samples;
+    samples.reserve(max_iter);
+
+    for (int i = 0; i < max_iter; ++i)
     {
         const auto t0 = Clock::now();
         fn();
         const auto t1 = Clock::now();
         samples.push_back(std::chrono::duration<double, std::milli>(t1 - t0).count());
+
+        if (static_cast<int>(samples.size()) < min_iter)
+            continue;
+
+        const Stats provisional = compute_stats(samples);
+        if (provisional.n >= 3 && provisional.rel_err < target_cv)
+            break;
     }
     return compute_stats(std::move(samples));
 }
@@ -268,16 +304,17 @@ struct Row
 void print_table(const std::vector<Row>& rows)
 {
     std::printf(
-        "%-10s %-16s %7s %10s %10s %10s %6s   %-16s %-16s\n",
-        "mode", "rack", "param", "min_ms", "med_ms", "mean_ms", "iters", "fp_strong", "fp_weak"
+        "%-10s %-16s %5s %10s %10s %10s %10s %7s %5s   %-16s\n",
+        "mode", "rack", "param", "min_ms", "med_ms", "mean_ms", "stddev", "cv%", "iters", "fp_strong"
     );
-    std::printf("%s\n", std::string(112, '-').c_str());
+    std::printf("%s\n", std::string(120, '-').c_str());
     for (const auto& r : rows)
     {
+        const double cv_pct = r.stats.rel_err * 100.0;
         std::printf(
-            "%-10s %-16s %7d %10.3f %10.3f %10.3f %6d   %016llx %016llx\n",
-            r.mode.c_str(), r.rack.c_str(), r.param, r.stats.min_ms, r.stats.med_ms, r.stats.mean_ms, r.stats.n,
-            static_cast<unsigned long long>(r.fp.strong), static_cast<unsigned long long>(r.fp.weak)
+            "%-10s %-16s %5d %10.3f %10.3f %10.3f %10.3f %6.1f%% %5d   %016llx\n",
+            r.mode.c_str(), r.rack.c_str(), r.param, r.stats.min_ms, r.stats.med_ms, r.stats.mean_ms,
+            r.stats.stddev_ms, cv_pct, r.stats.n, static_cast<unsigned long long>(r.fp.strong)
         );
     }
 }
@@ -410,6 +447,173 @@ int main(int argc, char** argv)
                 g_sink ^= fp.strong;
             });
             record("kills", threshold, s, fp);
+        }
+
+        for (int horizon : {3, 5})
+        {
+            FpPair fp;
+            double last_value = 0.0;
+            const auto s = time_it(iterations, [&]
+            {
+                std::mt19937 rng(0xBEEFCAFEu);
+                BestWordCache cache(MAX_CACHE_SIZE);
+                last_value = rolloutValue(rack, trie, horizon, rng, cache, tr.power, tr.powered);
+                g_sink ^= static_cast<std::uint64_t>(last_value * 1000.0);
+            });
+            const std::uint64_t key = static_cast<std::uint64_t>(static_cast<long long>(last_value * 1000.0 + 0.5));
+            fp.strong = mix32(1469598103934665603ULL, std::uint32_t(key & 0xFFFFFFFFu));
+            fp.strong = mix32(fp.strong, std::uint32_t(key >> 32));
+            fp.weak = fp.strong;
+            record("rollout", horizon, s, fp);
+        }
+
+        for (int mc_max : {30, 100})
+        {
+            FpPair fp;
+            double last_mean = 0.0;
+            int last_nsims = 0;
+            const auto s = time_it(iterations, [&]
+            {
+                std::mt19937 rng(0xDEADBEEFu);
+                BestWordCache cache(MAX_CACHE_SIZE);
+                last_mean = monteCarloRackValue(
+                    rack, trie, 3, 10, mc_max, 0.5, rng, cache, &last_nsims, tr.power, tr.powered
+                );
+                g_sink ^= static_cast<std::uint64_t>(last_mean * 1000.0);
+            });
+            const std::uint64_t mkey = static_cast<std::uint64_t>(
+                static_cast<long long>(last_mean * 1000.0 + 0.5)
+            );
+            fp.strong = mix32(1469598103934665603ULL, std::uint32_t(mkey & 0xFFFFFFFFu));
+            fp.strong = mix32(fp.strong, std::uint32_t(mkey >> 32));
+            fp.strong = mix32(fp.strong, std::uint32_t(last_nsims));
+            fp.weak = fp.strong;
+            record("mc", mc_max, s, fp);
+        }
+
+        {
+            FpPair fp;
+            long long last_sum = 0;
+            const auto s = time_it(iterations, [&]
+            {
+                std::mt19937 rng(0x12345678u);
+                BestWordCache cache(MAX_CACHE_SIZE);
+                long long sum = 0;
+                Rack r = rack;
+                for (int i = 0; i < 1000; ++i)
+                {
+                    const auto sr = cache.lookup(r.getTiles(), trie, tr.power, tr.powered);
+                    sum += sr.damage;
+                    if (i % 5 == 0)
+                    {
+                        Word w(sr.tiles);
+                        r.playWord(w, rng);
+                        if (r.size() == 0)
+                            r = rack;
+                    }
+                }
+                last_sum = sum;
+                g_sink ^= static_cast<std::uint64_t>(sum);
+            });
+            fp.strong = mix32(1469598103934665603ULL, std::uint32_t(last_sum & 0xFFFFFFFFu));
+            fp.strong = mix32(fp.strong, std::uint32_t(static_cast<std::uint64_t>(last_sum) >> 32));
+            fp.weak = fp.strong;
+            record("cache", 1000, s, fp);
+        }
+
+        auto top_signature = [](const std::string& json) -> std::uint64_t {
+            jmini::Parser p(json);
+            jmini::Value v = p.parse();
+            auto* words = v.find("words");
+            if (!words || !words->is_array())
+                return 0;
+            constexpr int K = 5;
+            std::vector<std::pair<std::string, int>> picks;
+            picks.reserve(K);
+            for (const auto& w : words->arr())
+            {
+                if (static_cast<int>(picks.size()) >= K)
+                    break;
+                std::string word;
+                int dmg = 0;
+                if (auto* p = w.find("word"); p && p->is_string())
+                    word = p->str();
+                if (auto* p = w.find("now"); p && p->is_number())
+                    dmg = static_cast<int>(p->num());
+                picks.emplace_back(std::move(word), dmg);
+            }
+            std::sort(picks.begin(), picks.end());
+            std::uint64_t h = 1469598103934665603ULL;
+            for (const auto& [word, dmg] : picks)
+            {
+                for (char c : word)
+                    h = (h ^ static_cast<std::uint8_t>(c)) * 1099511628211ULL;
+                h = (h ^ static_cast<std::uint32_t>(dmg)) * 1099511628211ULL;
+                h ^= 0xFFu;
+            }
+            return h;
+        };
+
+        {
+            FpPair fp;
+            std::uint64_t last_sig = 0;
+            const auto s = time_it(iterations, [&]
+            {
+                std::mt19937 rng(0xABCDEFu);
+                BestWordCache cache(MAX_CACHE_SIZE);
+                std::string req = R"({"op":"top","rack":")" + tr.letters + R"(",)"
+                    R"("n":20,"horizon":2,"min_sims":20,"max_sims":80,"se_target":0.5})";
+                jmini::Parser parser(req);
+                jmini::Value msg = parser.parse();
+                std::string resp = serve::handle_top(trie, msg, cache, rng);
+                last_sig = top_signature(resp);
+                g_sink ^= last_sig;
+            });
+            fp.strong = last_sig;
+            fp.weak = last_sig;
+            record("htop", 0, s, fp);
+        }
+
+        {
+            FpPair fp;
+            std::uint64_t last_sig = 0;
+            const auto s = time_it(iterations, [&]
+            {
+                std::mt19937 rng(0xABCDEFu);
+                BestWordCache cache(MAX_CACHE_SIZE);
+                std::string req = R"({"op":"top","rack":")" + tr.letters + R"(",)"
+                    R"("n":20,"horizon":2,"min_sims":20,"max_sims":80,)"
+                    R"("threshold":20,"max_kill_candidates":200})";
+                jmini::Parser parser(req);
+                jmini::Value msg = parser.parse();
+                std::string resp = serve::handle_top(trie, msg, cache, rng);
+                last_sig = top_signature(resp);
+                g_sink ^= last_sig;
+            });
+            fp.strong = last_sig;
+            fp.weak = last_sig;
+            record("htop_k", 20, s, fp);
+        }
+
+        {
+            FpPair fp;
+            std::uint64_t last_sig = 0;
+            const auto s = time_it(iterations, [&]
+            {
+                std::mt19937 rng(0xABCDEFu);
+                BestWordCache cache(MAX_CACHE_SIZE);
+                std::string req = R"({"op":"top","rack":")" + tr.letters + R"(",)"
+                    R"("n":20,"horizon":2,"min_sims":20,"max_sims":80,)"
+                    R"("threshold":20,"max_kill_candidates":200,"charges":3})";
+                jmini::Parser parser(req);
+                jmini::Value msg = parser.parse();
+                std::string resp = serve::handle_top(trie, msg, cache, rng);
+                last_sig = top_signature(resp);
+                g_sink ^= last_sig;
+            });
+            fp.strong = last_sig;
+            fp.weak = last_sig;
+            record("htop_kc", 20, s, fp);
         }
 
         config().gems_enabled = prev_gems;

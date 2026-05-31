@@ -1,0 +1,18 @@
+[bank_builder]
+
+save_path = "C:/ProgramData/PopCap Games/WinBAD/users/109SAVESTATE.bwa"
+
+menu_open      = "666,606"
+menu_exit      = "424,340"
+menu_exit_confirm = "334,413"
+switch_user  = "410,242"
+new_user = "410,246"
+confirm      = "328,495"
+resume_play    = "237,346"
+
+inter_click_delay1 = 0.5
+inter_click_delay2 = 1.5
+
+settle_delay = 2.0
+
+mouse_speed = 0.05

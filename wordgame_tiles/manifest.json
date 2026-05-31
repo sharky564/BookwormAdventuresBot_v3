@@ -1,0 +1,5567 @@
+{
+  "schema": 5,
+  "entries": [
+    {
+      "id": "A_0001",
+      "letter": "A",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "A_0002",
+      "letter": "A",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "A_0003",
+      "letter": "A",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "A_0004",
+      "letter": "A",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "A_0005",
+      "letter": "A",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "A_0006",
+      "letter": "A",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "A_0007",
+      "letter": "A",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "A_0008",
+      "letter": "A",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "A_0009",
+      "letter": "A",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "A_0010",
+      "letter": "A",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "A_0011",
+      "letter": "A",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "A_0012",
+      "letter": "A",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "A_0013",
+      "letter": "A",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "A_0014",
+      "letter": "A",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "A_0015",
+      "letter": "A",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "A_0016",
+      "letter": "A",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "A_0017",
+      "letter": "A",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "A_0018",
+      "letter": "A",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "A_0019",
+      "letter": "A",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "A_0020",
+      "letter": "A",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "A_0021",
+      "letter": "A",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "A_0022",
+      "letter": "A",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "A_0023",
+      "letter": "A",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "A_0024",
+      "letter": "A",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "A_0025",
+      "letter": "A",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "A_0026",
+      "letter": "A",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "A_0027",
+      "letter": "A",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "B_0001",
+      "letter": "B",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "B_0002",
+      "letter": "B",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "B_0003",
+      "letter": "B",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "B_0004",
+      "letter": "B",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "B_0005",
+      "letter": "B",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "B_0006",
+      "letter": "B",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "B_0007",
+      "letter": "B",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "B_0008",
+      "letter": "B",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "B_0009",
+      "letter": "B",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "B_0010",
+      "letter": "B",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "B_0011",
+      "letter": "B",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "B_0012",
+      "letter": "B",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "B_0013",
+      "letter": "B",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "B_0014",
+      "letter": "B",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "B_0015",
+      "letter": "B",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "B_0016",
+      "letter": "B",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "B_0017",
+      "letter": "B",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "B_0018",
+      "letter": "B",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "B_0019",
+      "letter": "B",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "B_0020",
+      "letter": "B",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "B_0021",
+      "letter": "B",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "B_0022",
+      "letter": "B",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "B_0023",
+      "letter": "B",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "B_0024",
+      "letter": "B",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "B_0025",
+      "letter": "B",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "B_0026",
+      "letter": "B",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "B_0027",
+      "letter": "B",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "B_0028",
+      "letter": "B",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "B_0029",
+      "letter": "B",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "B_0030",
+      "letter": "B",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "C_0001",
+      "letter": "C",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "C_0002",
+      "letter": "C",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "C_0003",
+      "letter": "C",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "C_0004",
+      "letter": "C",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "C_0005",
+      "letter": "C",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "C_0006",
+      "letter": "C",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "C_0007",
+      "letter": "C",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "C_0008",
+      "letter": "C",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "C_0009",
+      "letter": "C",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "C_0010",
+      "letter": "C",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "C_0011",
+      "letter": "C",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "C_0012",
+      "letter": "C",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "C_0013",
+      "letter": "C",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "C_0014",
+      "letter": "C",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "C_0015",
+      "letter": "C",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "C_0016",
+      "letter": "C",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "C_0017",
+      "letter": "C",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "C_0018",
+      "letter": "C",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "C_0019",
+      "letter": "C",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "C_0020",
+      "letter": "C",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "C_0021",
+      "letter": "C",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "D_0001",
+      "letter": "D",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "D_0002",
+      "letter": "D",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "D_0003",
+      "letter": "D",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "D_0004",
+      "letter": "D",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "D_0005",
+      "letter": "D",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "D_0006",
+      "letter": "D",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "D_0007",
+      "letter": "D",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "D_0008",
+      "letter": "D",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "D_0009",
+      "letter": "D",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "D_0010",
+      "letter": "D",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "D_0011",
+      "letter": "D",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "D_0012",
+      "letter": "D",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "D_0013",
+      "letter": "D",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "D_0014",
+      "letter": "D",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "D_0015",
+      "letter": "D",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "D_0016",
+      "letter": "D",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "D_0017",
+      "letter": "D",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "D_0018",
+      "letter": "D",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "D_0019",
+      "letter": "D",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "D_0020",
+      "letter": "D",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "D_0021",
+      "letter": "D",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "D_0022",
+      "letter": "D",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "D_0023",
+      "letter": "D",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "D_0024",
+      "letter": "D",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "D_0025",
+      "letter": "D",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "D_0026",
+      "letter": "D",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "E_0001",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0002",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0003",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0004",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0005",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0006",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0007",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0008",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0009",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0010",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0011",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0012",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0013",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0014",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0015",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0016",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0017",
+      "letter": "E",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "E_0018",
+      "letter": "E",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "E_0019",
+      "letter": "E",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "E_0020",
+      "letter": "E",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "E_0021",
+      "letter": "E",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "E_0022",
+      "letter": "E",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "E_0023",
+      "letter": "E",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "E_0024",
+      "letter": "E",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "E_0025",
+      "letter": "E",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "E_0026",
+      "letter": "E",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "E_0027",
+      "letter": "E",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "F_0001",
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "F_0002",
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "F_0003",
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "F_0004",
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "F_0005",
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "F_0006",
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "F_0007",
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "F_0008",
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "F_0009",
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "F_0010",
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "F_0011",
+      "letter": "F",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "F_0012",
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "F_0013",
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "F_0014",
+      "letter": "F",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "F_0015",
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "F_0016",
+      "letter": "F",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "F_0017",
+      "letter": "F",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "F_0018",
+      "letter": "F",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "F_0019",
+      "letter": "F",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "F_0020",
+      "letter": "F",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "F_0021",
+      "letter": "F",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "F_0022",
+      "letter": "F",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "F_0023",
+      "letter": "F",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "F_0024",
+      "letter": "F",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "F_0025",
+      "letter": "F",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "F_0026",
+      "letter": "F",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "F_0027",
+      "letter": "F",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "F_0028",
+      "letter": "F",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "F_0029",
+      "letter": "F",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "F_0030",
+      "letter": "F",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "F_0031",
+      "letter": "F",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "G_0001",
+      "letter": "G",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "G_0002",
+      "letter": "G",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "G_0003",
+      "letter": "G",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "G_0004",
+      "letter": "G",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "G_0005",
+      "letter": "G",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "G_0006",
+      "letter": "G",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "G_0007",
+      "letter": "G",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "G_0008",
+      "letter": "G",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "G_0009",
+      "letter": "G",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "G_0010",
+      "letter": "G",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "G_0011",
+      "letter": "G",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "G_0012",
+      "letter": "G",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "G_0013",
+      "letter": "G",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "G_0014",
+      "letter": "G",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "G_0015",
+      "letter": "G",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "G_0016",
+      "letter": "G",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "G_0017",
+      "letter": "G",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "G_0018",
+      "letter": "G",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "G_0019",
+      "letter": "G",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "G_0020",
+      "letter": "G",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "G_0021",
+      "letter": "G",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "G_0022",
+      "letter": "G",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "G_0023",
+      "letter": "G",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "G_0024",
+      "letter": "G",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "H_0001",
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "H_0002",
+      "letter": "H",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "H_0003",
+      "letter": "H",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "H_0004",
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "H_0005",
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "H_0006",
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "H_0007",
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "H_0008",
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "H_0009",
+      "letter": "H",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "H_0010",
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "H_0011",
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "H_0012",
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "H_0013",
+      "letter": "H",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "H_0014",
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "H_0015",
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "H_0016",
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "H_0017",
+      "letter": "H",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "H_0018",
+      "letter": "H",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "H_0019",
+      "letter": "H",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "H_0020",
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "H_0021",
+      "letter": "H",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "H_0022",
+      "letter": "H",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "H_0023",
+      "letter": "H",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "H_0024",
+      "letter": "H",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "H_0025",
+      "letter": "H",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "H_0026",
+      "letter": "H",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "H_0027",
+      "letter": "H",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "H_0028",
+      "letter": "H",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "H_0029",
+      "letter": "H",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "I_0001",
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "I_0002",
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "I_0003",
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "I_0004",
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "I_0005",
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "I_0006",
+      "letter": "I",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "I_0007",
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "I_0008",
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "I_0009",
+      "letter": "I",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "I_0010",
+      "letter": "I",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "I_0011",
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "I_0012",
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "I_0013",
+      "letter": "I",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "I_0014",
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "I_0015",
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "I_0016",
+      "letter": "I",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "I_0017",
+      "letter": "I",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "I_0018",
+      "letter": "I",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "I_0019",
+      "letter": "I",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "I_0020",
+      "letter": "I",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "I_0021",
+      "letter": "I",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "I_0022",
+      "letter": "I",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "I_0023",
+      "letter": "I",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "I_0024",
+      "letter": "I",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "I_0025",
+      "letter": "I",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "I_0026",
+      "letter": "I",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "I_0027",
+      "letter": "I",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "I_0028",
+      "letter": "I",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "I_0029",
+      "letter": "I",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "I_0030",
+      "letter": "I",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "J_0001",
+      "letter": "J",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "J_0002",
+      "letter": "J",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "J_0003",
+      "letter": "J",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "J_0004",
+      "letter": "J",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "J_0005",
+      "letter": "J",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "J_0006",
+      "letter": "J",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "J_0007",
+      "letter": "J",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "J_0008",
+      "letter": "J",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "J_0009",
+      "letter": "J",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "J_0010",
+      "letter": "J",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "J_0011",
+      "letter": "J",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "J_0012",
+      "letter": "J",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "J_0013",
+      "letter": "J",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "J_0014",
+      "letter": "J",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "J_0015",
+      "letter": "J",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "J_0016",
+      "letter": "J",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "J_0017",
+      "letter": "J",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "J_0018",
+      "letter": "J",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "J_0019",
+      "letter": "J",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "J_0020",
+      "letter": "J",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "J_0021",
+      "letter": "J",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "J_0022",
+      "letter": "J",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "J_0023",
+      "letter": "J",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "J_0024",
+      "letter": "J",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "J_0025",
+      "letter": "J",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "J_0026",
+      "letter": "J",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "J_0027",
+      "letter": "J",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "J_0028",
+      "letter": "J",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "J_0029",
+      "letter": "J",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "K_0001",
+      "letter": "K",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "K_0002",
+      "letter": "K",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "K_0003",
+      "letter": "K",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "K_0004",
+      "letter": "K",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "K_0005",
+      "letter": "K",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "K_0006",
+      "letter": "K",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "K_0007",
+      "letter": "K",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "K_0008",
+      "letter": "K",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "K_0009",
+      "letter": "K",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "K_0010",
+      "letter": "K",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "K_0011",
+      "letter": "K",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "K_0012",
+      "letter": "K",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "K_0013",
+      "letter": "K",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "K_0014",
+      "letter": "K",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "K_0015",
+      "letter": "K",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "K_0016",
+      "letter": "K",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "K_0017",
+      "letter": "K",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "K_0018",
+      "letter": "K",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "K_0019",
+      "letter": "K",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "K_0020",
+      "letter": "K",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "K_0021",
+      "letter": "K",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "K_0022",
+      "letter": "K",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "K_0023",
+      "letter": "K",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "L_0001",
+      "letter": "L",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "L_0002",
+      "letter": "L",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "L_0003",
+      "letter": "L",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "L_0004",
+      "letter": "L",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "L_0005",
+      "letter": "L",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "L_0006",
+      "letter": "L",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "L_0007",
+      "letter": "L",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "L_0008",
+      "letter": "L",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "L_0009",
+      "letter": "L",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "L_0010",
+      "letter": "L",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "L_0011",
+      "letter": "L",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "L_0012",
+      "letter": "L",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "L_0013",
+      "letter": "L",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "L_0014",
+      "letter": "L",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "L_0015",
+      "letter": "L",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "L_0016",
+      "letter": "L",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "L_0017",
+      "letter": "L",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "L_0018",
+      "letter": "L",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "L_0019",
+      "letter": "L",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "L_0020",
+      "letter": "L",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "L_0021",
+      "letter": "L",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "L_0022",
+      "letter": "L",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "L_0023",
+      "letter": "L",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "L_0024",
+      "letter": "L",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "M_0001",
+      "letter": "M",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "M_0002",
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "M_0003",
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "M_0004",
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "M_0005",
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "M_0006",
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "M_0007",
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "M_0008",
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "M_0009",
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "M_0010",
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "M_0011",
+      "letter": "M",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "M_0012",
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "M_0013",
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "M_0014",
+      "letter": "M",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "M_0015",
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "M_0016",
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "M_0017",
+      "letter": "M",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "M_0018",
+      "letter": "M",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "M_0019",
+      "letter": "M",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "M_0020",
+      "letter": "M",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "M_0021",
+      "letter": "M",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "M_0022",
+      "letter": "M",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "M_0023",
+      "letter": "M",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "M_0024",
+      "letter": "M",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "M_0025",
+      "letter": "M",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "M_0026",
+      "letter": "M",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "M_0027",
+      "letter": "M",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "M_0028",
+      "letter": "M",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "M_0029",
+      "letter": "M",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "M_0030",
+      "letter": "M",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "M_0031",
+      "letter": "M",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "M_0032",
+      "letter": "M",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "M_0033",
+      "letter": "M",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "M_0034",
+      "letter": "M",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "M_0035",
+      "letter": "M",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "M_0036",
+      "letter": "M",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "M_0037",
+      "letter": "M",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "M_0038",
+      "letter": "M",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "N_0001",
+      "letter": "N",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "N_0002",
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "N_0003",
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "N_0004",
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "N_0005",
+      "letter": "N",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "N_0006",
+      "letter": "N",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "N_0007",
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "N_0008",
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "N_0009",
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "N_0010",
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "N_0011",
+      "letter": "N",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "N_0012",
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "N_0013",
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "N_0014",
+      "letter": "N",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "N_0015",
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "N_0016",
+      "letter": "N",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "N_0017",
+      "letter": "N",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "N_0018",
+      "letter": "N",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "N_0019",
+      "letter": "N",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "N_0020",
+      "letter": "N",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "N_0021",
+      "letter": "N",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "N_0022",
+      "letter": "N",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "N_0023",
+      "letter": "N",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "N_0024",
+      "letter": "N",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "N_0025",
+      "letter": "N",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "N_0026",
+      "letter": "N",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "N_0027",
+      "letter": "N",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "N_0028",
+      "letter": "N",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "O_0001",
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "O_0002",
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "O_0003",
+      "letter": "O",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "O_0004",
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "O_0005",
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "O_0006",
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "O_0007",
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "O_0008",
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "O_0009",
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "O_0010",
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "O_0011",
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "O_0012",
+      "letter": "O",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "O_0013",
+      "letter": "O",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "O_0014",
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "O_0015",
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "O_0016",
+      "letter": "O",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "O_0017",
+      "letter": "O",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "O_0018",
+      "letter": "O",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "O_0019",
+      "letter": "O",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "O_0020",
+      "letter": "O",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "O_0021",
+      "letter": "O",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "O_0022",
+      "letter": "O",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "O_0023",
+      "letter": "O",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "O_0024",
+      "letter": "O",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "O_0025",
+      "letter": "O",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "O_0026",
+      "letter": "O",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "P_0001",
+      "letter": "P",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "P_0002",
+      "letter": "P",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "P_0003",
+      "letter": "P",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "P_0004",
+      "letter": "P",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "P_0005",
+      "letter": "P",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "P_0006",
+      "letter": "P",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "P_0007",
+      "letter": "P",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "P_0008",
+      "letter": "P",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "P_0009",
+      "letter": "P",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "P_0010",
+      "letter": "P",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "P_0011",
+      "letter": "P",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "P_0012",
+      "letter": "P",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "P_0013",
+      "letter": "P",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "P_0014",
+      "letter": "P",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "P_0015",
+      "letter": "P",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "P_0016",
+      "letter": "P",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "P_0017",
+      "letter": "P",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "P_0018",
+      "letter": "P",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "P_0019",
+      "letter": "P",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "P_0020",
+      "letter": "P",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "P_0021",
+      "letter": "P",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "P_0022",
+      "letter": "P",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "P_0023",
+      "letter": "P",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0001",
+      "letter": "Q",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0002",
+      "letter": "Q",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0003",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0004",
+      "letter": "Q",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0005",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0006",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0007",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0008",
+      "letter": "Q",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0009",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0010",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0011",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0012",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0013",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0014",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0015",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0016",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0017",
+      "letter": "Q",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0018",
+      "letter": "Q",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0019",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0020",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0021",
+      "letter": "Q",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0022",
+      "letter": "Q",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0023",
+      "letter": "Q",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0024",
+      "letter": "Q",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0025",
+      "letter": "Q",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0026",
+      "letter": "Q",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0027",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0028",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0029",
+      "letter": "Q",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0030",
+      "letter": "Q",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0031",
+      "letter": "Q",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0032",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0033",
+      "letter": "Q",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0034",
+      "letter": "Q",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0035",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0036",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0037",
+      "letter": "Q",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0038",
+      "letter": "Q",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0039",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0040",
+      "letter": "Q",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0041",
+      "letter": "Q",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0042",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0043",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0044",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0045",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0046",
+      "letter": "Q",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "R_0001",
+      "letter": "R",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "R_0002",
+      "letter": "R",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "R_0003",
+      "letter": "R",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "R_0004",
+      "letter": "R",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "R_0005",
+      "letter": "R",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "R_0006",
+      "letter": "R",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "R_0007",
+      "letter": "R",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "R_0008",
+      "letter": "R",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "R_0009",
+      "letter": "R",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "R_0010",
+      "letter": "R",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "R_0011",
+      "letter": "R",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "R_0012",
+      "letter": "R",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "R_0013",
+      "letter": "R",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "R_0014",
+      "letter": "R",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "R_0015",
+      "letter": "R",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "R_0016",
+      "letter": "R",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "R_0017",
+      "letter": "R",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "R_0018",
+      "letter": "R",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "R_0019",
+      "letter": "R",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "R_0020",
+      "letter": "R",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "R_0021",
+      "letter": "R",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "S_0001",
+      "letter": "S",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "S_0002",
+      "letter": "S",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "S_0003",
+      "letter": "S",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "S_0004",
+      "letter": "S",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "S_0005",
+      "letter": "S",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "S_0006",
+      "letter": "S",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "S_0007",
+      "letter": "S",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "S_0008",
+      "letter": "S",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "S_0009",
+      "letter": "S",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "S_0010",
+      "letter": "S",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "S_0011",
+      "letter": "S",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "S_0012",
+      "letter": "S",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "S_0013",
+      "letter": "S",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "S_0014",
+      "letter": "S",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "S_0015",
+      "letter": "S",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "S_0016",
+      "letter": "S",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "S_0017",
+      "letter": "S",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "S_0018",
+      "letter": "S",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "S_0019",
+      "letter": "S",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "S_0020",
+      "letter": "S",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "S_0021",
+      "letter": "S",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "S_0022",
+      "letter": "S",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "S_0023",
+      "letter": "S",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "S_0024",
+      "letter": "S",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "S_0025",
+      "letter": "S",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "S_0026",
+      "letter": "S",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "T_0001",
+      "letter": "T",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "T_0002",
+      "letter": "T",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "T_0003",
+      "letter": "T",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "T_0004",
+      "letter": "T",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "T_0005",
+      "letter": "T",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "T_0006",
+      "letter": "T",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "T_0007",
+      "letter": "T",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "T_0008",
+      "letter": "T",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "T_0009",
+      "letter": "T",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "T_0010",
+      "letter": "T",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "T_0011",
+      "letter": "T",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "T_0012",
+      "letter": "T",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "T_0013",
+      "letter": "T",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "T_0014",
+      "letter": "T",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "T_0015",
+      "letter": "T",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "T_0016",
+      "letter": "T",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "T_0017",
+      "letter": "T",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "T_0018",
+      "letter": "T",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "T_0019",
+      "letter": "T",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "T_0020",
+      "letter": "T",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "T_0021",
+      "letter": "T",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "T_0022",
+      "letter": "T",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "T_0023",
+      "letter": "T",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "T_0024",
+      "letter": "T",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "T_0025",
+      "letter": "T",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "T_0026",
+      "letter": "T",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "T_0027",
+      "letter": "T",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "T_0028",
+      "letter": "T",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "T_0029",
+      "letter": "T",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "T_0030",
+      "letter": "T",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "T_0031",
+      "letter": "T",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "T_0032",
+      "letter": "T",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "T_0033",
+      "letter": "T",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "T_0034",
+      "letter": "T",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "T_0035",
+      "letter": "T",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "T_0036",
+      "letter": "T",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "T_0037",
+      "letter": "T",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "T_0038",
+      "letter": "T",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "T_0039",
+      "letter": "T",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "T_0040",
+      "letter": "T",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "T_0041",
+      "letter": "T",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "U_0001",
+      "letter": "U",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "U_0002",
+      "letter": "U",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "U_0003",
+      "letter": "U",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "U_0004",
+      "letter": "U",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "U_0005",
+      "letter": "U",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "U_0006",
+      "letter": "U",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "U_0007",
+      "letter": "U",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "U_0008",
+      "letter": "U",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "U_0009",
+      "letter": "U",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "U_0010",
+      "letter": "U",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "U_0011",
+      "letter": "U",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "U_0012",
+      "letter": "U",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "U_0013",
+      "letter": "U",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "U_0014",
+      "letter": "U",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "U_0015",
+      "letter": "U",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "U_0016",
+      "letter": "U",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "U_0017",
+      "letter": "U",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "U_0018",
+      "letter": "U",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "U_0019",
+      "letter": "U",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "U_0020",
+      "letter": "U",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "U_0021",
+      "letter": "U",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "U_0022",
+      "letter": "U",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "U_0023",
+      "letter": "U",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "U_0024",
+      "letter": "U",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "U_0025",
+      "letter": "U",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "U_0026",
+      "letter": "U",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "U_0027",
+      "letter": "U",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "U_0028",
+      "letter": "U",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "U_0029",
+      "letter": "U",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "U_0030",
+      "letter": "U",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "U_0031",
+      "letter": "U",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "U_0032",
+      "letter": "U",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "U_0033",
+      "letter": "U",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "U_0034",
+      "letter": "U",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "U_0035",
+      "letter": "U",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "U_0036",
+      "letter": "U",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "U_0037",
+      "letter": "U",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "U_0038",
+      "letter": "U",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "U_0039",
+      "letter": "U",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "U_0040",
+      "letter": "U",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "U_0041",
+      "letter": "U",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "V_0001",
+      "letter": "V",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "V_0002",
+      "letter": "V",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "V_0003",
+      "letter": "V",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "V_0004",
+      "letter": "V",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "V_0005",
+      "letter": "V",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "V_0006",
+      "letter": "V",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "V_0007",
+      "letter": "V",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "V_0008",
+      "letter": "V",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "V_0009",
+      "letter": "V",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "V_0010",
+      "letter": "V",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "V_0011",
+      "letter": "V",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "V_0012",
+      "letter": "V",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "V_0013",
+      "letter": "V",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "V_0014",
+      "letter": "V",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "V_0015",
+      "letter": "V",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "V_0016",
+      "letter": "V",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "V_0017",
+      "letter": "V",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "V_0018",
+      "letter": "V",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "V_0019",
+      "letter": "V",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "V_0020",
+      "letter": "V",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "V_0021",
+      "letter": "V",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "V_0022",
+      "letter": "V",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "V_0023",
+      "letter": "V",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "V_0024",
+      "letter": "V",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "V_0025",
+      "letter": "V",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "V_0026",
+      "letter": "V",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "V_0027",
+      "letter": "V",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "V_0028",
+      "letter": "V",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "V_0029",
+      "letter": "V",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "W_0001",
+      "letter": "W",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "W_0002",
+      "letter": "W",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "W_0003",
+      "letter": "W",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "W_0004",
+      "letter": "W",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "W_0005",
+      "letter": "W",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "W_0006",
+      "letter": "W",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "W_0007",
+      "letter": "W",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "W_0008",
+      "letter": "W",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "W_0009",
+      "letter": "W",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "W_0010",
+      "letter": "W",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "W_0011",
+      "letter": "W",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "W_0012",
+      "letter": "W",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "W_0013",
+      "letter": "W",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "W_0014",
+      "letter": "W",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "W_0015",
+      "letter": "W",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "W_0016",
+      "letter": "W",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "W_0017",
+      "letter": "W",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "W_0018",
+      "letter": "W",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "W_0019",
+      "letter": "W",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "W_0020",
+      "letter": "W",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "W_0021",
+      "letter": "W",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "W_0022",
+      "letter": "W",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "W_0023",
+      "letter": "W",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "W_0024",
+      "letter": "W",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "W_0025",
+      "letter": "W",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "X_0001",
+      "letter": "X",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "X_0002",
+      "letter": "X",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "X_0003",
+      "letter": "X",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "X_0004",
+      "letter": "X",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "X_0005",
+      "letter": "X",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "X_0006",
+      "letter": "X",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "X_0007",
+      "letter": "X",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "X_0008",
+      "letter": "X",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "X_0009",
+      "letter": "X",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "X_0010",
+      "letter": "X",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "X_0011",
+      "letter": "X",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "X_0012",
+      "letter": "X",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "X_0013",
+      "letter": "X",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "X_0014",
+      "letter": "X",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "X_0015",
+      "letter": "X",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "X_0016",
+      "letter": "X",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "X_0017",
+      "letter": "X",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "X_0018",
+      "letter": "X",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "X_0019",
+      "letter": "X",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "X_0020",
+      "letter": "X",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "X_0021",
+      "letter": "X",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "X_0022",
+      "letter": "X",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "X_0023",
+      "letter": "X",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "X_0024",
+      "letter": "X",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "X_0025",
+      "letter": "X",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "X_0026",
+      "letter": "X",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "X_0027",
+      "letter": "X",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0001",
+      "letter": "Y",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0002",
+      "letter": "Y",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0003",
+      "letter": "Y",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0004",
+      "letter": "Y",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0005",
+      "letter": "Y",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0006",
+      "letter": "Y",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0007",
+      "letter": "Y",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0008",
+      "letter": "Y",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0009",
+      "letter": "Y",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0010",
+      "letter": "Y",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0011",
+      "letter": "Y",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0012",
+      "letter": "Y",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0013",
+      "letter": "Y",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0014",
+      "letter": "Y",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0015",
+      "letter": "Y",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0016",
+      "letter": "Y",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0017",
+      "letter": "Y",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0018",
+      "letter": "Y",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0019",
+      "letter": "Y",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0020",
+      "letter": "Y",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0021",
+      "letter": "Y",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0022",
+      "letter": "Y",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0023",
+      "letter": "Y",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0024",
+      "letter": "Y",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0025",
+      "letter": "Y",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0001",
+      "letter": "Z",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0002",
+      "letter": "Z",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0003",
+      "letter": "Z",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0004",
+      "letter": "Z",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0005",
+      "letter": "Z",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0006",
+      "letter": "Z",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0007",
+      "letter": "Z",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0008",
+      "letter": "Z",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0009",
+      "letter": "Z",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0010",
+      "letter": "Z",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0011",
+      "letter": "Z",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0012",
+      "letter": "Z",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0013",
+      "letter": "Z",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0014",
+      "letter": "Z",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0015",
+      "letter": "Z",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0016",
+      "letter": "Z",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0017",
+      "letter": "Z",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0018",
+      "letter": "Z",
+      "gem": "crystal",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0019",
+      "letter": "Z",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0020",
+      "letter": "Z",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0021",
+      "letter": "Z",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0022",
+      "letter": "Z",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0023",
+      "letter": "Z",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0024",
+      "letter": "Z",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0025",
+      "letter": "Z",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0026",
+      "letter": "Z",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0027",
+      "letter": "Z",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0028",
+      "letter": "Z",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0029",
+      "letter": "Z",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "B_0031",
+      "letter": "B",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "B_0032",
+      "letter": "B",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "B_0033",
+      "letter": "B",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "B_0034",
+      "letter": "B",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "C_0022",
+      "letter": "C",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "C_0023",
+      "letter": "C",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "C_0024",
+      "letter": "C",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "C_0025",
+      "letter": "C",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "C_0026",
+      "letter": "C",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "C_0027",
+      "letter": "C",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "C_0028",
+      "letter": "C",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "C_0029",
+      "letter": "C",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "C_0030",
+      "letter": "C",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "C_0031",
+      "letter": "C",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "C_0032",
+      "letter": "C",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "C_0033",
+      "letter": "C",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "C_0034",
+      "letter": "C",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "C_0035",
+      "letter": "C",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "C_0036",
+      "letter": "C",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "C_0037",
+      "letter": "C",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "C_0038",
+      "letter": "C",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "C_0039",
+      "letter": "C",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "C_0040",
+      "letter": "C",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "D_0027",
+      "letter": "D",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "D_0028",
+      "letter": "D",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "E_0028",
+      "letter": "E",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "E_0029",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0030",
+      "letter": "E",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "E_0031",
+      "letter": "E",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "E_0032",
+      "letter": "E",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "E_0033",
+      "letter": "E",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "E_0034",
+      "letter": "E",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "F_0032",
+      "letter": "F",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "F_0033",
+      "letter": "F",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "F_0034",
+      "letter": "F",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "G_0025",
+      "letter": "G",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "H_0030",
+      "letter": "H",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "H_0031",
+      "letter": "H",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "H_0032",
+      "letter": "H",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "H_0033",
+      "letter": "H",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "J_0030",
+      "letter": "J",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "J_0031",
+      "letter": "J",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "J_0032",
+      "letter": "J",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "J_0033",
+      "letter": "J",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "J_0034",
+      "letter": "J",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "J_0035",
+      "letter": "J",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "J_0036",
+      "letter": "J",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "J_0037",
+      "letter": "J",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "K_0024",
+      "letter": "K",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "K_0025",
+      "letter": "K",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "K_0026",
+      "letter": "K",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "K_0027",
+      "letter": "K",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "K_0028",
+      "letter": "K",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "K_0029",
+      "letter": "K",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "K_0030",
+      "letter": "K",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "K_0031",
+      "letter": "K",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "K_0032",
+      "letter": "K",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "K_0033",
+      "letter": "K",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "K_0034",
+      "letter": "K",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "K_0035",
+      "letter": "K",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "K_0036",
+      "letter": "K",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "L_0025",
+      "letter": "L",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "L_0026",
+      "letter": "L",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "L_0027",
+      "letter": "L",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "L_0028",
+      "letter": "L",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "L_0029",
+      "letter": "L",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "L_0030",
+      "letter": "L",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "L_0031",
+      "letter": "L",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "L_0032",
+      "letter": "L",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "L_0033",
+      "letter": "L",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "L_0034",
+      "letter": "L",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "L_0035",
+      "letter": "L",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "L_0036",
+      "letter": "L",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "M_0039",
+      "letter": "M",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "M_0040",
+      "letter": "M",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "N_0029",
+      "letter": "N",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "N_0030",
+      "letter": "N",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "N_0031",
+      "letter": "N",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "N_0032",
+      "letter": "N",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "O_0027",
+      "letter": "O",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "O_0028",
+      "letter": "O",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "O_0029",
+      "letter": "O",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "O_0030",
+      "letter": "O",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "P_0024",
+      "letter": "P",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "P_0025",
+      "letter": "P",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "P_0026",
+      "letter": "P",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "P_0027",
+      "letter": "P",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "P_0028",
+      "letter": "P",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "P_0029",
+      "letter": "P",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0047",
+      "letter": "Q",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0048",
+      "letter": "Q",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0049",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0050",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0051",
+      "letter": "Q",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0052",
+      "letter": "Q",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0053",
+      "letter": "Q",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0054",
+      "letter": "Q",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0055",
+      "letter": "Q",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0056",
+      "letter": "Q",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0057",
+      "letter": "Q",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "Q_0058",
+      "letter": "Q",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "R_0022",
+      "letter": "R",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "S_0027",
+      "letter": "S",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "S_0028",
+      "letter": "S",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "S_0029",
+      "letter": "S",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "S_0030",
+      "letter": "S",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "S_0031",
+      "letter": "S",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "S_0032",
+      "letter": "S",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "T_0042",
+      "letter": "T",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "T_0043",
+      "letter": "T",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "U_0042",
+      "letter": "U",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "U_0043",
+      "letter": "U",
+      "gem": "diamond",
+      "status": "normal"
+    },
+    {
+      "id": "U_0044",
+      "letter": "U",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "U_0045",
+      "letter": "U",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "V_0030",
+      "letter": "V",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "V_0031",
+      "letter": "V",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "V_0032",
+      "letter": "V",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "V_0033",
+      "letter": "V",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "V_0034",
+      "letter": "V",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "V_0035",
+      "letter": "V",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "V_0036",
+      "letter": "V",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "V_0037",
+      "letter": "V",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "V_0038",
+      "letter": "V",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "W_0026",
+      "letter": "W",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "W_0027",
+      "letter": "W",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "W_0028",
+      "letter": "W",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "W_0029",
+      "letter": "W",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "X_0028",
+      "letter": "X",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "X_0029",
+      "letter": "X",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "X_0030",
+      "letter": "X",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "X_0031",
+      "letter": "X",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "X_0032",
+      "letter": "X",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "X_0033",
+      "letter": "X",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "X_0034",
+      "letter": "X",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "X_0035",
+      "letter": "X",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "X_0036",
+      "letter": "X",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "X_0037",
+      "letter": "X",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "X_0038",
+      "letter": "X",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "X_0039",
+      "letter": "X",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "X_0040",
+      "letter": "X",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "X_0041",
+      "letter": "X",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "X_0042",
+      "letter": "X",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "X_0043",
+      "letter": "X",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "X_0044",
+      "letter": "X",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "X_0045",
+      "letter": "X",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "X_0046",
+      "letter": "X",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "X_0047",
+      "letter": "X",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "X_0048",
+      "letter": "X",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "X_0049",
+      "letter": "X",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0026",
+      "letter": "Y",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0027",
+      "letter": "Y",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0028",
+      "letter": "Y",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0029",
+      "letter": "Y",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0030",
+      "letter": "Y",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0031",
+      "letter": "Y",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0032",
+      "letter": "Y",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0033",
+      "letter": "Y",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0034",
+      "letter": "Y",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0035",
+      "letter": "Y",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0036",
+      "letter": "Y",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0037",
+      "letter": "Y",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0038",
+      "letter": "Y",
+      "gem": "none",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0039",
+      "letter": "Y",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0040",
+      "letter": "Y",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0041",
+      "letter": "Y",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0042",
+      "letter": "Y",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0043",
+      "letter": "Y",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0044",
+      "letter": "Y",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0045",
+      "letter": "Y",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0046",
+      "letter": "Y",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0047",
+      "letter": "Y",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0048",
+      "letter": "Y",
+      "gem": "garnet",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0049",
+      "letter": "Y",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0050",
+      "letter": "Y",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0051",
+      "letter": "Y",
+      "gem": "amethyst",
+      "status": "normal"
+    },
+    {
+      "id": "Y_0052",
+      "letter": "Y",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0030",
+      "letter": "Z",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0031",
+      "letter": "Z",
+      "gem": "ruby",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0032",
+      "letter": "Z",
+      "gem": "sapphire",
+      "status": "normal"
+    },
+    {
+      "id": "Z_0033",
+      "letter": "Z",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "E_0035",
+      "letter": "E",
+      "gem": "amethyst",
+      "status": "normal"
+    }
+  ]
+}

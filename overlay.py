@@ -2,12 +2,15 @@ from __future__ import annotations
 
 import tkinter as tk
 from dataclasses import dataclass
+from typing import Callable
 
 from engine import ScoredWord
-from recognize import Recognition
+from recognize import ALL_TILE_STATES, Recognition
 
-GEM_BG_COLORS = {
-    "none": "#2c2c2c",
+# Background color per tile state. State is one of the 11
+# ALL_TILE_STATES values (normal + 7 gems + 3 afflictions).
+STATE_BG_COLORS = {
+    "normal": "#2c2c2c",
     "amethyst": "#7b3f8a",
     "emerald": "#2f9f5a",
     "sapphire": "#3a5fcd",
@@ -15,11 +18,37 @@ GEM_BG_COLORS = {
     "ruby": "#d62c2c",
     "crystal": "#ffc0cb",
     "diamond": "#d0d0d0",
+    # Afflictions: muted reddish/greenish hues that read as "not playable".
+    "smashed": "#4a2c2c",
+    "locked": "#3a3a3a",
+    "plague": "#3a4a2c",
 }
+
+# Backwards-compat alias for older code that imports the old name.
+GEM_BG_COLORS = STATE_BG_COLORS
+
+
+@dataclass
+class _CorrectionRequest:
+    """Carries the data needed to persist a manual tile correction.
+
+    The overlay produces these from its right-click editor; main.py's
+    `on_correct` callback consumes them by calling
+    `correct_recognition(tile_img, db, letter, state)`. We use a small
+    type rather than passing N positional args so the contract is clear.
+    """
+
+    tile_img: object  # PIL.Image.Image, kept loose to avoid import here
+    letter: str
+    state: str
+
+
+# Public re-export so main.py can do `from overlay import CorrectionRequest`.
+CorrectionRequest = _CorrectionRequest
 
 
 class Overlay:
-    WIDTH = 480
+    WIDTH = 560
 
     def __init__(self, title: str = "BA Solver", *, geometry: str | None = None):
         self.root = tk.Tk()
@@ -50,8 +79,19 @@ class Overlay:
                 fg="white",
                 borderwidth=1,
                 relief="solid",
+                cursor="hand2",
             )
             lbl.grid(row=i // 4, column=i % 4, padx=2, pady=2, ipadx=4, ipady=4)
+            # Right-click (Button-3) opens the per-tile correction editor.
+            # Also bind Control-Click for Mac trackpad users.
+            lbl.bind(
+                "<Button-3>",
+                lambda e, idx=i: self._open_tile_editor(idx, e.x_root, e.y_root),
+            )
+            lbl.bind(
+                "<Control-Button-1>",
+                lambda e, idx=i: self._open_tile_editor(idx, e.x_root, e.y_root),
+            )
             self.tile_labels.append(lbl)
 
         self.word_frame = tk.Frame(self.root, bg="#1c1c1c")
@@ -330,6 +370,20 @@ class Overlay:
         )
         self.auto_btn.pack(side="left", padx=(6, 0))
 
+        self.review_btn = tk.Button(
+            self.button_frame,
+            text="✏️ Review",
+            command=lambda: self._review(),
+            bg="#444",
+            fg="white",
+            font=("Helvetica", 10),
+            activebackground="#555",
+            relief="flat",
+            padx=10,
+            pady=4,
+        )
+        self.review_btn.pack(side="left", padx=(6, 0))
+
         self.status_var = tk.StringVar(
             value="Press R to scan, click a word to play it."
         )
@@ -354,6 +408,16 @@ class Overlay:
         self._progress_next_callback = None
         self._progress_back_callback = None
         self._progress_jump_callback = None
+        # Called when the user manually corrects a tile via right-click
+        # editor or the Review button. Signature: fn(index, new_recognition).
+        # main.py wires this up; the overlay refreshes itself afterwards.
+        self._correct_callback: Callable[[int, Recognition], None] | None = None
+        self._review_callback: Callable[[], None] | None = None
+        # Most recent recognitions + tile images, set by update_rack. The
+        # right-click correction editor needs the source image to write
+        # back to the bank via correct_recognition.
+        self._latest_recs: list[Recognition] = []
+        self._latest_tiles: list | None = None
         self._current_words: list[ScoredWord] = []
 
         def _if_not_in_entry(fn):
@@ -399,6 +463,25 @@ class Overlay:
     def on_progress_jump(self, fn) -> None:
         self._progress_jump_callback = fn
 
+    def on_correct(self, fn: Callable[[int, Recognition], None]) -> None:
+        """Called when the user manually corrects a single tile.
+
+        `fn(index, new_recognition)` should update the caller's state
+        (e.g. `recs[index] = new_recognition`) and refresh anything
+        downstream. The overlay also refreshes its own display.
+        """
+        self._correct_callback = fn
+
+    def on_review(self, fn: Callable[[], None]) -> None:
+        """Called when the user clicks the Review button.
+
+        `fn()` should walk all 16 tiles in the current rack (typically
+        by calling `review_rack_interactively`) and update its state
+        accordingly. The overlay does not refresh itself in response —
+        the callback is expected to call `update_rack` once done.
+        """
+        self._review_callback = fn
+
     def _refresh(self) -> None:
         if self._refresh_callback:
             self._refresh_callback()
@@ -410,6 +493,127 @@ class Overlay:
     def _auto(self) -> None:
         if self._auto_callback:
             self._auto_callback()
+
+    def _review(self) -> None:
+        if self._review_callback:
+            self._review_callback()
+        else:
+            self.set_status("Review not wired up.")
+
+    def _open_tile_editor(self, index: int, screen_x: int, screen_y: int) -> None:
+        """Open a small popup to edit a single tile's letter and state.
+
+        Triggered by right-click (or Control-Click) on a tile label. On
+        commit, calls the registered `on_correct` callback with the new
+        Recognition, then refreshes the rack display.
+
+        Requires that update_rack was called with a `tiles` argument
+        (so we have the source image to write back to the bank).
+        """
+        if index < 0 or index >= len(self._latest_recs):
+            return
+        if self._latest_tiles is None or index >= len(self._latest_tiles):
+            self.set_status("Tile image unavailable — read the rack first (R).")
+            return
+        if self._correct_callback is None:
+            self.set_status("Correction not wired up.")
+            return
+
+        rec = self._latest_recs[index]
+        tile_img = self._latest_tiles[index]
+
+        win = tk.Toplevel(self.root)
+        win.title(f"Tile {index}")
+        win.attributes("-topmost", True)
+        win.transient(self.root)
+        win.configure(bg="#1c1c1c")
+        # Position near the cursor without spilling off-screen.
+        sw = self.root.winfo_screenwidth()
+        sh = self.root.winfo_screenheight()
+        x = min(max(0, screen_x), sw - 240)
+        y = min(max(0, screen_y), sh - 180)
+        win.geometry(f"+{x}+{y}")
+        # Modal-lite: grab focus but don't block the whole app.
+        win.grab_set()
+
+        info = tk.Label(
+            win,
+            text=(
+                f"Tile {index}: detected '{rec.letter or '?'}' / {rec.state} "
+                f"(dist {rec.distance:.1f})"
+            ),
+            bg="#1c1c1c",
+            fg="#bbb",
+            font=("Consolas", 9),
+        )
+        info.pack(padx=10, pady=(8, 4))
+
+        # Letter field
+        letter_frame = tk.Frame(win, bg="#1c1c1c")
+        letter_frame.pack(pady=2)
+        tk.Label(
+            letter_frame, text="Letter:", bg="#1c1c1c", fg="white"
+        ).pack(side="left", padx=(0, 4))
+        letter_var = tk.StringVar(value=rec.letter)
+        letter_entry = tk.Entry(
+            letter_frame,
+            textvariable=letter_var,
+            width=4,
+            font=("Helvetica", 14),
+            bg="#2c2c2c",
+            fg="white",
+            insertbackground="white",
+            relief="flat",
+        )
+        letter_entry.pack(side="left")
+
+        # State dropdown
+        state_frame = tk.Frame(win, bg="#1c1c1c")
+        state_frame.pack(pady=2)
+        tk.Label(
+            state_frame, text="State: ", bg="#1c1c1c", fg="white"
+        ).pack(side="left", padx=(0, 4))
+        state_var = tk.StringVar(value=rec.state)
+        state_menu = tk.OptionMenu(state_frame, state_var, *ALL_TILE_STATES)
+        state_menu.config(bg="#2c2c2c", fg="white", activebackground="#3c3c3c", width=10)
+        state_menu["menu"].config(bg="#2c2c2c", fg="white")
+        state_menu.pack(side="left")
+
+        tk.Label(
+            win,
+            text="Enter = save   Esc = cancel",
+            bg="#1c1c1c",
+            fg="#666",
+            font=("Consolas", 9),
+        ).pack(pady=(6, 8))
+
+        def commit(event=None):
+            letter = letter_var.get().strip()
+            state = state_var.get().strip()
+            if letter and letter[0].isalpha() and state in ALL_TILE_STATES:
+                letter = letter.upper() if len(letter) == 1 else letter
+                # Only persist & propagate when the user actually changed
+                # something (otherwise this is just a confirmation).
+                if letter != rec.letter or state != rec.state:
+                    # Build the correction request; the callback (which
+                    # has the db reference) is responsible for calling
+                    # correct_recognition() with it.
+                    self._correct_callback(index, _CorrectionRequest(
+                        tile_img=tile_img,
+                        letter=letter,
+                        state=state,
+                    ))
+            win.destroy()
+
+        def cancel(event=None):
+            win.destroy()
+
+        letter_entry.bind("<Return>", commit)
+        win.bind("<Return>", commit)
+        win.bind("<Escape>", cancel)
+        win.protocol("WM_DELETE_WINDOW", cancel)
+        letter_entry.focus_set()
+        letter_entry.select_range(0, "end")
 
     def _clear(self) -> None:
         self.clear_state()
@@ -498,11 +702,24 @@ class Overlay:
     def set_status(self, text: str) -> None:
         self.status_var.set(text)
 
-    def update_rack(self, recognitions: list[Recognition]) -> None:
+    def update_rack(
+        self,
+        recognitions: list[Recognition],
+        tiles: list | None = None,
+    ) -> None:
+        self._latest_recs = list(recognitions)
+        self._latest_tiles = list(tiles) if tiles is not None else None
+
         for i, rec in enumerate(recognitions):
             text = rec.letter if rec.letter else "?"
-            bg = GEM_BG_COLORS.get(rec.gem, "#2c2c2c")
-            fg = "black" if rec.gem == "diamond" else "white"
+            bg = STATE_BG_COLORS.get(rec.state, "#2c2c2c")
+            # Pick foreground for legibility against the bg.
+            if rec.state == "diamond":
+                fg = "black"
+            elif rec.state == "crystal":
+                fg = "#222"
+            else:
+                fg = "white"
             if not rec.confident:
                 fg = "#ff5050"
             self.tile_labels[i].config(text=text, bg=bg, fg=fg)

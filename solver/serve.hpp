@@ -7,9 +7,12 @@
 #include "trie.hpp"
 #include "utils.hpp"
 #include "word.hpp"
+#include <atomic>
+#include <cstdlib>
 #include <iostream>
 #include <limits>
 #include <random>
+#include <thread>
 #include <unordered_set>
 #include <string>
 #include <string_view>
@@ -398,13 +401,13 @@ inline std::string handle_top(
 
     const auto rng_snapshot = rng;
 
-    auto evaluate = [&](const ScoredWord& sw_unpowered) -> Eval {
-        rng = rng_snapshot;
+    auto evaluate = [&](const ScoredWord& sw_unpowered, std::mt19937& rng_local, BestWordCache& cache_local) -> Eval {
+        rng_local = rng_snapshot;
         Rack residual = rack;
         residual.playWord(Word(sw_unpowered.tiles));
         int n_sims = 0;
         const double future = monteCarloRackValue(
-            residual, trie, horizon, min_sims, max_sims, se_target, rng, cache, &n_sims,
+            residual, trie, horizon, min_sims, max_sims, se_target, rng_local, cache_local, &n_sims,
             cfg.power, false
         );
 
@@ -437,7 +440,8 @@ inline std::string handle_top(
                 }
                 curr = next;
             }
-            if (ok) fm = trie.nodes[curr].finish_mask;
+            if (ok)
+                fm = trie.nodes[curr].finish_mask;
         }
         const double w_treasure = (cfg.treasure_equipped && (fm & bonus_bit_for(0))) ? 1.5 : 1.0;
         const double w_weakness =
@@ -503,47 +507,91 @@ inline std::string handle_top(
         return Eval{chosen, future, total, n_sims, is_kill, use_powered};
     };
 
+    auto run_evals = [&](std::vector<ScoredWord>& candidates, std::vector<Eval>& out) {
+        const std::size_t N = candidates.size();
+        out.resize(N);
+        if (N == 0)
+            return;
+
+        constexpr std::size_t PARALLEL_CUTOFF = 16;
+        unsigned int hw_threads = std::thread::hardware_concurrency();
+        if (const char* env = std::getenv("SERVE_THREADS"))
+        {
+            const int v = std::atoi(env);
+            if (v > 0)
+                hw_threads = static_cast<unsigned int>(v);
+        }
+        const unsigned int desired_threads = hw_threads > 0 ? std::min(hw_threads, 8u) : 4u;
+        const bool parallel = (N >= PARALLEL_CUTOFF) && (desired_threads >= 2);
+
+        if (!parallel)
+        {
+            for (std::size_t i = 0; i < N; ++i)
+                out[i] = evaluate(candidates[i], rng, cache);
+            return;
+        }
+
+        const unsigned int n_threads = std::min<unsigned int>(
+            desired_threads,
+            static_cast<unsigned int>((N + 3) / 4)
+        );
+
+        std::atomic<std::size_t> next{0};
+        auto worker = [&]() {
+            std::mt19937 rng_local;
+            BestWordCache cache_local(MAX_CACHE_SIZE);
+            while (true)
+            {
+                const std::size_t idx = next.fetch_add(1, std::memory_order_relaxed);
+                if (idx >= N)
+                    break;
+                out[idx] = evaluate(candidates[idx], rng_local, cache_local);
+            }
+        };
+
+        std::vector<std::jthread> threads;
+        threads.reserve(n_threads);
+        for (unsigned int t = 0; t < n_threads; ++t)
+            threads.emplace_back(worker);
+        threads.clear();
+    };
+
     std::vector<Eval> kill_evals;
     std::vector<Eval> nonkill_evals;
 
+    auto tile_key = [](const ScoredWord& w) {
+        std::string k; k.reserve(w.tiles.size() * 2);
+        for (const auto& t : w.tiles)
+        {
+            k.push_back(t.getLetter());
+            k.push_back(static_cast<char>(t.getGem()));
+        }
+        return k;
+    };
+
     auto collect_unique = [&](std::vector<ScoredWord>& pool, std::vector<ScoredWord> more) {
-        auto key_of = [](const ScoredWord& w) {
-            std::string k; k.reserve(w.tiles.size() * 2);
-            for (const auto& t : w.tiles)
-            {
-                k.push_back(t.getLetter());
-                k.push_back(static_cast<char>(t.getGem()));
-            }
-            return k;
-        };
         std::unordered_set<std::string> seen;
+        seen.reserve(pool.size() + more.size());
         for (const auto& w : pool)
-            seen.insert(key_of(w));
+            seen.insert(tile_key(w));
         for (auto& w : more)
         {
-            auto k = key_of(w);
+            auto k = tile_key(w);
             if (seen.insert(std::move(k)).second)
                 pool.push_back(std::move(w));
         }
     };
 
+    std::vector<ScoredWord> all_candidates;
+
     if (threshold > 0)
     {
         auto kills_unp = rack.generateKills(trie, threshold, max_kill_candidates, cfg.power, false);
-        std::vector<ScoredWord> all_kills = std::move(kills_unp);
+        all_candidates = std::move(kills_unp);
         if (dual_regime)
         {
             auto kills_pow = rack.generateKills(trie, threshold, max_kill_candidates, cfg.power, true);
-            collect_unique(all_kills, std::move(kills_pow));
-        }
-        kill_evals.reserve(all_kills.size());
-        for (const ScoredWord& sw : all_kills)
-        {
-            Eval e = evaluate(sw);
-            if (e.is_kill)
-                kill_evals.push_back(std::move(e));
-            else
-                nonkill_evals.push_back(std::move(e));
+            collect_unique(all_candidates, std::move(kills_pow));
         }
     }
 
@@ -568,33 +616,52 @@ inline std::string handle_top(
             }
             collect_unique(all_top, std::move(more));
         }
-        nonkill_evals.reserve(nonkill_evals.size() + all_top.size());
-        for (const ScoredWord& sw : all_top)
+
+        constexpr std::size_t LINEAR_DEDUP_CUTOFF = 32;
+        const std::size_t start_size = all_candidates.size();
+        if (start_size * all_top.size() <= LINEAR_DEDUP_CUTOFF * LINEAR_DEDUP_CUTOFF && all_top.size() <= LINEAR_DEDUP_CUTOFF)
         {
-            bool is_in_kill = false;
-            for (const auto& ke : kill_evals)
+            for (const ScoredWord& sw : all_top)
             {
-                if (ke.sw.tiles == sw.tiles)
+                bool dup = false;
+                for (const auto& c : all_candidates)
                 {
-                    is_in_kill = true;
-                    break;
+                    if (c.tiles == sw.tiles)
+                    {
+                        dup = true;
+                        break;
+                    }
                 }
+                if (!dup)
+                    all_candidates.push_back(sw);
             }
-            if (is_in_kill)
-                continue;
-            bool is_dup = false;
-            for (const auto& ne : nonkill_evals)
-            {
-                if (ne.sw.tiles == sw.tiles)
-                {
-                    is_dup = true;
-                    break;
-                }
-            }
-            if (is_dup)
-                continue;
-            nonkill_evals.push_back(evaluate(sw));
         }
+        else
+        {
+            std::unordered_set<std::string> seen_keys;
+            seen_keys.reserve(start_size + all_top.size());
+            for (const auto& c : all_candidates)
+                seen_keys.insert(tile_key(c));
+            for (const ScoredWord& sw : all_top)
+            {
+                auto k = tile_key(sw);
+                if (seen_keys.insert(std::move(k)).second)
+                    all_candidates.push_back(sw);
+            }
+        }
+    }
+
+    std::vector<Eval> all_evals;
+    run_evals(all_candidates, all_evals);
+
+    kill_evals.reserve(all_evals.size());
+    nonkill_evals.reserve(all_evals.size());
+    for (auto& e : all_evals)
+    {
+        if (e.is_kill)
+            kill_evals.push_back(std::move(e));
+        else
+            nonkill_evals.push_back(std::move(e));
     }
 
     std::sort(kill_evals.begin(), kill_evals.end(), [](const Eval& a, const Eval& b) {

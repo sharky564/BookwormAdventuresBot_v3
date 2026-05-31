@@ -1,0 +1,266 @@
+{
+  "completed_letters": [
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+    "G",
+    "H",
+    "I",
+    "J",
+    "K",
+    "L",
+    "M",
+    "N",
+    "O",
+    "P",
+    "Q",
+    "R",
+    "S",
+    "T",
+    "U",
+    "V",
+    "W",
+    "X",
+    "Y",
+    "Z"
+  ],
+  "per_letter_stats": [
+    {
+      "letter": "A",
+      "assignments_attempted": 5,
+      "assignments_clean": 5,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 50,
+      "total_corrections": 0,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "B",
+      "assignments_attempted": 10,
+      "assignments_clean": 7,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 126,
+      "total_corrections": 4,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "C",
+      "assignments_attempted": 25,
+      "assignments_clean": 14,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 355,
+      "total_corrections": 19,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "D",
+      "assignments_attempted": 7,
+      "assignments_clean": 6,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 80,
+      "total_corrections": 2,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "E",
+      "assignments_attempted": 11,
+      "assignments_clean": 8,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 139,
+      "total_corrections": 7,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "F",
+      "assignments_attempted": 12,
+      "assignments_clean": 9,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 147,
+      "total_corrections": 3,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "G",
+      "assignments_attempted": 8,
+      "assignments_clean": 7,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 88,
+      "total_corrections": 1,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "H",
+      "assignments_attempted": 10,
+      "assignments_clean": 7,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 122,
+      "total_corrections": 4,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "I",
+      "assignments_attempted": 5,
+      "assignments_clean": 5,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 50,
+      "total_corrections": 0,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "J",
+      "assignments_attempted": 21,
+      "assignments_clean": 14,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 271,
+      "total_corrections": 8,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "K",
+      "assignments_attempted": 20,
+      "assignments_clean": 13,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 263,
+      "total_corrections": 13,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "L",
+      "assignments_attempted": 19,
+      "assignments_clean": 10,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 265,
+      "total_corrections": 12,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "M",
+      "assignments_attempted": 6,
+      "assignments_clean": 5,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 69,
+      "total_corrections": 2,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "N",
+      "assignments_attempted": 7,
+      "assignments_clean": 5,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 88,
+      "total_corrections": 4,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "O",
+      "assignments_attempted": 13,
+      "assignments_clean": 9,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 161,
+      "total_corrections": 4,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "P",
+      "assignments_attempted": 15,
+      "assignments_clean": 9,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 195,
+      "total_corrections": 6,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "Q",
+      "assignments_attempted": 17,
+      "assignments_clean": 12,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 218,
+      "total_corrections": 12,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "R",
+      "assignments_attempted": 6,
+      "assignments_clean": 5,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 61,
+      "total_corrections": 1,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "S",
+      "assignments_attempted": 7,
+      "assignments_clean": 5,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 87,
+      "total_corrections": 6,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "T",
+      "assignments_attempted": 10,
+      "assignments_clean": 8,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 117,
+      "total_corrections": 2,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "U",
+      "assignments_attempted": 16,
+      "assignments_clean": 13,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 188,
+      "total_corrections": 4,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "V",
+      "assignments_attempted": 28,
+      "assignments_clean": 20,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 348,
+      "total_corrections": 9,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "W",
+      "assignments_attempted": 19,
+      "assignments_clean": 15,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 225,
+      "total_corrections": 4,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "X",
+      "assignments_attempted": 39,
+      "assignments_clean": 26,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 511,
+      "total_corrections": 22,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "Y",
+      "assignments_attempted": 52,
+      "assignments_clean": 31,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 697,
+      "total_corrections": 27,
+      "aborted_assignments": 0
+    },
+    {
+      "letter": "Z",
+      "assignments_attempted": 14,
+      "assignments_clean": 11,
+      "consecutive_clean_at_finish": 5,
+      "total_reads": 168,
+      "total_corrections": 4,
+      "aborted_assignments": 0
+    }
+  ]
+}

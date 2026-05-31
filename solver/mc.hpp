@@ -9,9 +9,9 @@
 #include <cmath>
 #include <cstdint>
 #include <format>
+#include <cstring>
 #include <fstream>
 #include <iostream>
-#include <list>
 #include <mutex>
 #include <random>
 #include <string>
@@ -21,39 +21,72 @@
 #include <ankerl/unordered_dense.h>
 
 
-inline std::string makeRackKey(const TileList& tiles, double power = 0.0, bool powered = false)
+struct RackKey
 {
-    std::array<std::pair<char, Gem>, MAX_RACK_SIZE> pairs;
-    const std::size_t n = tiles.size();
-    for (std::size_t i = 0; i < n; ++i)
-        pairs[i] = {tiles[i].getLetter(), tiles[i].getGem()};
+    std::array<std::uint8_t, 26> letter_counts;
+    std::array<std::uint8_t, 26> gem_counts;
+    std::uint8_t wildcards;
+    std::uint8_t flags;
+    std::uint8_t weakness_cat;
+    std::uint8_t _pad;
+    std::uint64_t power_bits;
 
-    std::sort(pairs.begin(), pairs.begin() + n);
+    bool operator==(const RackKey& other) const noexcept
+    {
+        return std::memcmp(this, &other, sizeof(RackKey)) == 0;
+    }
+};
+static_assert(sizeof(RackKey) == 64, "RackKey should be 64 bytes (one cache line)");
+static_assert(std::is_trivially_copyable_v<RackKey>);
 
-    std::string key;
-    key.reserve(n * 2 + 16);
-    for (std::size_t i = 0; i < n; ++i)
+inline RackKey makeRackKey(const TileList& tiles, double power, bool powered) noexcept
+{
+    RackKey k{};
+    const RuntimeConfig& cfg = config();
+    for (const Tile& t : tiles)
     {
-        key += pairs[i].first;
-        if (config().gems_enabled)
-            key += static_cast<char>(static_cast<unsigned>(pairs[i].second) + '0');
+        if (t.isWildcard())
+        {
+            ++k.wildcards;
+            continue;
+        }
+        const int li = t.getLetter() - 'A';
+        ++k.letter_counts[li];
+        if (cfg.gems_enabled)
+            k.gem_counts[li] += static_cast<std::uint8_t>(t.getGem()) + 1;
     }
-    if (power != 0.0 || powered)
+    std::uint8_t flags = 0;
+    if (powered)
+        flags |= 1u;
+    if (cfg.treasure_equipped)
+        flags |= 2u;
+    if (cfg.gems_enabled)
+        flags |= 4u;
+    if (cfg.active_weakness_cat >= 0)
     {
-        key += '_';
-        key += std::to_string(power);
-        key += '_';
-        key += (powered ? "1" : "0");
+        flags |= 8u;
+        k.weakness_cat = static_cast<std::uint8_t>(cfg.active_weakness_cat);
     }
-    if (config().treasure_equipped)
-        key += "_T";
-    if (config().active_weakness_cat >= 0)
-    {
-        key += "_W";
-        key += static_cast<char>('0' + config().active_weakness_cat);
-    }
-    return key;
+    k.flags = flags;
+    std::memcpy(&k.power_bits, &power, sizeof(double));
+    return k;
 }
+
+struct RackKeyHash
+{
+    std::size_t operator()(const RackKey& k) const noexcept
+    {
+        std::uint64_t buf[8];
+        std::memcpy(buf, &k, sizeof(RackKey));
+        std::uint64_t h = 1469598103934665603ULL;
+        for (int i = 0; i < 8; ++i)
+        {
+            h ^= buf[i];
+            h *= 1099511628211ULL;
+        }
+        return static_cast<std::size_t>(h);
+    }
+};
 
 class BestWordCache
 {
@@ -66,25 +99,24 @@ public:
 
     SearchResult lookup(const TileList& tiles, const Trie<NUM_WORDS>& trie, double power = 0.0, bool powered = false)
     {
-        const std::string key = makeRackKey(tiles, power, powered);
+        const RackKey key = makeRackKey(tiles, power, powered);
         if (const auto it = mMap.find(key); it != mMap.end())
         {
-            mList.splice(mList.begin(), mList, it->second);
             ++mHits;
-            return it->second->second;
+            return it->second;
         }
         ++mMisses;
 
         RackState state = build_rack_state(tiles, power, config().gems_enabled, powered ? 1.25 : 1.0);
         SearchResult sr = find_best_word(trie, state);
 
-        mList.emplace_front(key, sr);
-        mMap[mList.front().first] = mList.begin();
-        if (mMap.size() > mCap)
+        if (mMap.size() >= mCap)
         {
-            mMap.erase(mList.back().first);
-            mList.pop_back();
+            const std::size_t target = mCap / 2;
+            while (mMap.size() > target)
+                mMap.erase(mMap.begin());
         }
+        mMap.emplace(key, sr);
         return sr;
     }
 
@@ -93,12 +125,7 @@ public:
     [[nodiscard]] std::uint64_t misses() const noexcept { return mMisses; }
 
 private:
-    using Item = std::pair<std::string, SearchResult>;
-    using ItemList = std::list<Item>;
-    using Map = ankerl::unordered_dense::map<std::string, typename ItemList::iterator>;
-
-    ItemList mList;
-    Map mMap;
+    ankerl::unordered_dense::map<RackKey, SearchResult, RackKeyHash> mMap;
     std::size_t mCap;
     std::uint64_t mHits = 0;
     std::uint64_t mMisses = 0;
@@ -124,6 +151,32 @@ inline double rolloutValue(
 
         Word w(sr.tiles);
         rack.playWord(w, rng);
+    }
+    return total;
+}
+
+inline double rolloutValueInto(
+    const Rack& source,
+    Rack& scratch,
+    const Trie<NUM_WORDS>& trie,
+    int horizon,
+    std::mt19937& rng,
+    BestWordCache& cache,
+    double power = 0.0,
+    bool powered = false
+)
+{
+    scratch = source;
+    double total = 0.0;
+    for (int t = 0; t < horizon; ++t)
+    {
+        const SearchResult sr = cache.lookup(scratch.getTiles(), trie, power, powered);
+        if (sr.damage <= 0 || sr.tiles.empty())
+            break;
+        total += sr.damage;
+
+        Word w(sr.tiles);
+        scratch.playWord(w, rng);
     }
     return total;
 }
@@ -154,9 +207,10 @@ inline double monteCarloRackValue(
     double mean = 0.0;
     double M2 = 0.0;
     int n = 0;
+    Rack scratch(rack.size());
     while (n < max_sims)
     {
-        const double v = rolloutValue(rack, trie, horizon, rng, cache, power, powered);
+        const double v = rolloutValueInto(rack, scratch, trie, horizon, rng, cache, power, powered);
         ++n;
         const double delta = v - mean;
         mean += delta / n;

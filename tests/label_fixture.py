@@ -1,36 +1,3 @@
-"""
-label_fixture.py
-================
-
-Interactive Tk tool for adding a new test-suite fixture. Walks tile-by-tile
-through a rack image, lets you set letter/gem/status with keyboard shortcuts,
-and writes the JSON annotation.
-
-Usage:
-    cd python
-    python tests/label_fixture.py NEW_RACK.png
-        --tile-size-x 50 --tile-size-y 51
-
-If the image is a rack-only crop (like the test fixtures), pass
---rack-offset-x 0 --rack-offset-y 0 (the default). If it's a full-screen
-screenshot, pass the offsets the same way main.py does.
-
-Keyboard shortcuts:
-    A-Z Set letter
-    SPACE/-/0 Letter empty (for smashed/locked/plague tiles)
-    Tab Next tile
-    Shift+Tab Previous tile
-    Enter Save and quit
-
-Gem buttons:
-    None / Amethyst / Emerald / Sapphire / Garnet / Ruby / Crystal / Diamond
-
-Status buttons:
-    Normal / Smashed / Locked / Plague
-
-The output JSON has the same schema as the existing fixtures.
-"""
-
 from __future__ import annotations
 
 import argparse
@@ -73,10 +40,8 @@ def parse_args() -> argparse.Namespace:
 
 
 def main() -> int:
-    args = parse_args()  # handle --help before importing GUI deps
+    args = parse_args()
 
-    # GUI deps loaded only when actually running, so `--help` works on
-    # headless boxes that don't have tkinter or PIL.ImageTk.
     import tkinter as tk
     from PIL import Image, ImageTk
 
@@ -87,12 +52,10 @@ def main() -> int:
     tile_w, tile_h = args.tile_size_x, args.tile_size_y
     ox, oy = args.rack_offset_x, args.rack_offset_y
 
-    # Pre-existing annotation? Load and continue editing.
     tiles: list[dict] = []
     if out_path.exists():
         existing = json.loads(out_path.read_text())
         tiles = existing.get("tiles", [])
-        # Ensure 16 entries by index.
         by_pos = {(t["row"], t["col"]): t for t in tiles}
         tiles = []
         for row in range(4):
@@ -128,17 +91,14 @@ def main() -> int:
     root.title(f"Label fixture: {img_path.name}")
     root.configure(bg="#1c1c1c")
 
-    # Tile preview (left)
     preview = tk.Label(root, bg="#1c1c1c")
     preview.grid(row=0, column=0, rowspan=8, padx=10, pady=10)
 
-    # Position label
     pos_label = tk.Label(
         root, text="", font=("Helvetica", 12, "bold"), bg="#1c1c1c", fg="white"
     )
     pos_label.grid(row=0, column=1, columnspan=2, sticky="w", padx=10)
 
-    # Letter entry
     tk.Label(root, text="Letter:", bg="#1c1c1c", fg="white").grid(
         row=1, column=1, sticky="e", padx=4
     )
@@ -149,7 +109,6 @@ def main() -> int:
     letter_entry.grid(row=1, column=2, sticky="w")
     letter_entry.focus_set()
 
-    # Gem buttons
     tk.Label(root, text="Gem:", bg="#1c1c1c", fg="white").grid(
         row=2, column=1, sticky="ne", padx=4, pady=(8, 0)
     )
@@ -172,7 +131,6 @@ def main() -> int:
         )
         rb.grid(row=i // 2, column=i % 2, sticky="w")
 
-    # Status buttons
     tk.Label(root, text="Status:", bg="#1c1c1c", fg="white").grid(
         row=3, column=1, sticky="ne", padx=4, pady=(8, 0)
     )
@@ -195,7 +153,6 @@ def main() -> int:
         )
         rb.grid(row=i // 2, column=i % 2, sticky="w")
 
-    # Mini rack overview (right side, shows progress)
     overview = tk.Frame(root, bg="#1c1c1c")
     overview.grid(row=4, column=1, columnspan=2, pady=(10, 0))
     overview_labels: list[tk.Label] = []
@@ -215,7 +172,6 @@ def main() -> int:
             lbl.grid(row=r, column=c, padx=1, pady=1)
             overview_labels.append(lbl)
 
-    # Save status
     status_msg = tk.Label(root, text="", bg="#1c1c1c", fg="#8f8")
     status_msg.grid(row=5, column=1, columnspan=2, sticky="w", padx=10, pady=(8, 0))
 
@@ -235,7 +191,6 @@ def main() -> int:
         gem_var.set(t["gem"])
         status_var.set(t["status"])
 
-        # Show enlarged tile crop.
         row, col = t["row"], t["col"]
         tile = img.crop(
             (
@@ -290,18 +245,13 @@ def main() -> int:
         status_msg.config(text=f"Saved: {out_path}")
         root.after(400, root.destroy)
 
-    # Bindings
     root.bind("<Tab>", next_tile)
     root.bind("<Shift-Tab>", prev_tile)
     root.bind("<Return>", save_quit)
 
-    # Letter keys: handle atomically at root level, never wait. Each key
-    # press immediately writes itself as the current tile's letter and
-    # advances. We bind on the root (not the entry) so fast typing doesn't
-    # accumulate characters in the entry between commits.
     def on_letter_key(e):
         if not e.keysym.isalpha() or len(e.keysym) != 1:
-            return  # let other keys (Tab, BackSpace, etc.) propagate
+            return
         tiles[state["idx"]]["letter"] = e.keysym.upper()
         tiles[state["idx"]]["gem"] = gem_var.get()
         tiles[state["idx"]]["status"] = status_var.get()

@@ -294,7 +294,9 @@ void dfs(
     if (k <= 0) [[unlikely]]
         return;
 
-    const double max_extra_pts = top_k_sum(st.value_bucket_counts, search_tables().letter_value_tiers_desc, k);
+    const double subtree_max = static_cast<double>(tn.max_subtree_points);
+    const double top_k_extra = top_k_sum(st.value_bucket_counts, search_tables().letter_value_tiers_desc, k);
+    const double max_extra_pts = std::min(top_k_extra, subtree_max);
     double max_extra_gem = 0.0;
     if (st.gems_enabled)
         max_extra_gem = top_k_sum(st.gem_bucket_counts, gem_power_tiers_desc, k);

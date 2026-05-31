@@ -20,11 +20,13 @@ from recognize import (
     TileDB,
     recognise_rack,
     label_unknowns_interactively,
+    review_rack_interactively,
+    correct_recognition,
     Recognition,
     is_rack_paused_or_empty,
 )
-from overlay import Overlay
-from play import resolve_positions, play_word, reset_game
+from overlay import Overlay, CorrectionRequest
+from play import resolve_positions, play_word, reset_game, reset_position
 from config import load_config, resolve_path, pick
 from progress import (
     Progress,
@@ -227,12 +229,6 @@ def main() -> int:
         if manual_chapter_override:
             return
         preset = active_chapter_preset(prog)
-        # Read power from the overlay rather than from prog directly. On
-        # progress changes, autofill_fields_for_current_enemy() runs first
-        # and sets the overlay power to power_at(prog), so the value here
-        # matches the new enemy. When the user manually edits the power
-        # field (and fires on_power_changed → here), we use their value
-        # instead. This makes the field a true override.
         power = overlay.get_power()
         base_damage_bonus = base_damage_bonus_at(prog)
         _, armour = monster_at(prog)
@@ -248,11 +244,6 @@ def main() -> int:
             weakness_boost=weakness_boost,
         )
 
-    # Prime the overlay's power field with the default for the current
-    # progress before the first config push. push_engine_config_for_progress
-    # reads overlay.get_power(), so we need the overlay primed first or
-    # we'd send power=0 to the engine on startup. The full autofill (HP
-    # + power) runs later — this is just the bit we need pre-push.
     overlay.set_power(power_at(prog))
     push_engine_config_for_progress()
 
@@ -281,8 +272,10 @@ def main() -> int:
     }
 
     latest_recs: list[list[Recognition]] = [[]]
+    latest_tiles: list[list] = [[]]
     run_state = {"auto": False}
 
+    @reset_position
     def focus_game_window(pre_delay: float = 0.40) -> None:
         try:
             import pyautogui
@@ -294,8 +287,9 @@ def main() -> int:
 
         x = win.left + focus_click_x
         y = win.top + focus_click_y
+        curr_x, curr_y = pyautogui.position()
         pyautogui.click(x, y, button=focus_click_button, duration=mouse_move_speed)
-
+        pyautogui.moveTo(curr_x, curr_y)
         if pre_delay > 0:
             time.sleep(pre_delay)
 
@@ -315,7 +309,8 @@ def main() -> int:
                 return
 
             recs = recognise_rack(tiles, db)
-            overlay.update_rack(recs)
+            latest_tiles[0] = list(tiles)
+            overlay.update_rack(recs, tiles=tiles)
 
             if any(not r.confident for r in recs):
                 overlay.root.attributes("-topmost", True)
@@ -331,7 +326,7 @@ def main() -> int:
                 recs = label_unknowns_interactively(
                     tiles, recs, db, parent=overlay.root, geometry=f"+{lx}+{ly}"
                 )
-                overlay.update_rack(recs)
+                overlay.update_rack(recs, tiles=tiles)
                 overlay.root.attributes("-topmost", False)
 
             playable = [r for r in recs if r.status == "normal"]
@@ -359,7 +354,8 @@ def main() -> int:
 
             threshold = overlay.get_threshold()
             charges = overlay.get_charges()
-            words = eng.top(
+
+            future = eng.top_async(
                 letters,
                 gems=gems,
                 n=n_words,
@@ -368,38 +364,50 @@ def main() -> int:
                 threshold=threshold,
                 charges=charges,
             )
-            overlay.update_words(words)
 
-            if words:
-                top = words[0]
-                marker_pow = " 💪" if top.used_powered else ""
-                if top.is_kill:
-                    overkill = top.now - threshold
-                    overkill_str = (
-                        f", +{overkill} overkill" if overkill > 0 else ", exact"
+            def on_search_done(f, threshold=threshold):
+                try:
+                    words = f.result()
+                except Exception as e:
+                    overlay.schedule(
+                        0, lambda: overlay.set_status(f"Engine error: {e}")
                     )
-                    overlay.set_status(
-                        f"💀 KILL: {top.word}{marker_pow} ({top.now}{overkill_str}, leave {top.future:.1f})"
-                    )
-                else:
-                    overlay.set_status(
-                        f"Top: {top.word}{marker_pow} ({top.now}, total {top.total:.1f})"
-                    )
+                    overlay.schedule(0, lambda: run_state.update(auto=False))
+                    return
+                overlay.schedule(0, lambda: render_search_result(words, threshold))
 
-                if run_state["auto"]:
-                    if top.is_kill:
-                        overlay.schedule(50, lambda w=top: handle_play(w))
-                    else:
-                        run_state["auto"] = False
-                        overlay.set_status(
-                            f"Auto halted: no kill available (best is {top.word} at {top.now} damage)."
-                        )
-            else:
-                overlay.set_status("No words found.")
-                run_state["auto"] = False
+            future.add_done_callback(on_search_done)
 
         except Exception as e:
             overlay.set_status(f"Error: {e}")
+            run_state["auto"] = False
+
+    def render_search_result(words, threshold) -> None:
+        overlay.update_words(words)
+        if words:
+            top = words[0]
+            marker_pow = " 💪" if top.used_powered else ""
+            if top.is_kill:
+                overkill = top.now - threshold
+                overkill_str = f", +{overkill} overkill" if overkill > 0 else ", exact"
+                overlay.set_status(
+                    f"💀 KILL: {top.word}{marker_pow} ({top.now}{overkill_str}, leave {top.future:.1f})"
+                )
+            else:
+                overlay.set_status(
+                    f"Top: {top.word}{marker_pow} ({top.now}, total {top.total:.1f})"
+                )
+
+            if run_state["auto"]:
+                if top.is_kill:
+                    overlay.schedule(50, lambda w=top: handle_play(w))
+                else:
+                    run_state["auto"] = False
+                    overlay.set_status(
+                        f"Auto halted: no kill available (best is {top.word} at {top.now} damage)."
+                    )
+        else:
+            overlay.set_status("No words found.")
             run_state["auto"] = False
 
     def handle_play(word) -> None:
@@ -599,7 +607,8 @@ def main() -> int:
                 return
 
             latest_recs[0] = recs
-            overlay.update_rack(recs)
+            latest_tiles[0] = list(tiles)
+            overlay.update_rack(recs, tiles=tiles)
 
             playable = [r for r in recs if r.status == "normal"]
             letters = "".join(r.letter for r in playable)
@@ -849,7 +858,60 @@ def main() -> int:
 
     def handle_clear() -> None:
         latest_recs[0] = []
+        latest_tiles[0] = []
         run_state["auto"] = False
+
+    def handle_correct(index: int, request: CorrectionRequest) -> None:
+        recs_now = latest_recs[0]
+        tiles_now = latest_tiles[0]
+        if not recs_now or index >= len(recs_now):
+            return
+        if not tiles_now or index >= len(tiles_now):
+            return
+        try:
+            new_rec = correct_recognition(
+                request.tile_img, db, request.letter, request.state
+            )
+        except ValueError as e:
+            overlay.set_status(f"Correction failed: {e}")
+            return
+        recs_now[index] = new_rec
+        overlay.update_rack(recs_now, tiles=tiles_now)
+        for lbl in overlay.word_labels:
+            lbl.config(text="")
+        overlay._current_words = []
+        overlay.set_status(
+            f"Tile {index} → {new_rec.letter}/{new_rec.state}. Press R to re-score."
+        )
+
+    def handle_review() -> None:
+        recs_now = latest_recs[0]
+        tiles_now = latest_tiles[0]
+        if not recs_now or not tiles_now:
+            overlay.set_status("Nothing to review — press R to scan first.")
+            return
+        overlay.root.attributes("-topmost", True)
+        try:
+            lx = overlay.root.winfo_x()
+            ly = overlay.root.winfo_y() + overlay.root.winfo_height() + 20
+            sh = overlay.root.winfo_screenheight()
+            if ly + 400 > sh:
+                ly = max(0, sh - 420)
+            new_recs = review_rack_interactively(
+                tiles_now,
+                recs_now,
+                db,
+                parent=overlay.root,
+                geometry=f"+{lx}+{ly}",
+            )
+        finally:
+            overlay.root.attributes("-topmost", False)
+        latest_recs[0] = new_recs
+        overlay.update_rack(new_recs, tiles=tiles_now)
+        for lbl in overlay.word_labels:
+            lbl.config(text="")
+        overlay._current_words = []
+        overlay.set_status("Review complete. Press R to re-score.")
 
     def handle_charges_changed() -> None:
         for lbl in overlay.word_labels:
@@ -870,6 +932,8 @@ def main() -> int:
     overlay.on_reset(handle_reset)
     overlay.on_auto(handle_auto)
     overlay.on_clear(handle_clear)
+    overlay.on_correct(handle_correct)
+    overlay.on_review(handle_review)
     overlay.on_charges_changed(handle_charges_changed)
     overlay.on_progress_next(handle_progress_next)
     overlay.on_progress_back(handle_progress_back)
