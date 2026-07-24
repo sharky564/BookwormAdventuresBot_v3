@@ -1,4 +1,5 @@
 #pragma once
+#include "class_scan.hpp"
 #include "constants.hpp"
 #include "rack.hpp"
 #include "rack_search.hpp"
@@ -92,50 +93,82 @@ class BestWordCache
 {
 public:
     explicit BestWordCache(std::size_t capacity = MAX_CACHE_SIZE)
-        : mCap(capacity)
+        : mHalfCap(std::max<std::size_t>(1, capacity / 2))
     {
-        mMap.reserve(capacity);
+        mCurr.reserve(mHalfCap + 1);
+        mPrev.reserve(mHalfCap + 1);
     }
 
     SearchResult lookup(const TileList& tiles, const Trie<NUM_WORDS>& trie, double power = 0.0, bool powered = false)
     {
+        if (const std::uint64_t epoch = config_epoch().load(std::memory_order_relaxed); epoch != mEpoch)
+        {
+            mCurr.clear();
+            mPrev.clear();
+            mEpoch = epoch;
+        }
         const RackKey key = makeRackKey(tiles, power, powered);
-        if (const auto it = mMap.find(key); it != mMap.end())
+        if (const auto it = mCurr.find(key); it != mCurr.end())
         {
             ++mHits;
             return it->second;
         }
+        if (const auto it = mPrev.find(key); it != mPrev.end())
+        {
+            // Promote so entries that stay hot survive generation rotations.
+            ++mHits;
+            const SearchResult sr = it->second;
+            mPrev.erase(it);
+            insert(key, sr);
+            return sr;
+        }
         ++mMisses;
 
         RackState state = build_rack_state(tiles, power, config().gems_enabled, powered ? 1.25 : 1.0);
-        SearchResult sr = find_best_word(trie, state);
-
-        if (mMap.size() >= mCap)
+        SearchResult sr = engine_find_best_word(trie, state);
+        if (!sr.tiles.empty())
         {
-            const std::size_t target = mCap / 2;
-            while (mMap.size() > target)
-                mMap.erase(mMap.begin());
+            sr.refill_gem = expected_gem_for(sr.tiles);
+            sr.refill_wildcard = refill_wildcard_for(sr.tiles);
         }
-        mMap.emplace(key, sr);
+        insert(key, sr);
         return sr;
     }
 
-    [[nodiscard]] std::size_t size() const noexcept { return mMap.size(); }
+    [[nodiscard]] std::size_t size() const noexcept { return mCurr.size() + mPrev.size(); }
     [[nodiscard]] std::uint64_t hits() const noexcept { return mHits; }
     [[nodiscard]] std::uint64_t misses() const noexcept { return mMisses; }
 
 private:
-    ankerl::unordered_dense::map<RackKey, SearchResult, RackKeyHash> mMap;
-    std::size_t mCap;
+    using Map = ankerl::unordered_dense::map<RackKey, SearchResult, RackKeyHash>;
+
+    // Generational eviction: O(1) amortized and approximately LRU. When the
+    // active generation fills, it replaces the previous one, which is dropped
+    // wholesale (its buffer is reused via swap+clear).
+    void insert(const RackKey& key, const SearchResult& sr)
+    {
+        if (mCurr.size() >= mHalfCap)
+        {
+            std::swap(mCurr, mPrev);
+            mCurr.clear();
+        }
+        mCurr.emplace(key, sr);
+    }
+
+    Map mCurr;
+    Map mPrev;
+    std::size_t mHalfCap;
+    std::uint64_t mEpoch = config_epoch().load(std::memory_order_relaxed);
     std::uint64_t mHits = 0;
     std::uint64_t mMisses = 0;
 };
 
+template <typename Rng>
 inline double rolloutValue(
     Rack rack,
     const Trie<NUM_WORDS>& trie,
     int horizon,
-    std::mt19937& rng,
+    Rng& rng,
     BestWordCache& cache,
     double power = 0.0,
     bool powered = false
@@ -149,18 +182,19 @@ inline double rolloutValue(
             break;
         total += sr.damage;
 
-        Word w(sr.tiles);
-        rack.playWord(w, rng);
+        rack.playTiles(sr.tiles);
+        rack.regenerateTiles(sr.refill_gem, sr.refill_wildcard, rng);
     }
     return total;
 }
 
+template <typename Rng>
 inline double rolloutValueInto(
     const Rack& source,
     Rack& scratch,
     const Trie<NUM_WORDS>& trie,
     int horizon,
-    std::mt19937& rng,
+    Rng& rng,
     BestWordCache& cache,
     double power = 0.0,
     bool powered = false
@@ -175,8 +209,8 @@ inline double rolloutValueInto(
             break;
         total += sr.damage;
 
-        Word w(sr.tiles);
-        scratch.playWord(w, rng);
+        scratch.playTiles(sr.tiles);
+        scratch.regenerateTiles(sr.refill_gem, sr.refill_wildcard, rng);
     }
     return total;
 }
@@ -224,6 +258,7 @@ inline Gem overkill_gem_for_excess(int excess) noexcept
 // killing turn dominates via the gamma discount; once a turn kills, we
 // stop (the enemy is dead). If `drop_gem` is set, it is placed on a random
 // tile of the residual before the rollout begins (overkill gem credit).
+template <typename Rng>
 inline double rolloutKillValueInto(
     const Rack& source,
     Rack& scratch,
@@ -231,7 +266,7 @@ inline double rolloutKillValueInto(
     int horizon,
     int next_threshold,
     Gem drop_gem,
-    std::mt19937& rng,
+    Rng& rng,
     BestWordCache& cache,
     double power = 0.0,
     bool powered = false,
@@ -269,14 +304,15 @@ inline double rolloutKillValueInto(
         if (ind >= 1.0)
             break;  // enemy dead this turn; no need to look further
 
-        Word w(sr.tiles);
-        scratch.playWord(w, rng);
+        scratch.playTiles(sr.tiles);
+        scratch.regenerateTiles(sr.refill_gem, sr.refill_wildcard, rng);
         discount *= GAMMA;
     }
     return value;
 }
 
 
+template <typename Rng>
 inline double monteCarloRackValue(
     const Rack& rack,
     const Trie<NUM_WORDS>& trie,
@@ -284,7 +320,7 @@ inline double monteCarloRackValue(
     int min_sims,
     int max_sims,
     double se_target,
-    std::mt19937& rng,
+    Rng& rng,
     BestWordCache& cache,
     int* out_n_sims = nullptr,
     double power = 0.0,
@@ -378,7 +414,7 @@ inline void generateDataParallel(
 
     auto worker = [&](int thread_id)
     {
-        std::mt19937 rng(cfg.master_seed ^ (static_cast<std::uint64_t>(thread_id) * 0x9E3779B97F4A7C15ull));
+        FastRng rng(cfg.master_seed ^ (static_cast<std::uint64_t>(thread_id) * 0x9E3779B97F4A7C15ull));
         BestWordCache cache(MAX_CACHE_SIZE);
         std::string buffer;
         buffer.reserve(64 * 1024);
@@ -468,6 +504,7 @@ struct PerWordConfig
     bool powered = false;
 };
 
+template <typename Rng>
 inline double qValueOneStep(
     const Rack& rack,
     const Word& played_word,
@@ -476,7 +513,7 @@ inline double qValueOneStep(
     int inner_min_sims,
     int inner_max_sims,
     double inner_se_target,
-    std::mt19937& rng,
+    Rng& rng,
     BestWordCache& cache,
     const Trie<NUM_WORDS>& trie,
     const int* crn_draws = nullptr,
@@ -549,7 +586,7 @@ inline void generatePerWordDataParallel(
 
     auto worker = [&](int thread_id)
     {
-        std::mt19937 rng(cfg.master_seed ^ (static_cast<std::uint64_t>(thread_id) * 0x9E3779B97F4A7C15ull));
+        FastRng rng(cfg.master_seed ^ (static_cast<std::uint64_t>(thread_id) * 0x9E3779B97F4A7C15ull));
         BestWordCache cache(MAX_CACHE_SIZE);
         std::vector<int> crn_buffer;
         crn_buffer.reserve(static_cast<std::size_t>(cfg.num_simulations) * cfg.crn_stride);
@@ -587,9 +624,9 @@ inline void generatePerWordDataParallel(
             const std::size_t N = static_cast<std::size_t>(cfg.num_simulations);
             const std::size_t S = static_cast<std::size_t>(cfg.crn_stride);
             crn_buffer.resize(N * S);
-            auto& dist = distribution();
+            const auto& sampler = letter_sampler();
             for (int& v : crn_buffer)
-                v = dist(rng);
+                v = sampler(rng);
 
             for (auto it = candidates.rbegin(); it != candidates.rend(); ++it)
             {

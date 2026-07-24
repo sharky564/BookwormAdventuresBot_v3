@@ -1,4 +1,5 @@
 #include "rack.hpp"
+#include "class_scan.hpp"
 #include <algorithm>
 #include <array>
 
@@ -83,6 +84,12 @@ void Rack::regenerateTiles(Gem gem, bool wildcard, std::mt19937& rng)
     regenerate_core(mTiles, mSize, gem, wildcard, [&] { return dist(rng); });
 }
 
+void Rack::regenerateTiles(Gem gem, bool wildcard, FastRng& rng)
+{
+    const auto& sampler = letter_sampler();
+    regenerate_core(mTiles, mSize, gem, wildcard, [&] { return sampler(rng); });
+}
+
 void Rack::regenerateTilesCRN(Gem gem, bool wildcard, const int* draws)
 {
     std::size_t i = 0;
@@ -106,9 +113,24 @@ void Rack::dropGemOnRandomTile(Gem gem, std::mt19937& rng)
     mTiles[eligible[pick(rng)]].setGem(gem);
 }
 
-void Rack::playWord(const Word& word)
+void Rack::dropGemOnRandomTile(Gem gem, FastRng& rng)
 {
-    const TileList& word_tiles = word.getTiles();
+    if (gem == Gem::NONE)
+        return;
+    std::array<int, MAX_RACK_SIZE> eligible{};
+    int n_eligible = 0;
+    for (int i = 0; i < static_cast<int>(mTiles.size()); ++i)
+    {
+        if (!mTiles[i].isGem() && !mTiles[i].isWildcard())
+            eligible[n_eligible++] = i;
+    }
+    if (n_eligible == 0)
+        return;
+    mTiles[eligible[rng.below(n_eligible)]].setGem(gem);
+}
+
+void Rack::playTiles(const TileList& word_tiles)
+{
     std::array<std::uint8_t, 26> demand_no_gem{};
     int demand_wild = 0;
     std::array<std::pair<std::int8_t, Gem>, MAX_WORD_LEN> gem_demands{};
@@ -171,7 +193,18 @@ void Rack::playWord(const Word& word)
     mTiles.erase(out, mTiles.end());
 }
 
+void Rack::playWord(const Word& word)
+{
+    playTiles(word.getTiles());
+}
+
 void Rack::playWord(const Word& word, std::mt19937& rng)
+{
+    playWord(word);
+    regenerateTiles(word.expectedGem(), word.checkWildcard(), rng);
+}
+
+void Rack::playWord(const Word& word, FastRng& rng)
 {
     playWord(word);
     regenerateTiles(word.expectedGem(), word.checkWildcard(), rng);
@@ -185,7 +218,7 @@ ScoredHeap Rack::generateWordlist(
 ) const
 {
     RackState state = build_rack_state(mTiles, power, config().gems_enabled, powered ? 1.25 : 1.0);
-    return find_top_words(trie, state, num_top_words);
+    return engine_find_top_words(trie, state, num_top_words);
 }
 
 std::vector<ScoredWord> Rack::generateKills(
@@ -197,13 +230,13 @@ std::vector<ScoredWord> Rack::generateKills(
 ) const
 {
     RackState state = build_rack_state(mTiles, power, config().gems_enabled, powered ? 1.25 : 1.0);
-    return find_kill_words(trie, state, threshold_damage, max_candidates);
+    return engine_find_kill_words(trie, state, threshold_damage, max_candidates);
 }
 
 SearchResult Rack::bestWord(const Trie<NUM_WORDS>& trie, double power, bool powered) const
 {
     RackState state = build_rack_state(mTiles, power, config().gems_enabled, powered ? 1.25 : 1.0);
-    return find_best_word(trie, state);
+    return engine_find_best_word(trie, state);
 }
 
 double Rack::incompleteRackScore(

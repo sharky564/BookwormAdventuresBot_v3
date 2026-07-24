@@ -39,11 +39,13 @@ def chapter_spec(book, chap):
 
 
 def run_sim(eng, config, enemies, *, gamma, margin, seeds, max_sims, horizon, base_seed,
-            future_metric="kill"):
+            future_metric="kill", prefilter_k=None):
     msg = {"op": "simulate", "config": config, "enemies": enemies, "seeds": seeds,
            "max_sims": max_sims, "horizon": horizon, "kill_gamma": gamma,
            "kill_margin": margin, "base_seed": base_seed, "turn_cap": 50,
            "future_metric": future_metric}
+    if prefilter_k is not None:
+        msg["prefilter_k"] = prefilter_k
     r = eng._send(msg)
     return float(r.get("mean_turns", 0.0)), float(r.get("fail_rate", 0.0))
 
@@ -64,8 +66,17 @@ def main():
                     help="gamma for the kill-aware arm of the A/B")
     ap.add_argument("--ab-margin", type=float, default=32.0,
                     help="margin for the kill-aware arm of the A/B")
+    ap.add_argument("--prefilter-k", type=int, default=None,
+                    help="MC-prefilter K for sim_pick_best (0/None = off, exact; "
+                         "e.g. 48 = ~10x faster sweeps with a small consistent "
+                         "policy bias -- re-check top cells with it off)")
+    ap.add_argument("--engine", choices=["dfs", "scan"], default=None,
+                    help="search engine (scan = hybrid anagram-class scan; "
+                         "re-tune gamma/margin when switching)")
     args = ap.parse_args()
     eng = Engine(os.path.abspath(args.exe), os.path.abspath(args.dict))
+    if args.engine:
+        eng._send({"op": "config", "engine": args.engine})
     chapters = []
     for tok in args.chapters.split(","):
         b, c = tok.split("."); chapters.append((int(b), int(c)))
@@ -83,7 +94,8 @@ def main():
                 mt, fr = run_sim(eng, cfg, enemies, gamma=args.ab_gamma,
                                  margin=args.ab_margin, seeds=args.seeds,
                                  max_sims=args.max_sims, horizon=args.horizon,
-                                 base_seed=args.base_seed, future_metric=metric)
+                                 base_seed=args.base_seed, future_metric=metric,
+                                 prefilter_k=args.prefilter_k)
                 row[metric] = (mt, fr)
                 totals[metric] += mt
             pm, pf = row["plain"]; km, kf = row["kill"]
@@ -117,7 +129,8 @@ def main():
             total = 0.0; fails = []; per = []
             for (b, c, cfg, enemies) in specs:
                 mt, fr = run_sim(eng, cfg, enemies, gamma=g, margin=m, seeds=args.seeds,
-                                 max_sims=args.max_sims, horizon=args.horizon, base_seed=args.base_seed)
+                                 max_sims=args.max_sims, horizon=args.horizon, base_seed=args.base_seed,
+                                 prefilter_k=args.prefilter_k)
                 total += mt; fails.append(fr); per.append(mt)
             avg_fail = sum(fails) / len(fails); results[(g, m)] = (total, avg_fail)
             ch_str = " ".join(f"{x:5.1f}" for x in per)

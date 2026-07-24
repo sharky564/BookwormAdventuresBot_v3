@@ -11,6 +11,7 @@
 #include <cstdlib>
 #include <iostream>
 #include <limits>
+#include <memory>
 #include <random>
 #include <thread>
 #include <unordered_set>
@@ -19,6 +20,24 @@
 #include <vector>
 
 namespace serve {
+
+// Long-lived per-session state: worker caches persist across requests so
+// consecutive turns stay warm; the config epoch invalidates them.
+struct ServeState
+{
+    BestWordCache serial_cache{MAX_CACHE_SIZE};
+    std::vector<std::unique_ptr<BestWordCache>> top_worker_caches;
+    std::vector<std::unique_ptr<BestWordCache>> sim_worker_caches;
+    FastRng rng{};
+
+    // Grow before spawning threads; workers index their own stable slot.
+    static BestWordCache& slot(std::vector<std::unique_ptr<BestWordCache>>& pool, std::size_t i)
+    {
+        while (pool.size() <= i)
+            pool.push_back(std::make_unique<BestWordCache>(MAX_CACHE_SIZE));
+        return *pool[i];
+    }
+};
 
 inline std::vector<Gem> parse_gems_string(std::string_view s, std::size_t len)
 {
@@ -69,6 +88,7 @@ inline void write_tiles(jmini::Writer& w, const TileList& tiles)
 inline std::string handle_config(const jmini::Value& msg)
 {
     RuntimeConfig& c = config();
+    const RuntimeConfig before = c;
     if (auto* v = msg.find("gems_enabled"); v && v->is_bool())
         c.gems_enabled = v->boolean();
     if (auto* v = msg.find("rainbow"); v && v->is_bool())
@@ -105,10 +125,34 @@ inline std::string handle_config(const jmini::Value& msg)
                 c.letter_points[i] = a[i].num();
         }
     }
+    // "scan" = hybrid anagram-class engine. Equal-damage tie-breaks differ
+    // from DFS (re-tune gamma/margin via sim_tune before trusting in play),
+    // and cached results embody them, so switching invalidates caches.
+    if (auto* v = msg.find("engine"); v && v->is_string())
+    {
+        const SearchEngine next = (v->str() == "scan") ? SearchEngine::Scan : SearchEngine::DFS;
+        if (next != search_engine())
+        {
+            search_engine() = next;
+            config_epoch().fetch_add(1, std::memory_order_relaxed);
+        }
+    }
     rebuild_search_tables();
+    if (!class_index().points_current())
+        class_index().refresh_points();
+    if (!(c == before))
+        config_epoch().fetch_add(1, std::memory_order_relaxed);
     return jmini::Writer().begin_obj()
         .key("op").str("config")
         .key("ok").boolean(true)
+        .end_obj().take();
+}
+
+inline std::string rack_length_error(std::string_view op)
+{
+    return jmini::Writer().begin_obj()
+        .key("op").str(op)
+        .key("error").str("rack too long (max 16 tiles)")
         .end_obj().take();
 }
 
@@ -125,6 +169,13 @@ inline std::string handle_trace(const Trie<TrieSize>& trie, const jmini::Value& 
     }
 
     const std::string& letters = word_v->str();
+    if (letters.size() > static_cast<std::size_t>(MAX_WORD_LEN))
+    {
+        return jmini::Writer().begin_obj()
+            .key("op").str("trace")
+            .key("error").str("word too long (max 16 letters)")
+            .end_obj().take();
+    }
     std::string gems_str;
     if (auto* g = msg.find("gems"); g && g->is_string())
         gems_str = g->str();
@@ -315,6 +366,8 @@ inline std::string handle_best(const Trie<TrieSize>& trie, const jmini::Value& m
         return jmini::Writer().begin_obj().key("op").str("best").key("error").str("rack required").end_obj().take();
 
     const std::string& letters = rack_v->str();
+    if (letters.size() > static_cast<std::size_t>(MAX_RACK_SIZE))
+        return rack_length_error("best");
     std::string gems_str;
     if (auto* g = msg.find("gems"); g && g->is_string())
         gems_str = g->str();
@@ -344,6 +397,17 @@ inline std::string handle_best(const Trie<TrieSize>& trie, const jmini::Value& m
 // empty tiles if no word.
 struct SimChoice { TileList tiles; bool is_kill; bool used_powered; };
 
+inline std::uint64_t tiles_fp(const TileList& tiles) noexcept
+{
+    std::uint64_t h = 1469598103934665603ULL;
+    for (const auto& t : tiles)
+    {
+        h = (h ^ static_cast<std::uint8_t>(t.getLetter())) * 1099511628211ULL;
+        h = (h ^ static_cast<std::uint8_t>(t.getGem())) * 1099511628211ULL;
+    }
+    return h;
+}
+
 template <int TrieSize>
 inline SimChoice sim_pick_best(
     const Trie<TrieSize>& trie, const Rack& rack, const RuntimeConfig& cfg,
@@ -352,7 +416,8 @@ inline SimChoice sim_pick_best(
     double gamma, double margin,
     int horizon, int min_sims, int max_sims, double se_target,
     int charges, double charge_cost, bool use_plain_future,
-    std::mt19937& rng, BestWordCache& cache)
+    int prefilter_k,
+    FastRng& rng, BestWordCache& cache)
 {
     // Candidate pool: killing words (tight) + general top words. Include
     // powered kill candidates too when charges are available, since a powered
@@ -371,22 +436,38 @@ inline SimChoice sim_pick_best(
     if (cands.empty())
         return {TileList{}, false, false};
 
-    double best_score = -1e18;
-    const ScoredWord* best = nullptr;
-    bool best_kill = false;
-    bool best_powered = false;
-
-    for (const auto& sw : cands)
+    // Dedup: the candidate lists overlap heavily and every duplicate below
+    // would pay a full MC evaluation.
     {
-        Word w(sw.tiles);
-        const double raw_points = w.getPoints();
+        std::unordered_set<std::uint64_t> seen;
+        seen.reserve(cands.size() * 2);
+        std::size_t out = 0;
+        for (std::size_t i = 0; i < cands.size(); ++i)
+        {
+            if (seen.insert(tiles_fp(cands[i].tiles)).second)
+            {
+                if (out != i) cands[out] = cands[i];
+                ++out;
+            }
+        }
+        cands.resize(out);
+    }
+
+    // Static facts per candidate, computed once across both regimes.
+    const std::size_t NC = cands.size();
+    std::vector<double> raw_points(NC), gem_sums(NC), w_trs(NC), w_wks(NC);
+    for (std::size_t i = 0; i < NC; ++i)
+    {
+        const auto& sw = cands[i];
+        raw_points[i] = tile_points_sum(sw.tiles);
         double gem_sum = 0.0;
         if (cfg.gems_enabled)
             for (const auto& t : sw.tiles) gem_sum += gemPower(t.getGem());
+        gem_sums[i] = gem_sum;
 
         std::uint8_t fm = 0;
         {
-            int curr = TrieSize > 0 ? Trie<TrieSize>::ROOT : 0;
+            int curr = Trie<TrieSize>::ROOT;
             bool ok = true;
             for (const auto& t : sw.tiles)
             {
@@ -398,60 +479,134 @@ inline SimChoice sim_pick_best(
             }
             if (ok) fm = trie.nodes[curr].finish_mask;
         }
-        const double w_tr = (cfg.treasure_equipped && (fm & bonus_bit_for(0))) ? 1.5 : 1.0;
-        const double w_wk = (cfg.active_weakness_cat >= 0 && (fm & bonus_bit_for(cfg.active_weakness_cat)))
-                            ? cfg.active_weakness_boost : 1.0;
-        const int length = static_cast<int>(sw.tiles.size());
+        w_trs[i] = (cfg.treasure_equipped && (fm & bonus_bit_for(0))) ? 1.5 : 1.0;
+        w_wks[i] = (cfg.active_weakness_cat >= 0 && (fm & bonus_bit_for(cfg.active_weakness_cat)))
+                   ? cfg.active_weakness_boost : 1.0;
+    }
 
-        // Evaluate both unpowered and (if charges remain) powered regimes.
-        const int n_regimes = (charges > 0) ? 2 : 1;
+    struct Pending
+    {
+        int cand;
+        int dmg;
+        bool is_kill;
+        bool powered;
+        int length;
+    };
+    const int n_regimes = (charges > 0) ? 2 : 1;
+    std::vector<Pending> pending;
+    pending.reserve(NC * n_regimes);
+    for (std::size_t i = 0; i < NC; ++i)
+    {
         for (int r = 0; r < n_regimes; ++r)
         {
             const bool powered = (r == 1);
-            const int dmg = compute_damage(raw_points, gem_sum, cfg.power, cfg.gems_enabled,
-                                           powered ? 1.25 : 1.0, w_tr, w_wk,
+            const int dmg = compute_damage(raw_points[i], gem_sums[i], cfg.power, cfg.gems_enabled,
+                                           powered ? 1.25 : 1.0, w_trs[i], w_wks[i],
                                            cfg.base_damage_bonus, cfg.enemy_armour);
-            const bool is_kill = (threshold > 0) && (dmg >= threshold);
-
-            double score;
-            if (terminal)
-            {
-                const int excess = dmg - threshold;
-                const double delay = (excess >= 8) ? overkill_delay_penalty : 0.0;
-                score = is_kill ? (-beta * length - delay) : static_cast<double>(dmg);
-            }
-            else
-            {
-                Rack residual = rack;
-                residual.playWord(Word(sw.tiles));
-                int rt; Gem drop = Gem::NONE;
-                if (is_kill) { rt = next_threshold; const int ex = dmg - threshold; drop = overkill_gem_for_excess(ex); }
-                else { rt = (threshold > 0) ? std::max(0, threshold - dmg) : 0; }
-                int ns = 0;
-                double fut = monteCarloRackValue(residual, trie, horizon, min_sims, max_sims,
-                                                 se_target, rng, cache, &ns, cfg.power, false,
-                                                 rt, drop, gamma, margin, use_plain_future);
-                // The kill-aware metric returns a [0,1]-ish kill value that we
-                // scale into damage units by the threshold it targets. The
-                // plain-damage rollout already returns damage units, so it is
-                // NOT scaled.
-                if (!use_plain_future && rt > 0) fut *= static_cast<double>(rt);
-                if (is_kill)
-                {
-                    const int excess = dmg - threshold;
-                    const double delay = (excess >= 8) ? overkill_delay_penalty : 0.0;
-                    score = fut - beta * length - delay;
-                }
-                else
-                    score = dmg + fut;
-            }
-            if (powered) score -= charge_cost;  // spending a charge has a cost
-
-            if (score > best_score)
-            {
-                best_score = score; best = &sw; best_kill = is_kill; best_powered = powered;
-            }
+            pending.push_back({static_cast<int>(i), dmg, (threshold > 0) && (dmg >= threshold),
+                               powered, static_cast<int>(cands[i].tiles.size())});
         }
+    }
+
+    double best_score = -1e18;
+    const ScoredWord* best = nullptr;
+    bool best_kill = false;
+    bool best_powered = false;
+
+    auto consider = [&](const Pending& p, double score)
+    {
+        if (score > best_score)
+        {
+            best_score = score;
+            best = &cands[p.cand];
+            best_kill = p.is_kill;
+            best_powered = p.powered;
+        }
+    };
+
+    // Terminal fights drop the future term entirely, so scoring is static
+    // and needs no MC rollouts at all.
+    if (terminal)
+    {
+        for (const Pending& p : pending)
+        {
+            const int excess = p.dmg - threshold;
+            const double delay = (excess >= 8) ? overkill_delay_penalty : 0.0;
+            double score = p.is_kill ? (-beta * p.length - delay) : static_cast<double>(p.dmg);
+            if (p.powered) score -= charge_cost;  // spending a charge has a cost
+            consider(p, score);
+        }
+        if (!best) return {TileList{}, false, false};
+        return {best->tiles, best_kill, best_powered};
+    }
+
+    // Prefilter (approximation; prefilter_k <= 0 disables): only the most
+    // promising (candidate, regime) pairs get an MC rollout. Kills ranked by
+    // least overkill then shortest word, nonkills by damage; kills get at
+    // least half the budget when available.
+    if (prefilter_k > 0 && static_cast<int>(pending.size()) > prefilter_k)
+    {
+        std::vector<Pending> kills, nonkills;
+        kills.reserve(pending.size());
+        nonkills.reserve(pending.size());
+        for (const Pending& p : pending)
+            (p.is_kill ? kills : nonkills).push_back(p);
+        std::sort(kills.begin(), kills.end(), [threshold](const Pending& a, const Pending& b) {
+            const int oa = a.dmg - threshold, ob = b.dmg - threshold;
+            if (oa != ob) return oa < ob;
+            if (a.length != b.length) return a.length < b.length;
+            return a.dmg > b.dmg;
+        });
+        std::sort(nonkills.begin(), nonkills.end(), [](const Pending& a, const Pending& b) {
+            if (a.dmg != b.dmg) return a.dmg > b.dmg;
+            return a.length < b.length;
+        });
+
+        const int half = prefilter_k / 2;
+        const int take_kills = std::min<int>(
+            static_cast<int>(kills.size()),
+            std::max(half, prefilter_k - static_cast<int>(nonkills.size())));
+        const int take_nonkills = std::min<int>(
+            static_cast<int>(nonkills.size()), prefilter_k - take_kills);
+
+        std::vector<Pending> selected;
+        selected.reserve(static_cast<std::size_t>(prefilter_k));
+        selected.insert(selected.end(), kills.begin(), kills.begin() + take_kills);
+        selected.insert(selected.end(), nonkills.begin(), nonkills.begin() + take_nonkills);
+        pending = std::move(selected);
+    }
+
+    for (const Pending& p : pending)
+    {
+        const auto& sw = cands[p.cand];
+        Rack residual = rack;
+        residual.playTiles(sw.tiles);
+
+        int rt; Gem drop = Gem::NONE;
+        if (p.is_kill) { rt = next_threshold; const int ex = p.dmg - threshold; drop = overkill_gem_for_excess(ex); }
+        else { rt = (threshold > 0) ? std::max(0, threshold - p.dmg) : 0; }
+        int ns = 0;
+        double fut = monteCarloRackValue(residual, trie, horizon, min_sims, max_sims,
+                                         se_target, rng, cache, &ns, cfg.power, false,
+                                         rt, drop, gamma, margin, use_plain_future);
+        // The kill-aware metric returns a [0,1]-ish kill value that we
+        // scale into damage units by the threshold it targets. The
+        // plain-damage rollout already returns damage units, so it is
+        // NOT scaled.
+        if (!use_plain_future && rt > 0) fut *= static_cast<double>(rt);
+
+        double score;
+        if (p.is_kill)
+        {
+            const int excess = p.dmg - threshold;
+            const double delay = (excess >= 8) ? overkill_delay_penalty : 0.0;
+            score = fut - beta * p.length - delay;
+        }
+        else
+            score = p.dmg + fut;
+        if (p.powered) score -= charge_cost;  // spending a charge has a cost
+
+        consider(p, score);
     }
     if (!best) return {TileList{}, false, false};
     return {best->tiles, best_kill, best_powered};
@@ -459,7 +614,7 @@ inline SimChoice sim_pick_best(
 
 template <int TrieSize>
 inline std::string handle_simulate(
-    const Trie<TrieSize>& trie, const jmini::Value& msg
+    const Trie<TrieSize>& trie, const jmini::Value& msg, ServeState& state
 )
 {
     // Honest-play simulation of a chapter, run entirely in C++ for speed.
@@ -493,7 +648,10 @@ inline std::string handle_simulate(
         }
     }
 
+    // prefilter_k 0 = off (exact). K=48 is ~10x faster but biases play by
+    // +0.4..1.8 mean turns: use for coarse sweeps, re-check top cells at 0.
     int seeds = 40, max_sims = 60, horizon = 2, min_sims = 30, turn_cap = 40;
+    int prefilter_k = 0;
     double se_target = 0.5, beta = 0.2, delay = 2.0, gamma = 0.7, margin = 8.0;
     std::uint64_t base_seed = 1;
     auto getn = [&](const char* k, auto& dst) {
@@ -504,6 +662,7 @@ inline std::string handle_simulate(
     getn("min_sims", min_sims); getn("turn_cap", turn_cap); getn("se_target", se_target);
     getn("beta", beta); getn("overkill_delay_penalty", delay);
     getn("kill_gamma", gamma); getn("kill_margin", margin); getn("base_seed", base_seed);
+    getn("prefilter_k", prefilter_k);
 
     // future_metric: "kill" (default, kill-aware) or "plain" (sum-of-damage).
     bool use_plain_future = false;
@@ -529,17 +688,45 @@ inline std::string handle_simulate(
         enemies.push_back(en);
     }
 
-    auto& dist = distribution();
     std::atomic<int> total_turns{0};
     std::atomic<int> fails{0};
 
-    // Set the global config's CHAPTER-level fields once (letter_points,
-    // gems_enabled, prescramble). These are read by generateKills /
-    // generateWordlist / compute_damage and are constant across the whole
-    // simulation, so it is safe for parallel workers to read them. Per-enemy
-    // fields (power, armour, weakness, ...) are passed explicitly and never
-    // touch the global, so there is no data race.
-    config() = base_cfg;
+    // Swap the CHAPTER-level config into the global for this request, restore
+    // on exit. Only transitions that actually change it rebuild tables and
+    // bump the epoch, so identical-config sweeps keep caches warm.
+    //
+    // KNOWN FIDELITY LIMIT (deliberate): per-enemy fields only apply when
+    // sim_pick_best RE-scores candidates; candidate generation and rollout
+    // leaves see just this chapter config. Armour is safe (rescoring
+    // corrects), but weakness/treasure kills below the unboosted threshold
+    // can be missing, and rollout leaves ignore per-enemy armour. A real fix
+    // needs per-enemy search state + cache keying.
+    struct ConfigSwap
+    {
+        RuntimeConfig saved;
+        explicit ConfigSwap(const RuntimeConfig& next) : saved(config())
+        {
+            if (!(next == saved))
+            {
+                config() = next;
+                rebuild_search_tables();
+                if (!class_index().points_current())
+                    class_index().refresh_points();
+                config_epoch().fetch_add(1, std::memory_order_relaxed);
+            }
+        }
+        ~ConfigSwap()
+        {
+            if (!(config() == saved))
+            {
+                config() = saved;
+                rebuild_search_tables();
+                if (!class_index().points_current())
+                    class_index().refresh_points();
+                config_epoch().fetch_add(1, std::memory_order_relaxed);
+            }
+        }
+    } config_swap(base_cfg);
 
     unsigned int hw = std::thread::hardware_concurrency();
     if (const char* env = std::getenv("SERVE_THREADS"))
@@ -547,16 +734,19 @@ inline std::string handle_simulate(
     const unsigned int n_threads = std::max(1u, std::min(hw, 8u));
 
     std::atomic<int> next_seed{0};
-    auto worker = [&]() {
-        BestWordCache cache(MAX_CACHE_SIZE);
+    for (unsigned int t = 0; t < n_threads; ++t)
+        ServeState::slot(state.sim_worker_caches, t);  // grow before threads exist
+    auto worker = [&](unsigned int wid) {
+        BestWordCache& cache = *state.sim_worker_caches[wid];
         while (true)
         {
             const int s = next_seed.fetch_add(1, std::memory_order_relaxed);
             if (s >= seeds) break;
-            std::mt19937 rng(static_cast<std::mt19937::result_type>(base_seed + s));
+            FastRng rng(base_seed + static_cast<std::uint64_t>(s));
+            const auto& sampler = letter_sampler();
             std::string letters;
             for (int i = 0; i < 16; ++i)
-                letters += static_cast<char>('A' + dist(rng));
+                letters += static_cast<char>('A' + sampler(rng));
             Rack rack(letters, std::vector<Gem>(16, Gem::NONE));
 
             int turns = 0;
@@ -587,7 +777,8 @@ inline std::string handle_simulate(
                     auto choice = sim_pick_best(
                         trie, rack, cfg, remaining, next_threshold, en.terminal,
                         beta, delay, gamma, margin, horizon, min_sims, max_sims,
-                        se_target, charges, charge_cost, use_plain_future, rng, cache);
+                        se_target, charges, charge_cost, use_plain_future,
+                        prefilter_k, rng, cache);
                     const TileList& tiles = choice.tiles;
                     const bool powered = choice.used_powered;
                     ++turns; ++enemy_turns;
@@ -652,7 +843,7 @@ inline std::string handle_simulate(
     {
         std::vector<std::jthread> threads;
         for (unsigned int t = 0; t < n_threads; ++t)
-            threads.emplace_back(worker);
+            threads.emplace_back(worker, t);
     }
 
     jmini::Writer w;
@@ -687,6 +878,8 @@ inline std::string handle_step(
             .key("error").str("rack and word required").end_obj().take();
 
     const std::string& letters = rack_v->str();
+    if (letters.size() > static_cast<std::size_t>(MAX_RACK_SIZE))
+        return rack_length_error("step");
     std::string gems_str;
     if (auto* g = msg.find("gems"); g && g->is_string())
         gems_str = g->str();
@@ -777,6 +970,8 @@ inline std::string handle_replay(
             .key("error").str("thresholds (array) required").end_obj().take();
 
     const std::string& letters = rack_v->str();
+    if (letters.size() > static_cast<std::size_t>(MAX_RACK_SIZE))
+        return rack_length_error("replay");
     std::string gems_str;
     if (auto* g = msg.find("gems"); g && g->is_string())
         gems_str = g->str();
@@ -865,9 +1060,11 @@ inline std::string handle_replay(
 
 template <int TrieSize>
 inline std::string handle_top(
-    const Trie<TrieSize>& trie, const jmini::Value& msg, BestWordCache& cache, std::mt19937& rng
+    const Trie<TrieSize>& trie, const jmini::Value& msg, ServeState& state
 )
 {
+    BestWordCache& cache = state.serial_cache;
+    FastRng& rng = state.rng;
     auto* rack_v = msg.find("rack");
     if (!rack_v || !rack_v->is_string())
     {
@@ -875,6 +1072,8 @@ inline std::string handle_top(
     }
 
     const std::string& letters = rack_v->str();
+    if (letters.size() > static_cast<std::size_t>(MAX_RACK_SIZE))
+        return rack_length_error("top");
     std::string gems_str;
     if (auto* g = msg.find("gems");g && g->is_string())
         gems_str = g->str();
@@ -944,7 +1143,7 @@ inline std::string handle_top(
 
     const auto rng_snapshot = rng;
 
-    auto evaluate = [&](const ScoredWord& sw_unpowered, std::mt19937& rng_local, BestWordCache& cache_local) -> Eval {
+    auto evaluate = [&](const ScoredWord& sw_unpowered, FastRng& rng_local, BestWordCache& cache_local) -> Eval {
         rng_local = rng_snapshot;
         Rack residual = rack;
         residual.playWord(Word(sw_unpowered.tiles));
@@ -1114,7 +1313,7 @@ inline std::string handle_top(
         if (N == 0)
             return;
 
-        constexpr std::size_t PARALLEL_CUTOFF = 16;
+        constexpr std::size_t PARALLEL_CUTOFF = 8;
         unsigned int hw_threads = std::thread::hardware_concurrency();
         if (const char* env = std::getenv("SERVE_THREADS"))
         {
@@ -1137,10 +1336,13 @@ inline std::string handle_top(
             static_cast<unsigned int>((N + 3) / 4)
         );
 
+        for (unsigned int t = 0; t < n_threads; ++t)
+            ServeState::slot(state.top_worker_caches, t);  // grow before threads exist
+
         std::atomic<std::size_t> next{0};
-        auto worker = [&]() {
-            std::mt19937 rng_local;
-            BestWordCache cache_local(MAX_CACHE_SIZE);
+        auto worker = [&](unsigned int wid) {
+            FastRng rng_local;
+            BestWordCache& cache_local = *state.top_worker_caches[wid];
             while (true)
             {
                 const std::size_t idx = next.fetch_add(1, std::memory_order_relaxed);
@@ -1153,7 +1355,7 @@ inline std::string handle_top(
         std::vector<std::jthread> threads;
         threads.reserve(n_threads);
         for (unsigned int t = 0; t < n_threads; ++t)
-            threads.emplace_back(worker);
+            threads.emplace_back(worker, t);
         threads.clear();
     };
 
@@ -1311,8 +1513,8 @@ template <int TrieSize>
 inline void run(const Trie<TrieSize>& trie)
 {
     rebuild_search_tables();
-    BestWordCache cache(MAX_CACHE_SIZE);
-    std::mt19937 rng{std::random_device{}()};
+    ServeState state;
+    state.rng.seed(std::random_device{}());
 
     std::cerr << "wordgame: ready\n" << std::flush;
 
@@ -1348,7 +1550,7 @@ inline void run(const Trie<TrieSize>& trie)
             }
             else if (op == "top")
             {
-                response = handle_top(trie, msg, cache, rng);
+                response = handle_top(trie, msg, state);
             }
             else if (op == "replay")
             {
@@ -1360,7 +1562,7 @@ inline void run(const Trie<TrieSize>& trie)
             }
             else if (op == "simulate")
             {
-                response = handle_simulate(trie, msg);
+                response = handle_simulate(trie, msg, state);
             }
             else if (op == "quit")
             {

@@ -1,5 +1,6 @@
 #pragma once
 #include <array>
+#include <atomic>
 #include <cstdint>
 #include <random>
 
@@ -39,12 +40,24 @@ struct RuntimeConfig
     std::array<Point, 26> letter_points = {
         1, 1.25, 1.25, 1, 1, 1.25, 1, 1.25, 1, 1.75, 1.75, 1, 1.25, 1, 1, 1.25, 2.75, 1, 1, 1, 1, 1.5, 1.5, 2, 1.5, 2
     };
+
+    bool operator==(const RuntimeConfig&) const = default;
 };
 
 inline RuntimeConfig& config()
 {
     static RuntimeConfig c;
     return c;
+}
+
+// Cached SearchResults depend on RuntimeConfig fields that are NOT part of
+// the cache key (letter_points, armour, bonuses, rainbow). Mutating those
+// must bump this epoch; BestWordCache self-clears lazily on mismatch. Bumped
+// only between requests, so relaxed ordering suffices for worker reads.
+inline std::atomic<std::uint64_t>& config_epoch()
+{
+    static std::atomic<std::uint64_t> e{0};
+    return e;
 }
 
 struct SearchTables

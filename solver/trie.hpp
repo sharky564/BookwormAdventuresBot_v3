@@ -8,6 +8,7 @@
 #include <expected>
 #include <fstream>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <vector>
@@ -123,7 +124,11 @@ void Trie<size>::add_word(std::string_view word)
         const int idx = c - 'A';
         const int flat = curr * 26 + idx;
         if (mBuild[flat] == -1)
+        {
+            if (mNext >= size)
+                throw std::length_error("Trie node capacity exceeded; raise NUM_WORDS");
             mBuild[flat] = mNext++;
+        }
         curr = mBuild[flat];
     }
     (*mBuildWordFinished)[curr] = true;

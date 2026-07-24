@@ -384,9 +384,13 @@ int main(int argc, char** argv)
         return 1;
     }
     trie.finalize();
+    class_index().build(trie);
+    if (const char* env = std::getenv("SOLVER_ENGINE"); env && std::string_view(env) == "scan")
+        search_engine() = SearchEngine::Scan;
     std::fprintf(stderr,
-        "Loaded %d words; %d nodes, %d edges. %d timed iter / test (+1 warmup).\n",
-        *loaded, trie.node_count(), trie.edge_count(), iterations
+        "Loaded %d words; %d nodes, %d edges. %d timed iter / test (+1 warmup). Engine: %s\n",
+        *loaded, trie.node_count(), trie.edge_count(), iterations,
+        search_engine() == SearchEngine::Scan ? "scan" : "dfs"
     );
 
     const auto racks = default_racks();
@@ -455,7 +459,7 @@ int main(int argc, char** argv)
             double last_value = 0.0;
             const auto s = time_it(iterations, [&]
             {
-                std::mt19937 rng(0xBEEFCAFEu);
+                FastRng rng(0xBEEFCAFEu);
                 BestWordCache cache(MAX_CACHE_SIZE);
                 last_value = rolloutValue(rack, trie, horizon, rng, cache, tr.power, tr.powered);
                 g_sink ^= static_cast<std::uint64_t>(last_value * 1000.0);
@@ -474,7 +478,7 @@ int main(int argc, char** argv)
             int last_nsims = 0;
             const auto s = time_it(iterations, [&]
             {
-                std::mt19937 rng(0xDEADBEEFu);
+                FastRng rng(0xDEADBEEFu);
                 BestWordCache cache(MAX_CACHE_SIZE);
                 last_mean = monteCarloRackValue(
                     rack, trie, 3, 10, mc_max, 0.5, rng, cache, &last_nsims, tr.power, tr.powered
@@ -496,7 +500,7 @@ int main(int argc, char** argv)
             long long last_sum = 0;
             const auto s = time_it(iterations, [&]
             {
-                std::mt19937 rng(0x12345678u);
+                FastRng rng(0x12345678u);
                 BestWordCache cache(MAX_CACHE_SIZE);
                 long long sum = 0;
                 Rack r = rack;
@@ -559,13 +563,13 @@ int main(int argc, char** argv)
             std::uint64_t last_sig = 0;
             const auto s = time_it(iterations, [&]
             {
-                std::mt19937 rng(0xABCDEFu);
-                BestWordCache cache(MAX_CACHE_SIZE);
+                serve::ServeState sstate;
+                sstate.rng.seed(0xABCDEFu);
                 std::string req = R"({"op":"top","rack":")" + tr.letters + R"(",)"
                     R"("n":20,"horizon":2,"min_sims":20,"max_sims":80,"se_target":0.5})";
                 jmini::Parser parser(req);
                 jmini::Value msg = parser.parse();
-                std::string resp = serve::handle_top(trie, msg, cache, rng);
+                std::string resp = serve::handle_top(trie, msg, sstate);
                 last_sig = top_signature(resp);
                 g_sink ^= last_sig;
             });
@@ -579,14 +583,14 @@ int main(int argc, char** argv)
             std::uint64_t last_sig = 0;
             const auto s = time_it(iterations, [&]
             {
-                std::mt19937 rng(0xABCDEFu);
-                BestWordCache cache(MAX_CACHE_SIZE);
+                serve::ServeState sstate;
+                sstate.rng.seed(0xABCDEFu);
                 std::string req = R"({"op":"top","rack":")" + tr.letters + R"(",)"
                     R"("n":20,"horizon":2,"min_sims":20,"max_sims":80,)"
                     R"("threshold":20,"max_kill_candidates":200})";
                 jmini::Parser parser(req);
                 jmini::Value msg = parser.parse();
-                std::string resp = serve::handle_top(trie, msg, cache, rng);
+                std::string resp = serve::handle_top(trie, msg, sstate);
                 last_sig = top_signature(resp);
                 g_sink ^= last_sig;
             });
@@ -600,14 +604,14 @@ int main(int argc, char** argv)
             std::uint64_t last_sig = 0;
             const auto s = time_it(iterations, [&]
             {
-                std::mt19937 rng(0xABCDEFu);
-                BestWordCache cache(MAX_CACHE_SIZE);
+                serve::ServeState sstate;
+                sstate.rng.seed(0xABCDEFu);
                 std::string req = R"({"op":"top","rack":")" + tr.letters + R"(",)"
                     R"("n":20,"horizon":2,"min_sims":20,"max_sims":80,)"
                     R"("threshold":20,"max_kill_candidates":200,"charges":3})";
                 jmini::Parser parser(req);
                 jmini::Value msg = parser.parse();
-                std::string resp = serve::handle_top(trie, msg, cache, rng);
+                std::string resp = serve::handle_top(trie, msg, sstate);
                 last_sig = top_signature(resp);
                 g_sink ^= last_sig;
             });

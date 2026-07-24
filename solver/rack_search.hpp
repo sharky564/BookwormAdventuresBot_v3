@@ -42,11 +42,35 @@ struct ScoredWord
 using ScoredHeap = std::priority_queue<ScoredWord, std::vector<ScoredWord>, std::greater<>>;
 
 
+// Per-letter gem stack, ascending gemPower order (strongest at the back).
+// Inline capacity MAX_RACK_SIZE: the protocol validates rack length but not
+// per-letter frequency, so a hostile rack could stack 16 gems on one letter.
+struct GemStack
+{
+    std::array<Gem, MAX_RACK_SIZE> g{};
+    std::uint8_t n = 0;
+
+    [[nodiscard]] bool empty() const noexcept { return n == 0; }
+    [[nodiscard]] Gem back() const noexcept { return g[n - 1]; }
+    void pop_back() noexcept { --n; }
+
+    void push_sorted(Gem gem) noexcept
+    {
+        g[n++] = gem;
+        for (std::uint8_t i = static_cast<std::uint8_t>(n - 1); i > 0; --i)
+        {
+            if (gemPower(g[i - 1]) > gemPower(g[i]))
+                std::swap(g[i - 1], g[i]);
+            else break;
+        }
+    }
+};
+
 struct RackState
 {
     std::array<std::int8_t, 26> letter_counts{};
     std::array<std::int8_t, 26> non_gem_counts{};
-    std::array<std::vector<Gem>, 26> gem_stacks{};
+    std::array<GemStack, 26> gem_stacks{};
     std::int8_t wildcard_count = 0;
 
     std::array<std::int8_t, 8> value_bucket_counts{};
@@ -62,6 +86,12 @@ struct RackState
 
     int base_damage_bonus = 0;
     int enemy_armour = 0;
+
+    // Hoisted singleton pointers: the function-local-static guard check on
+    // config()/search_tables() is measurable per DFS node, so the search
+    // reads through these instead.
+    const std::array<Point, 26>* letter_points = nullptr;
+    const SearchTables* tables = nullptr;
 };
 
 struct BestCollector
@@ -160,8 +190,6 @@ struct ThresholdCollector
 
 namespace detail {
 
-inline int letter_to_value_tier(int letter_idx) noexcept { return search_tables().letter_to_tier[letter_idx]; }
-
 inline int gem_to_tier(Gem g) noexcept
 {
     switch (g)
@@ -202,21 +230,14 @@ inline double top_k_sum(const std::array<CountT, NC>& counts, const std::array<V
 inline void push_real(RackState& st, int idx, Gem g) noexcept
 {
     ++st.letter_counts[idx];
-    ++st.value_bucket_counts[letter_to_value_tier(idx)];
+    ++st.value_bucket_counts[st.tables->letter_to_tier[idx]];
     if (g == Gem::NONE)
     {
         ++st.non_gem_counts[idx];
     }
     else
     {
-        auto& s = st.gem_stacks[idx];
-        s.push_back(g);
-        for (std::size_t i = s.size() - 1; i > 0; --i)
-        {
-            if (gemPower(s[i - 1]) > gemPower(s[i]))
-                std::swap(s[i - 1], s[i]);
-            else break;
-        }
+        st.gem_stacks[idx].push_sorted(g);
         const int t = gem_to_tier(g);
         if (t >= 0)
             ++st.gem_bucket_counts[t];
@@ -226,13 +247,13 @@ inline void push_real(RackState& st, int idx, Gem g) noexcept
 inline void push_wildcard(RackState& st) noexcept
 {
     ++st.wildcard_count;
-    ++st.value_bucket_counts[search_tables().wildcard_tier];
+    ++st.value_bucket_counts[st.tables->wildcard_tier];
 }
 
 inline void pop_wildcard(RackState& st) noexcept
 {
     --st.wildcard_count;
-    --st.value_bucket_counts[search_tables().wildcard_tier];
+    --st.value_bucket_counts[st.tables->wildcard_tier];
 }
 
 inline Gem pop_best_real(RackState& st, int idx) noexcept
@@ -252,7 +273,7 @@ inline Gem pop_best_real(RackState& st, int idx) noexcept
         --st.non_gem_counts[idx];
     }
     --st.letter_counts[idx];
-    --st.value_bucket_counts[letter_to_value_tier(idx)];
+    --st.value_bucket_counts[st.tables->letter_to_tier[idx]];
     return chosen;
 }
 
@@ -295,7 +316,7 @@ void dfs(
         return;
 
     const double subtree_max = static_cast<double>(tn.max_subtree_points);
-    const double top_k_extra = top_k_sum(st.value_bucket_counts, search_tables().letter_value_tiers_desc, k);
+    const double top_k_extra = top_k_sum(st.value_bucket_counts, st.tables->letter_value_tiers_desc, k);
     const double max_extra_pts = std::min(top_k_extra, subtree_max);
     double max_extra_gem = 0.0;
     if (st.gems_enabled)
@@ -332,7 +353,7 @@ void dfs(
             path.emplace_back(static_cast<char>('A' + i), g);
 
             dfs(
-                trie, child, points_so_far + config().letter_points[i],
+                trie, child, points_so_far + (*st.letter_points)[i],
                 gem_sum_so_far + gemPower(g), path, st, collector
             );
 
@@ -357,6 +378,8 @@ void dfs(
 inline RackState build_rack_state(std::span<const Tile> tiles, double power, bool gems_enabled, double power_boost = 1.0)
 {
     RackState st;
+    st.letter_points = &config().letter_points;
+    st.tables = &search_tables();
     st.power = power;
     st.gems_enabled = gems_enabled;
     st.power_boost = power_boost;
@@ -380,7 +403,13 @@ struct SearchResult
 {
     int damage = -1;
     TileList tiles;
+    // Refill metadata for playing `tiles`, precomputed when the result is
+    // cached so rollouts never construct a Word. Valid only under the config
+    // epoch the cache entry was created in (gems_enabled / rainbow).
+    Gem refill_gem = Gem::NONE;
+    bool refill_wildcard = false;
 };
+static_assert(std::is_trivially_copyable_v<SearchResult>);
 
 template <int TrieSize>
 SearchResult find_best_word(const Trie<TrieSize>& trie, RackState& state)

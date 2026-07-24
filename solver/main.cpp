@@ -1,3 +1,4 @@
+#include "class_scan.hpp"
 #include "constants.hpp"
 #include "mc.hpp"
 #include "rack.hpp"
@@ -7,6 +8,7 @@
 #include "word.hpp"
 #include <algorithm>
 #include <cctype>
+#include <cstdlib>
 #include <chrono>
 #include <expected>
 #include <format>
@@ -26,7 +28,7 @@ void play_game(const Trie<NUM_WORDS>& trie)
     constexpr double SE_TARGET = 0.5;
 
     BestWordCache cache(MAX_CACHE_SIZE);
-    std::mt19937 rng{std::random_device{}()};
+    FastRng rng{std::random_device{}()};
 
     std::cout << std::format(
         "Columns: Now = immediate damage, Future = E[next {} turns], "
@@ -45,6 +47,12 @@ void play_game(const Trie<NUM_WORDS>& trie)
 
         for (char& c : input)
             c = static_cast<char>(std::toupper(static_cast<unsigned char>(c)));
+
+        if (input.size() > static_cast<std::size_t>(MAX_RACK_SIZE))
+        {
+            std::cout << std::format("Rack too long ({} tiles, max {}).\n", input.size(), MAX_RACK_SIZE);
+            continue;
+        }
 
         gem_string.clear();
         if (config().gems_enabled)
@@ -233,6 +241,12 @@ int main(int argc, char** argv)
     rebuild_search_tables();
     if (serve_mode)
         std::cerr << "search tables built.\n" << std::flush;
+    class_index().build(*trie);
+    if (const char* env = std::getenv("SOLVER_ENGINE"); env && std::string_view(env) == "scan")
+        search_engine() = SearchEngine::Scan;
+    if (serve_mode)
+        std::cerr << std::format("class index built ({} classes, {} variants).\n",
+                                 class_index().num_classes(), class_index().num_variants()) << std::flush;
 
     const std::string mode = argc > 2 ? argv[2] : "play";
 

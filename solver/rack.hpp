@@ -1,6 +1,7 @@
 #pragma once
 #include "constants.hpp"
 #include "rack_search.hpp"
+#include "rng.hpp"
 #include "tile.hpp"
 #include "trie.hpp"
 #include "word.hpp"
@@ -36,12 +37,16 @@ public:
     void removeTile(const Tile& tile);
 
     void regenerateTiles(Gem gem, bool wildcard, std::mt19937& rng);
+    void regenerateTiles(Gem gem, bool wildcard, FastRng& rng);
     void regenerateTilesCRN(Gem gem, bool wildcard, const int* draws);
 
     void dropGemOnRandomTile(Gem gem, std::mt19937& rng);
+    void dropGemOnRandomTile(Gem gem, FastRng& rng);
 
+    void playTiles(const TileList& word_tiles);
     void playWord(const Word& word);
     void playWord(const Word& word, std::mt19937& rng);
+    void playWord(const Word& word, FastRng& rng);
 
     [[nodiscard]] ScoredHeap generateWordlist(
         const Trie<NUM_WORDS>& trie, int num_top_words, double power = 0.0, bool powered = false
