@@ -5,8 +5,9 @@ import time
 from functools import wraps
 from collections.abc import Sequence
 
+from bot_logic import BROKEN_STATES
 from engine import Tile
-from recognize import Recognition, BROKEN_STATES
+from recognize import Recognition
 from capture import RackBox
 
 

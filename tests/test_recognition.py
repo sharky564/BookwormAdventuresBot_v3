@@ -216,14 +216,14 @@ def main() -> int:
             print(f"Tile [{row}, {col}] in {fix.name} (not annotated)")
         print(f"  Detected: status={info['status']}  gem={info['guess']}")
         print(f"  Overall median RGB: {info['overall_rgb']}")
-        print(f"  Per-corner detail:")
+        print("  Per-corner detail:")
         for c in info["corners"]:
             r, g, b = c["rgb"]
             print(
                 f"    {c['corner']}  RGB=({r:3d},{g:3d},{b:3d})  "
                 f"closest={c['best']:<10}  d={c['distance']:.0f}"
             )
-        print(f"  Overall distance to each centroid (sorted):")
+        print("  Overall distance to each centroid (sorted):")
         for name, d in sorted(info["distances"].items(), key=lambda kv: kv[1]):
             r, g, b = info["overall_rgb"]
             cr, cg, cb = (None, None, None)

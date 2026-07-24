@@ -49,15 +49,18 @@ public:
     void playWord(const Word& word, FastRng& rng);
 
     [[nodiscard]] ScoredHeap generateWordlist(
-        const Trie<NUM_WORDS>& trie, int num_top_words, double power = 0.0, bool powered = false
+        const Trie<NUM_WORDS>& trie, int num_top_words, double power = 0.0, bool powered = false,
+        const RuntimeConfig& cfg = config()
     ) const;
 
     [[nodiscard]] std::vector<ScoredWord> generateKills(
         const Trie<NUM_WORDS>& trie, int threshold_damage,
-        int max_candidates = 500, double power = 0.0, bool powered = false
+        int max_candidates = 500, double power = 0.0, bool powered = false,
+        const RuntimeConfig& cfg = config()
     ) const;
 
-    [[nodiscard]] SearchResult bestWord(const Trie<NUM_WORDS>& trie, double power = 0.0, bool powered = false) const;
+    [[nodiscard]] SearchResult bestWord(const Trie<NUM_WORDS>& trie, double power = 0.0, bool powered = false,
+                                        const RuntimeConfig& cfg = config()) const;
 
     [[nodiscard]] double incompleteRackScore(
         const Word& played_word,

@@ -22,6 +22,10 @@
 #include <ankerl/unordered_dense.h>
 
 
+// Keyed on the rack AND every per-enemy damage parameter, so caches stay
+// valid across enemies within a request (and across engines' config swaps).
+// Chapter-level fields that can't be keyed cheaply (letter_points, rainbow,
+// prescramble) are covered by the config epoch instead.
 struct RackKey
 {
     std::array<std::uint8_t, 26> letter_counts;
@@ -30,7 +34,10 @@ struct RackKey
     std::uint8_t wildcards;
     std::uint8_t flags;
     std::uint8_t weakness_cat;
-    std::array<std::uint8_t, 7> _pad;
+    std::array<std::uint8_t, 3> _pad;
+    std::int16_t enemy_armour;
+    std::int16_t base_damage_bonus;
+    std::uint64_t weakness_boost_bits;
     std::uint64_t power_bits;
 
     bool operator==(const RackKey& other) const noexcept
@@ -38,13 +45,13 @@ struct RackKey
         return std::memcmp(this, &other, sizeof(RackKey)) == 0;
     }
 };
-static_assert(sizeof(RackKey) == 96, "RackKey should be 96 bytes");
+static_assert(sizeof(RackKey) == 104, "RackKey should be 104 bytes");
 static_assert(std::is_trivially_copyable_v<RackKey>);
 
-inline RackKey makeRackKey(const TileList& tiles, double power, bool powered) noexcept
+inline RackKey makeRackKey(const TileList& tiles, double power, bool powered,
+                           const RuntimeConfig& cfg) noexcept
 {
     RackKey k{};
-    const RuntimeConfig& cfg = config();
     for (const Tile& t : tiles)
     {
         if (t.isWildcard())
@@ -70,8 +77,11 @@ inline RackKey makeRackKey(const TileList& tiles, double power, bool powered) no
     {
         flags |= 8u;
         k.weakness_cat = static_cast<std::uint8_t>(cfg.active_weakness_cat);
+        std::memcpy(&k.weakness_boost_bits, &cfg.active_weakness_boost, sizeof(double));
     }
     k.flags = flags;
+    k.enemy_armour = static_cast<std::int16_t>(cfg.enemy_armour);
+    k.base_damage_bonus = static_cast<std::int16_t>(cfg.base_damage_bonus);
     std::memcpy(&k.power_bits, &power, sizeof(double));
     return k;
 }
@@ -80,10 +90,10 @@ struct RackKeyHash
 {
     std::size_t operator()(const RackKey& k) const noexcept
     {
-        std::uint64_t buf[12];
+        std::uint64_t buf[13];
         std::memcpy(buf, &k, sizeof(RackKey));
         std::uint64_t h = 1469598103934665603ULL;
-        for (int i = 0; i < 12; ++i)
+        for (int i = 0; i < 13; ++i)
         {
             h ^= buf[i];
             h *= 1099511628211ULL;
@@ -102,7 +112,8 @@ public:
         mPrev.reserve(mHalfCap + 1);
     }
 
-    SearchResult lookup(const TileList& tiles, const Trie<NUM_WORDS>& trie, double power = 0.0, bool powered = false)
+    SearchResult lookup(const TileList& tiles, const Trie<NUM_WORDS>& trie, double power = 0.0, bool powered = false,
+                        const RuntimeConfig& cfg = config())
     {
         if (const std::uint64_t epoch = config_epoch().load(std::memory_order_relaxed); epoch != mEpoch)
         {
@@ -110,7 +121,7 @@ public:
             mPrev.clear();
             mEpoch = epoch;
         }
-        const RackKey key = makeRackKey(tiles, power, powered);
+        const RackKey key = makeRackKey(tiles, power, powered, cfg);
         if (const auto it = mCurr.find(key); it != mCurr.end())
         {
             ++mHits;
@@ -127,12 +138,12 @@ public:
         }
         ++mMisses;
 
-        RackState state = build_rack_state(tiles, power, config().gems_enabled, powered ? 1.25 : 1.0);
+        RackState state = build_rack_state(tiles, power, cfg.gems_enabled, powered ? 1.25 : 1.0, cfg);
         SearchResult sr = engine_find_best_word(trie, state);
         if (!sr.tiles.empty())
         {
-            sr.refill_gem = expected_gem_for(sr.tiles);
-            sr.refill_wildcard = refill_wildcard_for(sr.tiles);
+            sr.refill_gem = expected_gem_for(sr.tiles, cfg);
+            sr.refill_wildcard = refill_wildcard_for(sr.tiles, cfg);
         }
         insert(key, sr);
         return sr;
@@ -174,13 +185,14 @@ inline double rolloutValue(
     Rng& rng,
     BestWordCache& cache,
     double power = 0.0,
-    bool powered = false
+    bool powered = false,
+    const RuntimeConfig& cfg = config()
 )
 {
     double total = 0.0;
     for (int t = 0; t < horizon; ++t)
     {
-        const SearchResult sr = cache.lookup(rack.getTiles(), trie, power, powered);
+        const SearchResult sr = cache.lookup(rack.getTiles(), trie, power, powered, cfg);
         if (sr.damage <= 0 || sr.tiles.empty())
             break;
         total += sr.damage;
@@ -200,14 +212,15 @@ inline double rolloutValueInto(
     Rng& rng,
     BestWordCache& cache,
     double power = 0.0,
-    bool powered = false
+    bool powered = false,
+    const RuntimeConfig& cfg = config()
 )
 {
     scratch = source;
     double total = 0.0;
     for (int t = 0; t < horizon; ++t)
     {
-        const SearchResult sr = cache.lookup(scratch.getTiles(), trie, power, powered);
+        const SearchResult sr = cache.lookup(scratch.getTiles(), trie, power, powered, cfg);
         if (sr.damage <= 0 || sr.tiles.empty())
             break;
         total += sr.damage;
@@ -274,7 +287,8 @@ inline double rolloutKillValueInto(
     double power = 0.0,
     bool powered = false,
     double gamma = 0.7,
-    double margin = 8.0
+    double margin = 8.0,
+    const RuntimeConfig& cfg = config()
 )
 {
     scratch = source;
@@ -289,7 +303,7 @@ inline double rolloutKillValueInto(
     double discount = 1.0;
     for (int t = 0; t < horizon; ++t)
     {
-        const SearchResult sr = cache.lookup(scratch.getTiles(), trie, power, powered);
+        const SearchResult sr = cache.lookup(scratch.getTiles(), trie, power, powered, cfg);
         if (sr.tiles.empty())
             break;
         const double dmg = static_cast<double>(sr.damage);
@@ -332,7 +346,8 @@ inline double monteCarloRackValue(
     Gem drop_gem = Gem::NONE,
     double gamma = 0.7,
     double margin = 8.0,
-    bool force_plain = false
+    bool force_plain = false,
+    const RuntimeConfig& cfg = config()
 )
 {
     // Kill-aware leaf metric is gated on a positive next_threshold. When it
@@ -344,7 +359,7 @@ inline double monteCarloRackValue(
 
     if (horizon <= 1 && !kill_aware)
     {
-        const auto sr = cache.lookup(rack.getTiles(), trie, power, powered);
+        const auto sr = cache.lookup(rack.getTiles(), trie, power, powered, cfg);
         if (out_n_sims)
             *out_n_sims = 1;
         return static_cast<double>(sr.damage);
@@ -358,8 +373,8 @@ inline double monteCarloRackValue(
     {
         const double v = kill_aware
             ? rolloutKillValueInto(rack, scratch, trie, horizon, next_threshold,
-                                   drop_gem, rng, cache, power, powered, gamma, margin)
-            : rolloutValueInto(rack, scratch, trie, horizon, rng, cache, power, powered);
+                                   drop_gem, rng, cache, power, powered, gamma, margin, cfg)
+            : rolloutValueInto(rack, scratch, trie, horizon, rng, cache, power, powered, cfg);
         ++n;
         const double delta = v - mean;
         mean += delta / n;

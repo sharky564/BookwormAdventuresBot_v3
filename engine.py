@@ -35,6 +35,12 @@ class EngineError(RuntimeError):
 class Engine:
     """Long-lived subprocess. Use as a context manager or call close()."""
 
+    # Features this Python side depends on. The solver advertises its feature
+    # set in the ready line; missing entries mean a stale binary whose parser
+    # would silently ignore the corresponding request fields (e.g. a solver
+    # without "broken" would score smashed tiles at full damage).
+    REQUIRED_FEATURES = frozenset({"broken", "engine", "prefilter_k"})
+
     def __init__(self, exe_path: str | os.PathLike, dict_path: str | os.PathLike):
         exe = Path(exe_path)
         if not exe.exists():
@@ -90,12 +96,40 @@ class Engine:
                 )
             startup_log.append(line)
             if "ready" in line:
+                self.features = self._parse_features(line)
+                missing = self.REQUIRED_FEATURES - self.features
+                if missing:
+                    raise EngineError(
+                        f"solver binary is missing protocol features {sorted(missing)} "
+                        f"(advertised: {sorted(self.features) or 'none'}). "
+                        "Rebuild it: cd solver && make"
+                    )
+                self._start_stderr_drain()
                 return
         seen = "".join(startup_log).rstrip()
         raise EngineError(
             f"timed out after {timeout:.1f}s waiting for engine ready.\n"
             f"stderr seen so far:\n{seen or '    (none)'}"
         )
+
+    @staticmethod
+    def _parse_features(ready_line: str) -> frozenset[str]:
+        for tok in ready_line.split():
+            if tok.startswith("features="):
+                return frozenset(f for f in tok[len("features="):].split(",") if f)
+        return frozenset()
+
+    def _start_stderr_drain(self) -> None:
+        # The solver only writes to stderr at startup today, but if it ever
+        # logs steadily, an undrained pipe fills and deadlocks the process.
+        def drain() -> None:
+            try:
+                for _ in self._proc.stderr:
+                    pass
+            except Exception:
+                pass
+
+        threading.Thread(target=drain, daemon=True, name="engine-stderr").start()
 
     def _send(self, msg: dict) -> dict:
         with self._io_lock:
@@ -106,8 +140,10 @@ class Engine:
             self._proc.stdin.flush()
             resp_line = self._proc.stdout.readline()
             if not resp_line:
-                stderr = self._proc.stderr.read()
-                raise EngineError(f"engine closed stdout. stderr: {stderr!r}")
+                # stderr is owned by the drain thread; don't read it here.
+                raise EngineError(
+                    f"engine closed stdout (exit code {self._proc.poll()})"
+                )
             resp = json.loads(resp_line)
             if "error" in resp:
                 raise EngineError(

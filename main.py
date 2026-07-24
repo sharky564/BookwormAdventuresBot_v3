@@ -4,6 +4,12 @@ import argparse
 import sys
 import time
 
+from bot_logic import (
+    broken_mask,
+    choose_sphinx_variant,
+    conservation_penalty,
+    partition_playable,
+)
 from engine import Engine, ScoredWord as EngScored, Tile as EngTile
 from chapter import CHAPTERS
 from capture import (
@@ -23,7 +29,6 @@ from recognize import (
     review_rack_interactively,
     correct_recognition,
     Recognition,
-    BROKEN_STATES,
     is_rack_paused_or_empty,
 )
 from overlay import Overlay, CorrectionRequest
@@ -431,54 +436,18 @@ def main() -> int:
             )
         run_state["auto"] = False
 
-    def _letter_multiset(s: str) -> dict:
-        d: dict = {}
-        for ch in s:
-            d[ch] = d.get(ch, 0) + 1
-        return d
-
-    def _can_form(word: str, available: dict) -> bool:
-        need = _letter_multiset(word)
-        for ch, k in need.items():
-            if available.get(ch, 0) < k:
-                return False
-        return True
-
-    def _conservation_penalty(word_tiles, upcoming_words: list[str]) -> int:
-        if not upcoming_words:
-            return 0
-        demand: dict = {}
-        for w in upcoming_words:
-            for ch, k in _letter_multiset(w).items():
-                demand[ch] = max(demand.get(ch, 0), k)
-        consumed = _letter_multiset("".join(t.letter for t in word_tiles))
-        penalty = 0
-        for ch, k in consumed.items():
-            if ch in demand:
-                penalty += min(k, demand[ch])
-        return penalty
-
     def run_sphinx_search(letters: str, gems: str, broken: str, playable) -> None:
         phase = int(run_state.get("sphinx_phase", 0))
         answers = progress_sphinx_words_for_phase(phase) or []
         answer_label = "/".join(answers) if answers else "?"
         upcoming = progress_sphinx_upcoming_words(phase)
-        available = _letter_multiset(letters)
 
         threshold = overlay.get_threshold()
         charges = overlay.get_charges()
 
-        # The sphinx accepts any answer variant; among the formable ones,
-        # prefer the variant that consumes the fewest letters needed by
-        # upcoming answers, then the shortest.
         scripted_word_entry = None
-        formable = [w for w in answers if _can_form(w, available)]
-        if formable:
-            def variant_cost(w: str) -> tuple:
-                tiles = [EngTile(letter=ch, gem="none") for ch in w]
-                return (_conservation_penalty(tiles, upcoming), len(w))
-
-            chosen = min(formable, key=variant_cost)
+        chosen = choose_sphinx_variant(answers, letters, upcoming)
+        if chosen is not None:
             scripted_word_entry = EngScored(
                 word=chosen, now=threshold, future=0.0, total=1000.0,
                 tiles=[EngTile(letter=ch, gem="none") for ch in chosen],
@@ -503,7 +472,7 @@ def main() -> int:
             return
 
         def sphinx_key(w):
-            pen = _conservation_penalty(w.tiles, upcoming)
+            pen = conservation_penalty(w.tiles, upcoming)
             return (0 if w.is_kill else 1, pen, len(w.tiles))
 
         words = sorted(words, key=sphinx_key)
@@ -539,16 +508,7 @@ def main() -> int:
 
     def _run_search_for_recs(recs) -> None:
         """Given finalized recognitions, run the async solve and render."""
-        # Smashed/plagued tiles still spell words (at 0 damage), so the solver
-        # sees them via the broken mask and can cycle them out. Locked tiles
-        # and broken tiles with unreadable letters are excluded.
-        playable = []
-        excluded = []
-        for r in recs:
-            if r.status == "normal" or (r.status in BROKEN_STATES and r.letter):
-                playable.append(r)
-            else:
-                excluded.append(r)
+        playable, excluded = partition_playable(recs)
         if excluded:
             breakdown = ", ".join(sorted({r.status for r in excluded}))
             print(f"Excluding {len(excluded)} non-playable tiles ({breakdown})")
@@ -565,9 +525,7 @@ def main() -> int:
 
         letters: str = "".join(r.letter for r in playable)
         gems = "".join(gem_chars.get(r.gem, " ") for r in playable)
-        broken = "".join("X" if r.status in BROKEN_STATES else "." for r in playable)
-        if "X" not in broken:
-            broken = ""
+        broken = broken_mask(playable)
 
         if not manual_chapter_override and progress_is_same_rack_block(prog):
             run_replay_block_search(letters, gems, broken)

@@ -532,7 +532,6 @@ class TileDB:
 
 GEM_STATES = ("amethyst", "emerald", "sapphire", "garnet", "ruby", "crystal", "diamond")
 AFFLICTION_STATES = ("smashed", "locked", "plague")
-BROKEN_STATES = ("smashed", "plague")  # still playable, but score 0 damage
 ALL_TILE_STATES = ("normal",) + GEM_STATES + AFFLICTION_STATES
 PLAYABLE_STATES = ("normal",) + GEM_STATES
 

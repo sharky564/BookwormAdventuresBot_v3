@@ -92,9 +92,9 @@ inline Point tile_points_sum(const TileList& tiles) noexcept
 // Refill metadata for a played word: the gem the refill spawns and whether it
 // spawns a wildcard (rainbow, >= 3 distinct gem kinds). Shared by Word and
 // the rollout cache so both compute identical values.
-inline Gem expected_gem_for(const TileList& tiles) noexcept
+inline Gem expected_gem_for(const TileList& tiles, const RuntimeConfig& cfg = config()) noexcept
 {
-    if (config().gems_enabled)
+    if (cfg.gems_enabled)
     {
         if (const int wp = static_cast<int>(std::ceil(tile_points_sum(tiles))); wp > 5)
             return gemMaxPoints(wp);
@@ -102,9 +102,9 @@ inline Gem expected_gem_for(const TileList& tiles) noexcept
     return Gem::NONE;
 }
 
-inline bool refill_wildcard_for(const TileList& tiles) noexcept
+inline bool refill_wildcard_for(const TileList& tiles, const RuntimeConfig& cfg = config()) noexcept
 {
-    if (!config().rainbow)
+    if (!cfg.rainbow)
         return false;
     Gem first = Gem::NONE;
     Gem second = Gem::NONE;

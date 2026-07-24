@@ -399,7 +399,11 @@ void dfs(
 
 } // namespace detail
 
-inline RackState build_rack_state(std::span<const Tile> tiles, double power, bool gems_enabled, double power_boost = 1.0)
+// Damage parameters come from `cfg` (per-enemy in simulate; the ambient
+// config elsewhere). letter_points stays a global read: it is chapter-level
+// and covered by the config epoch.
+inline RackState build_rack_state(std::span<const Tile> tiles, double power, bool gems_enabled,
+                                  double power_boost = 1.0, const RuntimeConfig& cfg = config())
 {
     RackState st;
     st.letter_points = &config().letter_points;
@@ -407,12 +411,12 @@ inline RackState build_rack_state(std::span<const Tile> tiles, double power, boo
     st.power = power;
     st.gems_enabled = gems_enabled;
     st.power_boost = power_boost;
-    st.base_damage_bonus = config().base_damage_bonus;
-    st.enemy_armour = config().enemy_armour;
-    st.treasure_equipped = config().treasure_equipped;
+    st.base_damage_bonus = cfg.base_damage_bonus;
+    st.enemy_armour = cfg.enemy_armour;
+    st.treasure_equipped = cfg.treasure_equipped;
     st.treasure_boost = 1.5;
-    st.weakness_cat = static_cast<int8_t>(config().active_weakness_cat);
-    st.weakness_boost = config().active_weakness_boost;
+    st.weakness_cat = static_cast<int8_t>(cfg.active_weakness_cat);
+    st.weakness_boost = cfg.active_weakness_boost;
     for (const Tile& t : tiles)
     {
         if (t.isWildcard())

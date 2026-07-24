@@ -164,7 +164,13 @@ inline std::string handle_config(const jmini::Value& msg)
     rebuild_search_tables();
     if (!class_index().points_current())
         class_index().refresh_points();
-    if (!(c == before))
+    // Per-enemy fields (armour/weakness/treasure/bonus/power) are part of the
+    // cache key, so only the globally-read fields require an epoch bump.
+    const bool epoch_relevant =
+        !(c.letter_points == before.letter_points)
+        || c.rainbow != before.rainbow
+        || c.prescramble != before.prescramble;
+    if (epoch_relevant)
         config_epoch().fetch_add(1, std::memory_order_relaxed);
     return jmini::Writer().begin_obj()
         .key("op").str("config")
@@ -447,14 +453,14 @@ inline SimChoice sim_pick_best(
     // powered kill candidates too when charges are available, since a powered
     // play can cross a kill threshold an unpowered one can't.
     std::vector<ScoredWord> cands = rack.generateKills(trie, threshold > 0 ? threshold : 1,
-                                                        300, cfg.power, false);
+                                                        300, cfg.power, false, cfg);
     if (charges > 0)
     {
-        auto pw = rack.generateKills(trie, threshold > 0 ? threshold : 1, 300, cfg.power, true);
+        auto pw = rack.generateKills(trie, threshold > 0 ? threshold : 1, 300, cfg.power, true, cfg);
         for (auto& x : pw) cands.push_back(std::move(x));
     }
     {
-        ScoredHeap heap = rack.generateWordlist(trie, 20, cfg.power, false);
+        ScoredHeap heap = rack.generateWordlist(trie, 20, cfg.power, false, cfg);
         while (!heap.empty()) { cands.push_back(heap.top()); heap.pop(); }
     }
     if (cands.empty())
@@ -612,7 +618,7 @@ inline SimChoice sim_pick_best(
         int ns = 0;
         double fut = monteCarloRackValue(residual, trie, horizon, min_sims, max_sims,
                                          se_target, rng, cache, &ns, cfg.power, false,
-                                         rt, drop, gamma, margin, use_plain_future);
+                                         rt, drop, gamma, margin, use_plain_future, cfg);
         // The kill-aware metric returns a [0,1]-ish kill value that we
         // scale into damage units by the threshold it targets. The
         // plain-damage rollout already returns damage units, so it is
@@ -715,16 +721,12 @@ inline std::string handle_simulate(
     std::atomic<int> total_turns{0};
     std::atomic<int> fails{0};
 
-    // Swap the CHAPTER-level config into the global for this request, restore
-    // on exit. Only transitions that actually change it rebuild tables and
-    // bump the epoch, so identical-config sweeps keep caches warm.
-    //
-    // KNOWN FIDELITY LIMIT (deliberate): per-enemy fields only apply when
-    // sim_pick_best RE-scores candidates; candidate generation and rollout
-    // leaves see just this chapter config. Armour is safe (rescoring
-    // corrects), but weakness/treasure kills below the unboosted threshold
-    // can be missing, and rollout leaves ignore per-enemy armour. A real fix
-    // needs per-enemy search state + cache keying.
+    // Swap the CHAPTER-level config (letter_points, gems_enabled, prescramble
+    // -- read globally by points/refill code) into the global for this
+    // request, restore on exit. Only transitions that actually change it
+    // rebuild tables and bump the epoch, so identical-config sweeps keep
+    // caches warm. Per-enemy fields flow explicitly through sim_pick_best's
+    // cfg parameter and are part of the cache key.
     struct ConfigSwap
     {
         RuntimeConfig saved;
@@ -1540,7 +1542,9 @@ inline void run(const Trie<TrieSize>& trie)
     ServeState state;
     state.rng.seed(std::random_device{}());
 
-    std::cerr << "wordgame: ready\n" << std::flush;
+    // Feature list lets the Python side fail loudly on binary/protocol skew
+    // instead of silently ignoring unknown request fields.
+    std::cerr << "wordgame: ready features=broken,engine,prefilter_k\n" << std::flush;
 
     std::string line;
     while (std::getline(std::cin, line))

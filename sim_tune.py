@@ -119,7 +119,7 @@ def main():
     if args.quick:
         gammas = [0.5, 0.7, 0.9]; margins = [4.0, 8.0]
     else:
-        gammas = [0.4, 0.55, 0.7, 0.82, 0.92]; margins = [3.0, 6.0, 9.0, 14.0]
+        gammas = [0.4, 0.55, 0.7, 0.82, 0.92]; margins = [3.0, 6.0, 8.0, 12.0]
     print(f"Chapters {[f'{b+1}.{c+1}' for b,c in chapters]} | seeds={args.seeds} "
           f"max_sims={args.max_sims} horizon={args.horizon}")
     print(f"Grid: gamma={gammas} margin={margins}\n")
@@ -140,11 +140,12 @@ def main():
     print("\nTop 5:")
     for (g, m), (t, f) in ranked[:5]:
         print(f"  gamma={g} margin={m}: total={t:.2f} fail={100*f:.1f}%")
-    base = results.get((0.7, 9.0))
+    # (0.7, 8.0) is what production actually runs: the C++ serve defaults.
+    base = results.get((0.7, 8.0))
     bestkey, (bt, bf) = ranked[0]
     print(f"\nBest: gamma={bestkey[0]} margin={bestkey[1]}  total={bt:.2f}")
     if base:
-        print(f"Default-ish (0.7, 9.0): total={base[0]:.2f}")
+        print(f"Production default (0.7, 8.0): total={base[0]:.2f}")
         if base[0] > 0:
             print(f"Improvement: {base[0]-bt:+.2f} turns ({100*(base[0]-bt)/base[0]:+.1f}%)")
 

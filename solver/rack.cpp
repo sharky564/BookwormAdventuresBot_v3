@@ -225,10 +225,11 @@ ScoredHeap Rack::generateWordlist(
     const Trie<NUM_WORDS>& trie,
     int num_top_words,
     double power,
-    bool powered
+    bool powered,
+    const RuntimeConfig& cfg
 ) const
 {
-    RackState state = build_rack_state(mTiles, power, config().gems_enabled, powered ? 1.25 : 1.0);
+    RackState state = build_rack_state(mTiles, power, cfg.gems_enabled, powered ? 1.25 : 1.0, cfg);
     return engine_find_top_words(trie, state, num_top_words);
 }
 
@@ -237,16 +238,18 @@ std::vector<ScoredWord> Rack::generateKills(
     int threshold_damage,
     int max_candidates,
     double power,
-    bool powered
+    bool powered,
+    const RuntimeConfig& cfg
 ) const
 {
-    RackState state = build_rack_state(mTiles, power, config().gems_enabled, powered ? 1.25 : 1.0);
+    RackState state = build_rack_state(mTiles, power, cfg.gems_enabled, powered ? 1.25 : 1.0, cfg);
     return engine_find_kill_words(trie, state, threshold_damage, max_candidates);
 }
 
-SearchResult Rack::bestWord(const Trie<NUM_WORDS>& trie, double power, bool powered) const
+SearchResult Rack::bestWord(const Trie<NUM_WORDS>& trie, double power, bool powered,
+                            const RuntimeConfig& cfg) const
 {
-    RackState state = build_rack_state(mTiles, power, config().gems_enabled, powered ? 1.25 : 1.0);
+    RackState state = build_rack_state(mTiles, power, cfg.gems_enabled, powered ? 1.25 : 1.0, cfg);
     return engine_find_best_word(trie, state);
 }
 
