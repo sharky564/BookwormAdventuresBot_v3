@@ -132,6 +132,7 @@ void Rack::dropGemOnRandomTile(Gem gem, FastRng& rng)
 void Rack::playTiles(const TileList& word_tiles)
 {
     std::array<std::uint8_t, 26> demand_no_gem{};
+    std::array<std::uint8_t, 26> demand_broken{};
     int demand_wild = 0;
     std::array<std::pair<std::int8_t, Gem>, MAX_WORD_LEN> gem_demands{};
     int n_gem_demands = 0;
@@ -140,6 +141,8 @@ void Rack::playTiles(const TileList& word_tiles)
     {
         if (t.isWildcard())
             ++demand_wild;
+        else if (t.isBroken())
+            ++demand_broken[t.getLetter() - 'A'];
         else if (t.getGem() == Gem::NONE)
             ++demand_no_gem[t.getLetter() - 'A'];
         else
@@ -162,7 +165,15 @@ void Rack::playTiles(const TileList& word_tiles)
         else
         {
             const int li = t.getLetter() - 'A';
-            if (t.getGem() == Gem::NONE)
+            if (t.isBroken())
+            {
+                if (demand_broken[li] > 0)
+                {
+                    --demand_broken[li];
+                    consumed = true;
+                }
+            }
+            else if (t.getGem() == Gem::NONE)
             {
                 if (demand_no_gem[li] > 0)
                 {

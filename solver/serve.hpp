@@ -47,6 +47,28 @@ inline std::vector<Gem> parse_gems_string(std::string_view s, std::size_t len)
     return out;
 }
 
+// Rack from protocol strings. The optional broken mask marks 0-damage tiles
+// (smashed/plagued): any character other than '.' or ' ' at that position.
+inline Rack make_rack(const std::string& letters, std::string_view gems_str, std::string_view broken_str)
+{
+    const auto gems = parse_gems_string(gems_str, letters.size());
+    TileList tiles;
+    for (std::size_t i = 0; i < letters.size(); ++i)
+    {
+        const bool broken =
+            i < broken_str.size() && broken_str[i] != '.' && broken_str[i] != ' ';
+        tiles.emplace_back(letters[i], gems[i], broken);
+    }
+    return Rack(tiles);
+}
+
+inline std::string get_broken_str(const jmini::Value& msg)
+{
+    if (auto* b = msg.find("broken"); b && b->is_string())
+        return b->str();
+    return {};
+}
+
 inline std::string_view gem_name(Gem g)
 {
     switch (g)
@@ -80,6 +102,8 @@ inline void write_tiles(jmini::Writer& w, const TileList& tiles)
         const char c = t.getLetter();
         w.key("letter").str(std::string_view(&c, 1));
         w.key("gem").str(gem_name(t.getGem()));
+        if (t.isBroken())
+            w.key("broken").boolean(true);
         w.end_obj();
     }
     w.end_arr();
@@ -372,7 +396,7 @@ inline std::string handle_best(const Trie<TrieSize>& trie, const jmini::Value& m
     if (auto* g = msg.find("gems"); g && g->is_string())
         gems_str = g->str();
 
-    Rack rack(letters, parse_gems_string(gems_str, letters.size()));
+    Rack rack = make_rack(letters, gems_str, get_broken_str(msg));
     const RuntimeConfig& cfg = config();
     const SearchResult sr = rack.bestWord(trie, cfg.power, cfg.powered);
 
@@ -891,7 +915,7 @@ inline std::string handle_step(
     Gem refill_gem = Gem::NONE;
     bool refill_wild = false;
 
-    Rack rack(letters, parse_gems_string(gems_str, letters.size()));
+    Rack rack = make_rack(letters, gems_str, get_broken_str(msg));
 
     // Build the played Word from the rack tiles matching the word's letters.
     const std::string& word_str = word_v->str();
@@ -990,7 +1014,7 @@ inline std::string handle_replay(
             thresholds.push_back(static_cast<int>(t.num()));
 
     const RuntimeConfig& cfg = config();
-    Rack rack(letters, parse_gems_string(gems_str, letters.size()));
+    Rack rack = make_rack(letters, gems_str, get_broken_str(msg));
 
     // Generate kill candidates once at the LOWEST threshold (a superset: any
     // word that kills a higher threshold also kills a lower one). Powered and
@@ -1125,7 +1149,7 @@ inline std::string handle_top(
     if (auto* v = msg.find("charges"); v && v->is_number())
         charges = static_cast<int>(v->num());
 
-    Rack rack(letters, parse_gems_string(gems_str, letters.size()));
+    Rack rack = make_rack(letters, gems_str, get_broken_str(msg));
     const RuntimeConfig& cfg = config();
 
     const double charge_cost = (charges > 0) ? (10.0 / charges) : 0.0;

@@ -186,14 +186,20 @@ inline ClassScanIndex& class_index()
 template <Collector C>
 void ClassScanIndex::search(RackState& st, C& collector) const
 {
-    // Rack-side facts.
+    // Rack-side facts. have[] includes broken tiles (they spell normally);
+    // normal_have[] excludes them for the points math.
     std::array<std::uint8_t, 32> have{};
+    std::array<std::uint8_t, 26> normal_have{};
     std::uint32_t rack_mask = 0;
+    std::uint32_t broken_mask = 0;
     for (int i = 0; i < 26; ++i)
     {
         have[i] = static_cast<std::uint8_t>(st.letter_counts[i]);
+        normal_have[i] = static_cast<std::uint8_t>(st.letter_counts[i] - st.broken_counts[i]);
         if (st.letter_counts[i] > 0)
             rack_mask |= (std::uint32_t{1} << i);
+        if (st.broken_counts[i] > 0)
+            broken_mask |= (std::uint32_t{1} << i);
     }
     const int wildcards = st.wildcard_count;
 
@@ -329,6 +335,19 @@ void ClassScanIndex::search(RackState& st, C& collector) const
                     points += d * (WILDCARD_PTS - lp[i]);
             }
         }
+        // Broken tiles consumed (normal tiles are used first) score 0.
+        if (std::uint32_t bm = mMasks[c] & broken_mask; bm != 0)
+        {
+            while (bm)
+            {
+                const int i = std::countr_zero(bm);
+                bm &= bm - 1;
+                const int used = std::min<int>(need[i], have[i]);
+                const int broken_used = used - std::min<int>(used, normal_have[i]);
+                if (broken_used > 0)
+                    points -= broken_used * lp[i];
+            }
+        }
 
         // Gem power of the tiles the greedy assignment would consume.
         double gem_sum = 0.0;
@@ -369,20 +388,24 @@ void ClassScanIndex::search(RackState& st, C& collector) const
                     break;  // heap cutoff may have risen while offering
                 const char* word = mChars.data() + mWordOffsets[w];
 
-                // Build the tile assignment the DFS would produce: real tiles
-                // first (strongest gem first per letter), wildcards cover the
-                // last occurrences of deficit letters.
+                // Build the tile assignment the DFS would produce: gem tiles
+                // first (strongest gem first), then plain, then broken;
+                // wildcards cover the last occurrences of deficit letters.
                 TileList tiles;
                 std::array<std::uint8_t, 26> occ{};
                 for (const char* p = word; *p; ++p)
                 {
                     const int i = *p - 'A';
                     const int k = occ[i]++;
-                    if (k < static_cast<int>(have[i]))
+                    if (k < static_cast<int>(normal_have[i]))
                     {
                         const GemStack& gs = st.gem_stacks[i];
                         const Gem g = (k < gs.n) ? gs.g[gs.n - 1 - k] : Gem::NONE;
                         tiles.emplace_back(*p, g);
+                    }
+                    else if (k < static_cast<int>(have[i]))
+                    {
+                        tiles.emplace_back(*p, Gem::NONE, true);
                     }
                     else
                     {

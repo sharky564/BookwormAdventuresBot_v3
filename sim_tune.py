@@ -85,7 +85,7 @@ def main():
     if args.ab:
         print(f"A/B future metric | chapters {[f'{b+1}.{c+1}' for b,c in chapters]} | "
               f"seeds={args.seeds} max_sims={args.max_sims} horizon={args.horizon}")
-        print(f"  plain = sum-of-damage rollout (no gamma/margin)")
+        print("  plain = sum-of-damage rollout (no gamma/margin)")
         print(f"  kill  = kill-aware (gamma={args.ab_gamma}, margin={args.ab_margin})\n")
         totals = {"plain": 0.0, "kill": 0.0}
         for (b, c, cfg, enemies) in specs:

@@ -132,7 +132,11 @@ def _detect_status_and_gem_arr(
                 _GEM_NAMES[best_idx] if best_dist <= GEM_DISTANCE_THRESHOLD else "none"
             )
 
-    if is_wild or gem != "none":
+    # A plague tile's green wash often reaches the corner samples and
+    # masquerades as an emerald match; the gem short-circuit would then skip
+    # the plague test entirely. Emerald matches therefore only count after
+    # surviving the green-spread test below.
+    if is_wild or (gem != "none" and gem != "emerald"):
         return "normal", gem
 
     fr2 = arr_norm[:, :, 0]
@@ -170,7 +174,10 @@ def _detect_status_and_gem_arr(
                 std_x >= w * PLAGUE_SPREAD_FRAC_MIN
                 and std_y >= h * PLAGUE_SPREAD_FRAC_MIN
             ):
-                return "plague", gem
+                return "plague", "none"
+
+    if gem == "emerald":
+        return "normal", gem  # survived the plague test: a real emerald
 
     chain = (
         (sat2 < CHAIN_SAT_MAX)
@@ -525,6 +532,7 @@ class TileDB:
 
 GEM_STATES = ("amethyst", "emerald", "sapphire", "garnet", "ruby", "crystal", "diamond")
 AFFLICTION_STATES = ("smashed", "locked", "plague")
+BROKEN_STATES = ("smashed", "plague")  # still playable, but score 0 damage
 ALL_TILE_STATES = ("normal",) + GEM_STATES + AFFLICTION_STATES
 PLAYABLE_STATES = ("normal",) + GEM_STATES
 
@@ -921,7 +929,7 @@ if __name__ == "__main__":
                 f"({rgb[0]:3d},{rgb[1]:3d},{rgb[2]:3d})    {corners_str}"
             )
         print()
-        print(f"  Centroids loaded from gem_centroids.json:")
+        print("  Centroids loaded from gem_centroids.json:")
         for n, c in GEM_CENTROIDS.items():
             print(f"    {n:<10} RGB=({c[0]:3d}, {c[1]:3d}, {c[2]:3d})")
         print(f"  Distance threshold: {GEM_DISTANCE_THRESHOLD}")

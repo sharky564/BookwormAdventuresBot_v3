@@ -4,7 +4,7 @@ import argparse
 import sys
 import time
 
-from engine import Engine
+from engine import Engine, ScoredWord as EngScored, Tile as EngTile
 from chapter import CHAPTERS
 from capture import (
     ensure_calibration,
@@ -23,6 +23,7 @@ from recognize import (
     review_rack_interactively,
     correct_recognition,
     Recognition,
+    BROKEN_STATES,
     is_rack_paused_or_empty,
 )
 from overlay import Overlay, CorrectionRequest
@@ -132,7 +133,6 @@ def main() -> int:
     args = parse_args()
     cfg = load_config(args.config)
 
-    chapter = pick(args, "chapter", cfg, "engine", "chapter", "1.1")
     n_words = pick(args, "n", cfg, "engine", "n", 8)
     horizon = pick(args, "horizon", cfg, "engine", "horizon", 2)
     max_sims = pick(args, "max_sims", cfg, "engine", "max_sims", 300)
@@ -393,14 +393,16 @@ def main() -> int:
             return f"{bk}.{ch}.{lo}"
         return f"{bk}.{ch}.{lo}-{hi}"
 
-    def run_replay_block_search(letters: str, gems: str) -> None:
+    def run_replay_block_search(letters: str, gems: str, broken: str = "") -> None:
         tiers = progress_same_rack_block_thresholds(prog)  # [(enemy_idx, eff_thr)]
         distinct = sorted({t for _, t in tiers})
         overlay.set_status(f"Replay block: solving tiers {distinct} ...")
         overlay.root.update_idletasks()
 
         try:
-            results = eng.replay(letters, distinct, gems=gems, per_threshold=3)
+            results = eng.replay(
+                letters, distinct, gems=gems, per_threshold=3, broken=broken or None
+            )
         except Exception as e:
             overlay.set_status(f"Replay solve error: {e}")
             run_state["auto"] = False
@@ -456,30 +458,36 @@ def main() -> int:
                 penalty += min(k, demand[ch])
         return penalty
 
-    def run_sphinx_search(letters: str, gems: str, playable) -> None:
+    def run_sphinx_search(letters: str, gems: str, broken: str, playable) -> None:
         phase = int(run_state.get("sphinx_phase", 0))
-        scripted = progress_sphinx_words_for_phase(phase)
+        answers = progress_sphinx_words_for_phase(phase) or []
+        answer_label = "/".join(answers) if answers else "?"
         upcoming = progress_sphinx_upcoming_words(phase)
         available = _letter_multiset(letters)
 
         threshold = overlay.get_threshold()
         charges = overlay.get_charges()
 
+        # The sphinx accepts any answer variant; among the formable ones,
+        # prefer the variant that consumes the fewest letters needed by
+        # upcoming answers, then the shortest.
         scripted_word_entry = None
-        if scripted:
-            for word in scripted:
-                if _can_form(word, available):
-                    from engine import Tile as EngTile, ScoredWord as EngScored
+        formable = [w for w in answers if _can_form(w, available)]
+        if formable:
+            def variant_cost(w: str) -> tuple:
+                tiles = [EngTile(letter=ch, gem="none") for ch in w]
+                return (_conservation_penalty(tiles, upcoming), len(w))
 
-                    tiles = [EngTile(letter=ch, gem="none") for ch in scripted]
-                    scripted_word_entry = EngScored(
-                        word=scripted, now=threshold, future=0.0, total=1000.0,
-                        tiles=tiles, n_sims=0, is_kill=True, used_powered=False,
-                    )
+            chosen = min(formable, key=variant_cost)
+            scripted_word_entry = EngScored(
+                word=chosen, now=threshold, future=0.0, total=1000.0,
+                tiles=[EngTile(letter=ch, gem="none") for ch in chosen],
+                n_sims=0, is_kill=True, used_powered=False,
+            )
 
         overlay.set_status(
             f"Sphinx phase {phase + 1}/5 "
-            f"(answer: {scripted or '?'}) — searching..."
+            f"(answer: {answer_label}) — searching..."
         )
         overlay.root.update_idletasks()
 
@@ -487,6 +495,7 @@ def main() -> int:
             words = eng.top(
                 letters, gems=gems, n=n_words, horizon=1, max_sims=max_sims,
                 threshold=threshold, terminal=True, charges=charges,
+                broken=broken or None,
             )
         except Exception as e:
             overlay.set_status(f"Sphinx solve error: {e}")
@@ -512,14 +521,14 @@ def main() -> int:
         if scripted_word_entry is not None:
             keep = ", ".join(upcoming) if upcoming else "none"
             overlay.set_status(
-                f"Sphinx {phase + 1}/5: play '{scripted}' (no counter-damage). "
-                f"Conserve for: {keep}"
+                f"Sphinx {phase + 1}/5: play '{scripted_word_entry.word}' "
+                f"(no counter-damage). Conserve for: {keep}"
             )
         elif display:
             top = display[0]
             keep = ", ".join(upcoming) if upcoming else "none"
             overlay.set_status(
-                f"Sphinx {phase + 1}/5: no '{scripted}' in rack. "
+                f"Sphinx {phase + 1}/5: no '{answer_label}' in rack. "
                 f"Best: {top.word} (will take counter-damage). Conserve for: {keep}"
             )
         else:
@@ -530,11 +539,19 @@ def main() -> int:
 
     def _run_search_for_recs(recs) -> None:
         """Given finalized recognitions, run the async solve and render."""
-        playable = [r for r in recs if r.status == "normal"]
-        non_normal = [r for r in recs if r.status != "normal"]
-        if non_normal:
-            breakdown = ", ".join(sorted({r.status for r in non_normal}))
-            print(f"Excluding {len(non_normal)} non-playable tiles ({breakdown})")
+        # Smashed/plagued tiles still spell words (at 0 damage), so the solver
+        # sees them via the broken mask and can cycle them out. Locked tiles
+        # and broken tiles with unreadable letters are excluded.
+        playable = []
+        excluded = []
+        for r in recs:
+            if r.status == "normal" or (r.status in BROKEN_STATES and r.letter):
+                playable.append(r)
+            else:
+                excluded.append(r)
+        if excluded:
+            breakdown = ", ".join(sorted({r.status for r in excluded}))
+            print(f"Excluding {len(excluded)} non-playable tiles ({breakdown})")
 
         if any(not r.letter for r in playable):
             overlay.set_status("Some playable tiles unknown; skipping search.")
@@ -548,13 +565,16 @@ def main() -> int:
 
         letters: str = "".join(r.letter for r in playable)
         gems = "".join(gem_chars.get(r.gem, " ") for r in playable)
+        broken = "".join("X" if r.status in BROKEN_STATES else "." for r in playable)
+        if "X" not in broken:
+            broken = ""
 
         if not manual_chapter_override and progress_is_same_rack_block(prog):
-            run_replay_block_search(letters, gems)
+            run_replay_block_search(letters, gems, broken)
             return
 
         if not manual_chapter_override and progress_is_sphinx(prog):
-            run_sphinx_search(letters, gems, playable)
+            run_sphinx_search(letters, gems, broken, playable)
             return
 
         overlay.set_status(f"Searching ({letters})...")
@@ -574,15 +594,17 @@ def main() -> int:
             next_enemy_hp=next_enemy_hp,
             terminal=terminal,
             charges=charges,
+            broken=broken or None,
         )
 
         def on_search_done(f, threshold=threshold):
             try:
                 words = f.result()
             except Exception as e:
-                overlay.schedule(
-                    0, lambda: overlay.set_status(f"Engine error: {e}")
-                )
+                # Bind the message now: `e` is unbound once this except block
+                # exits, and the lambda runs later on the Tk thread.
+                msg = f"Engine error: {e}"
+                overlay.schedule(0, lambda: overlay.set_status(msg))
                 overlay.schedule(0, lambda: run_state.update(auto=False))
                 return
             overlay.schedule(0, lambda: render_search_result(words, threshold))
@@ -752,7 +774,7 @@ def main() -> int:
             run_state["sphinx_phase"] = int(run_state.get("sphinx_phase", 0)) + 1
             ph = run_state["sphinx_phase"]
             if ph < 5:
-                nxt = progress_sphinx_words_for_phase(ph)
+                nxt = "/".join(progress_sphinx_words_for_phase(ph) or [])
                 overlay.set_status(
                     f"Sphinx: phase {ph}/5 cleared. Next answer: {nxt}. Press R."
                 )

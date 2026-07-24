@@ -292,7 +292,7 @@ def _pretty(s: SaveState) -> str:
     gem_str = ", ".join(f"{s.rack[i]}={g}" for i, g in enumerate(s.gems) if g != 'none') or "(no gems)"
     lines.append(f"Gems: {gem_str}")
     if s.floats:
-        lines.append(f"Stats: " + ", ".join(f"{k}={v}" for k, v in s.floats.items()))
+        lines.append("Stats: " + ", ".join(f"{k}={v}" for k, v in s.floats.items()))
     if s.letter_counts:
         top = sorted(s.letter_counts.items(), key=lambda kv: -kv[1])[:6]
         lines.append("Most-spawned letters (lifetime tile spawns, not usage): "

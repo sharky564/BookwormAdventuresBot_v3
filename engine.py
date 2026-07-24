@@ -13,6 +13,7 @@ from pathlib import Path
 class Tile:
     letter: str
     gem: str = "none"
+    broken: bool = False  # smashed/plagued: spells normally, scores 0
 
 
 @dataclass
@@ -161,12 +162,23 @@ class Engine:
 
     @staticmethod
     def _parse_tiles(raw: list) -> list[Tile]:
-        return [Tile(letter=t["letter"], gem=t.get("gem", "none")) for t in raw]
+        return [
+            Tile(
+                letter=t["letter"],
+                gem=t.get("gem", "none"),
+                broken=bool(t.get("broken", False)),
+            )
+            for t in raw
+        ]
 
-    def best(self, rack: str, gems: str | None = None) -> ScoredWord:
+    def best(
+        self, rack: str, gems: str | None = None, broken: str | None = None
+    ) -> ScoredWord:
         msg = {"op": "best", "rack": rack}
         if gems:
             msg["gems"] = gems
+        if broken:
+            msg["broken"] = broken
         r = self._send(msg)
         return ScoredWord(
             word=r["word"],
@@ -197,6 +209,7 @@ class Engine:
         kill_margin: float | None = None,
         max_kill_candidates: int | None = None,
         charges: int = 0,
+        broken: str | None = None,
     ) -> list[ScoredWord]:
         msg = {
             "op": "top",
@@ -209,6 +222,8 @@ class Engine:
         }
         if gems:
             msg["gems"] = gems
+        if broken:
+            msg["broken"] = broken
         if threshold > 0:
             msg["threshold"] = int(threshold)
         if next_enemy_hp > 0:
@@ -265,6 +280,7 @@ class Engine:
         *,
         per_threshold: int = 3,
         max_candidates: int = 500,
+        broken: str | None = None,
     ) -> list[dict]:
         msg = {
             "op": "replay",
@@ -275,6 +291,8 @@ class Engine:
         }
         if gems:
             msg["gems"] = gems
+        if broken:
+            msg["broken"] = broken
         r = self._send(msg)
         results: list[dict] = []
         for tier in r.get("results", []):

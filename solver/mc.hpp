@@ -26,10 +26,11 @@ struct RackKey
 {
     std::array<std::uint8_t, 26> letter_counts;
     std::array<std::uint8_t, 26> gem_counts;
+    std::array<std::uint8_t, 26> broken_counts;
     std::uint8_t wildcards;
     std::uint8_t flags;
     std::uint8_t weakness_cat;
-    std::uint8_t _pad;
+    std::array<std::uint8_t, 7> _pad;
     std::uint64_t power_bits;
 
     bool operator==(const RackKey& other) const noexcept
@@ -37,7 +38,7 @@ struct RackKey
         return std::memcmp(this, &other, sizeof(RackKey)) == 0;
     }
 };
-static_assert(sizeof(RackKey) == 64, "RackKey should be 64 bytes (one cache line)");
+static_assert(sizeof(RackKey) == 96, "RackKey should be 96 bytes");
 static_assert(std::is_trivially_copyable_v<RackKey>);
 
 inline RackKey makeRackKey(const TileList& tiles, double power, bool powered) noexcept
@@ -53,7 +54,9 @@ inline RackKey makeRackKey(const TileList& tiles, double power, bool powered) no
         }
         const int li = t.getLetter() - 'A';
         ++k.letter_counts[li];
-        if (cfg.gems_enabled)
+        if (t.isBroken())
+            ++k.broken_counts[li];
+        else if (cfg.gems_enabled)
             k.gem_counts[li] += static_cast<std::uint8_t>(t.getGem()) + 1;
     }
     std::uint8_t flags = 0;
@@ -77,10 +80,10 @@ struct RackKeyHash
 {
     std::size_t operator()(const RackKey& k) const noexcept
     {
-        std::uint64_t buf[8];
+        std::uint64_t buf[12];
         std::memcpy(buf, &k, sizeof(RackKey));
         std::uint64_t h = 1469598103934665603ULL;
-        for (int i = 0; i < 8; ++i)
+        for (int i = 0; i < 12; ++i)
         {
             h ^= buf[i];
             h *= 1099511628211ULL;

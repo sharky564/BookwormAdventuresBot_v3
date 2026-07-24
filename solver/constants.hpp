@@ -107,6 +107,13 @@ inline void rebuild_search_tables()
         }
     }
 
+    // At most 7 value tiers + the trailing zero tier (used by 0-point letters
+    // and broken tiles). More distinct letter values than that are merged
+    // into the 7th tier, which over-estimates their value -- the search bound
+    // stays sound.
+    if (n > 7)
+        n = 7;
+
     SearchTables& st = search_tables();
     st.letter_value_tiers_desc.fill(0.0);
     for (int i = 0; i < n; ++i)
@@ -125,11 +132,7 @@ inline void rebuild_search_tables()
     for (int i = 0; i < 26; ++i)
     {
         const Point v = lp[i];
-        if (v <= 0.0)
-        {
-            st.letter_to_tier[i] = static_cast<std::int8_t>(n);
-            continue;
-        }
+        st.letter_to_tier[i] = static_cast<std::int8_t>(v <= 0.0 ? n : n - 1);
         for (int j = 0; j < n; ++j)
         {
             if (st.letter_value_tiers_desc[j] == v)

@@ -6,7 +6,7 @@ from functools import wraps
 from collections.abc import Sequence
 
 from engine import Tile
-from recognize import Recognition
+from recognize import Recognition, BROKEN_STATES
 from capture import RackBox
 
 
@@ -33,12 +33,18 @@ def resolve_positions(
     for wt in word_tiles:
         target_letter = wt.letter.upper()
         target_gem = wt.gem
-        chosen: int | None = None
+        want_broken = getattr(wt, "broken", False)
 
+        def matches_state(rec) -> bool:
+            if want_broken:
+                return rec.status in BROKEN_STATES
+            return rec.status == "normal"
+
+        chosen: int | None = None
         for i, rec in enumerate(rack_recs):
             if i in used:
                 continue
-            if rec.status != "normal":
+            if not matches_state(rec):
                 continue
             if rec.letter == target_letter and rec.gem == target_gem:
                 chosen = i
@@ -48,7 +54,7 @@ def resolve_positions(
             for i, rec in enumerate(rack_recs):
                 if i in used:
                     continue
-                if rec.status != "normal":
+                if not matches_state(rec):
                     continue
                 if rec.letter == target_letter:
                     chosen = i

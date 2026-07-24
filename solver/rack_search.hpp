@@ -68,8 +68,11 @@ struct GemStack
 
 struct RackState
 {
+    // letter_counts includes broken tiles (they spell normally); consumption
+    // order per letter is gem -> plain -> broken (highest damage first).
     std::array<std::int8_t, 26> letter_counts{};
     std::array<std::int8_t, 26> non_gem_counts{};
+    std::array<std::int8_t, 26> broken_counts{};
     std::array<GemStack, 26> gem_stacks{};
     std::int8_t wildcard_count = 0;
 
@@ -227,11 +230,21 @@ inline double top_k_sum(const std::array<CountT, NC>& counts, const std::array<V
     return sum;
 }
 
-inline void push_real(RackState& st, int idx, Gem g) noexcept
+inline int value_tier_for(const RackState& st, int idx, bool broken) noexcept
+{
+    // Broken tiles score 0: they live in the trailing zero-value tier.
+    return broken ? st.tables->n_value_tiers - 1 : st.tables->letter_to_tier[idx];
+}
+
+inline void push_real(RackState& st, int idx, Gem g, bool broken) noexcept
 {
     ++st.letter_counts[idx];
-    ++st.value_bucket_counts[st.tables->letter_to_tier[idx]];
-    if (g == Gem::NONE)
+    ++st.value_bucket_counts[value_tier_for(st, idx, broken)];
+    if (broken)
+    {
+        ++st.broken_counts[idx];
+    }
+    else if (g == Gem::NONE)
     {
         ++st.non_gem_counts[idx];
     }
@@ -256,25 +269,36 @@ inline void pop_wildcard(RackState& st) noexcept
     --st.value_bucket_counts[st.tables->wildcard_tier];
 }
 
-inline Gem pop_best_real(RackState& st, int idx) noexcept
+struct PoppedTile
+{
+    Gem gem = Gem::NONE;
+    bool broken = false;
+};
+
+inline PoppedTile pop_best_real(RackState& st, int idx) noexcept
 {
     auto& stack = st.gem_stacks[idx];
-    Gem chosen = Gem::NONE;
+    PoppedTile out;
     if (!stack.empty())
     {
-        chosen = stack.back();
+        out.gem = stack.back();
         stack.pop_back();
-        const int t = gem_to_tier(chosen);
+        const int t = gem_to_tier(out.gem);
         if (t >= 0)
             --st.gem_bucket_counts[t];
     }
-    else
+    else if (st.non_gem_counts[idx] > 0)
     {
         --st.non_gem_counts[idx];
     }
+    else
+    {
+        --st.broken_counts[idx];
+        out.broken = true;
+    }
     --st.letter_counts[idx];
-    --st.value_bucket_counts[st.tables->letter_to_tier[idx]];
-    return chosen;
+    --st.value_bucket_counts[value_tier_for(st, idx, out.broken)];
+    return out;
 }
 
 
@@ -349,16 +373,16 @@ void dfs(
 
         if (st.letter_counts[i] > 0) [[likely]]
         {
-            const Gem g = pop_best_real(st, i);
-            path.emplace_back(static_cast<char>('A' + i), g);
+            const PoppedTile pt = pop_best_real(st, i);
+            path.emplace_back(static_cast<char>('A' + i), pt.gem, pt.broken);
 
             dfs(
-                trie, child, points_so_far + (*st.letter_points)[i],
-                gem_sum_so_far + gemPower(g), path, st, collector
+                trie, child, points_so_far + (pt.broken ? 0.0 : (*st.letter_points)[i]),
+                gem_sum_so_far + gemPower(pt.gem), path, st, collector
             );
 
             path.pop_back();
-            push_real(st, i, g);
+            push_real(st, i, pt.gem, pt.broken);
         }
         else if (st.wildcard_count > 0) [[unlikely]]
         {
@@ -394,7 +418,7 @@ inline RackState build_rack_state(std::span<const Tile> tiles, double power, boo
         if (t.isWildcard())
             detail::push_wildcard(st);
         else
-            detail::push_real(st, t.getLetter() - 'A', t.getGem());
+            detail::push_real(st, t.getLetter() - 'A', t.getGem(), t.isBroken());
     }
     return st;
 }
