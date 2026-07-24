@@ -89,6 +89,23 @@ void Rack::regenerateTilesCRN(Gem gem, bool wildcard, const int* draws)
     regenerate_core(mTiles, mSize, gem, wildcard, [&] { return draws[i++]; });
 }
 
+void Rack::dropGemOnRandomTile(Gem gem, std::mt19937& rng)
+{
+    if (gem == Gem::NONE)
+        return;
+    std::array<int, MAX_RACK_SIZE> eligible{};
+    int n_eligible = 0;
+    for (int i = 0; i < static_cast<int>(mTiles.size()); ++i)
+    {
+        if (!mTiles[i].isGem() && !mTiles[i].isWildcard())
+            eligible[n_eligible++] = i;
+    }
+    if (n_eligible == 0)
+        return;
+    std::uniform_int_distribution<int> pick(0, n_eligible - 1);
+    mTiles[eligible[pick(rng)]].setGem(gem);
+}
+
 void Rack::playWord(const Word& word)
 {
     const TileList& word_tiles = word.getTiles();

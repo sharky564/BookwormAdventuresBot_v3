@@ -45,11 +45,6 @@ GEM_DISTANCE_THRESHOLD = 70
 
 def _load_centroids() -> dict[str, tuple[int, int, int]]:
     if not _CENTROIDS_PATH.exists():
-        # Fallback centroids, recalibrated from a 926-image real bank
-        # (per-gem median of the corner-median RGB feature). The previous
-        # hardcoded values were stale and caused ~30% of gem tiles —
-        # especially the vivid sapphire/ruby/amethyst — to be missed as
-        # "none". With these, standalone gem detection is ~99.5% accurate.
         return {
             "none": (230, 217, 159),
             "amethyst": (254, 100, 255),
@@ -337,22 +332,8 @@ class TileDB:
 
     DB_SCHEMA = 5
     K_NEIGHBOURS = 3
-    # Leave-one-out over a 926-image real bank: correct matches sit at
-    # median distance ~2.5 (max ~12), while the first WRONG match doesn't
-    # appear until ~25-35. A threshold of 22 commits on ~98% of tiles with
-    # zero wrong answers in LOO, leaving a safety gap before the first
-    # error. (The old value of 12 was tuned on small synthetic fixtures
-    # and abstained on ~42% of real tiles whose correct neighbour simply
-    # sat past 12 due to gem bleed / capture variation.)
     MAX_DISTANCE = 22.0
     CONFIDENCE_MARGIN = 1.5
-    # When the closest bank entry is within this distance, trust the bank's
-    # stored state over live HSV detection. Leave-one-out on the real bank:
-    # state-from-nearest-neighbour is 100% accurate out to distance ~8, so
-    # 6 is a safe value that covers ~50% of tiles via the bank (vs ~38% at
-    # the old value of 4). This matters because live HSV gem detection
-    # misses some gems (notably ruby/sapphire), so leaning on the bank for
-    # state where we have a close match improves overall state accuracy.
     TRUST_BANK_STATE_DISTANCE = 6.0
 
     def __init__(self, path: Path = TILE_DB_DIR):

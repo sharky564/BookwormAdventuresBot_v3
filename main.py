@@ -43,6 +43,14 @@ from progress import (
     retreat as progress_retreat,
     is_terminal as progress_is_terminal,
     is_valid as progress_is_valid,
+    is_terminal_kill as progress_is_terminal_kill,
+    scripted_opening as progress_scripted_opening,
+    fixed_opening_rack as progress_fixed_opening_rack,
+    is_same_rack_block as progress_is_same_rack_block,
+    same_rack_block_thresholds as progress_same_rack_block_thresholds,
+    is_sphinx as progress_is_sphinx,
+    sphinx_words_for_phase as progress_sphinx_words_for_phase,
+    sphinx_upcoming_words as progress_sphinx_upcoming_words,
 )
 
 
@@ -166,6 +174,10 @@ def main() -> int:
     )
     post_word_delay = pick(args, None, cfg, "play", "post_word_delay", 0.10)
 
+    scramble_x = pick(args, None, cfg, "play", "scramble_x", 162)
+    scramble_y = pick(args, None, cfg, "play", "scramble_y", 606)
+    scramble_settle_delay = pick(args, None, cfg, "play", "scramble_settle_delay", 0.6)
+
     reset_menu_delay = pick(args, None, cfg, "reset", "menu_delay", 0.5)
     reset_quit_delay = pick(args, None, cfg, "reset", "quit_delay", 0.5)
     reset_confirm_delay = pick(args, None, cfg, "reset", "confirm_delay", 1.0)
@@ -247,6 +259,22 @@ def main() -> int:
     overlay.set_power(power_at(prog))
     push_engine_config_for_progress()
 
+    def derive_solve_params() -> tuple[bool, int]:
+        if manual_chapter_override:
+            return False, overlay.get_next_enemy_hp()
+
+        terminal = progress_is_terminal_kill(prog)
+        manual_next = overlay.get_next_enemy_hp()
+        if manual_next > 0:
+            return terminal, manual_next
+        if terminal:
+            return True, 0
+        nxt = progress_advance(prog)
+        if nxt == prog:
+            return True, 0
+        hp, _armour = monster_at(nxt)
+        return terminal, int(hp)
+
     def refresh_progress_display() -> None:
         if manual_chapter_override:
             overlay.update_progress(
@@ -273,7 +301,7 @@ def main() -> int:
 
     latest_recs: list[list[Recognition]] = [[]]
     latest_tiles: list[list] = [[]]
-    run_state = {"auto": False}
+    run_state = {"auto": False, "sphinx_phase": 0}
 
     @reset_position
     def focus_game_window(pre_delay: float = 0.40) -> None:
@@ -284,17 +312,35 @@ def main() -> int:
         win = find_game_window()
         if win is None:
             return
-
+        try:
+            win.activate()
+        except Exception:
+            pass
         x = win.left + focus_click_x
         y = win.top + focus_click_y
-        curr_x, curr_y = pyautogui.position()
         pyautogui.click(x, y, button=focus_click_button, duration=mouse_move_speed)
-        pyautogui.moveTo(curr_x, curr_y)
         if pre_delay > 0:
             time.sleep(pre_delay)
 
+    def _synthesize_recs_from_rack(rack_str: str) -> list:
+        return [
+            Recognition(letter=ch.upper(), gem="none", distance=0.0,
+                        confident=True, status="normal")
+            for ch in rack_str
+        ]
+
     def do_capture_and_search() -> None:
         try:
+            if not manual_chapter_override and prog.enemy == 0:
+                known = progress_fixed_opening_rack(prog)
+                if known:
+                    recs = _synthesize_recs_from_rack(known)
+                    latest_recs[0] = recs
+                    latest_tiles[0] = []
+                    overlay.update_rack(recs, tiles=None)
+                    _run_search_for_recs(recs)
+                    return
+
             overlay.set_status("Capturing...")
             overlay.root.update_idletasks()
 
@@ -329,58 +375,219 @@ def main() -> int:
                 overlay.update_rack(recs, tiles=tiles)
                 overlay.root.attributes("-topmost", False)
 
-            playable = [r for r in recs if r.status == "normal"]
-            non_normal = [r for r in recs if r.status != "normal"]
-            if non_normal:
-                breakdown = ", ".join(sorted({r.status for r in non_normal}))
-                print(f"Excluding {len(non_normal)} non-playable tiles ({breakdown})")
-
-            if any(not r.letter for r in playable):
-                overlay.set_status("Some playable tiles unknown; skipping search.")
-                run_state["auto"] = False
-                return
-
-            if not playable:
-                overlay.set_status("No playable tiles on rack.")
-                run_state["auto"] = False
-                return
-
             latest_recs[0] = recs
-            letters: str = "".join(r.letter for r in playable)
-            gems = "".join(gem_chars.get(r.gem, " ") for r in playable)
-
-            overlay.set_status(f"Searching ({letters})...")
-            overlay.root.update_idletasks()
-
-            threshold = overlay.get_threshold()
-            charges = overlay.get_charges()
-
-            future = eng.top_async(
-                letters,
-                gems=gems,
-                n=n_words,
-                horizon=horizon,
-                max_sims=max_sims,
-                threshold=threshold,
-                charges=charges,
-            )
-
-            def on_search_done(f, threshold=threshold):
-                try:
-                    words = f.result()
-                except Exception as e:
-                    overlay.schedule(
-                        0, lambda: overlay.set_status(f"Engine error: {e}")
-                    )
-                    overlay.schedule(0, lambda: run_state.update(auto=False))
-                    return
-                overlay.schedule(0, lambda: render_search_result(words, threshold))
-
-            future.add_done_callback(on_search_done)
+            _run_search_for_recs(recs)
 
         except Exception as e:
             overlay.set_status(f"Error: {e}")
             run_state["auto"] = False
+
+    def _enemy_coverage_label(tier_threshold: int, tiers) -> str:
+        at_tier = [e + 1 for (e, t) in tiers if t == tier_threshold]
+        if not at_tier:
+            return ""
+        lo, hi = min(at_tier), max(at_tier)
+        ch = prog.chapter + 1
+        bk = prog.book + 1
+        if lo == hi:
+            return f"{bk}.{ch}.{lo}"
+        return f"{bk}.{ch}.{lo}-{hi}"
+
+    def run_replay_block_search(letters: str, gems: str) -> None:
+        tiers = progress_same_rack_block_thresholds(prog)  # [(enemy_idx, eff_thr)]
+        distinct = sorted({t for _, t in tiers})
+        overlay.set_status(f"Replay block: solving tiers {distinct} ...")
+        overlay.root.update_idletasks()
+
+        try:
+            results = eng.replay(letters, distinct, gems=gems, per_threshold=3)
+        except Exception as e:
+            overlay.set_status(f"Replay solve error: {e}")
+            run_state["auto"] = False
+            return
+
+        flat = []
+        plan_bits = []
+        for tier in results:
+            thr = tier["threshold"]
+            words = tier["words"]
+            cover = _enemy_coverage_label(thr, tiers)
+            if words:
+                best = words[0]
+                flat.append(best)
+                plan_bits.append(f"{cover} (thr {thr}): {best.word} +{best.now - thr}")
+            else:
+                plan_bits.append(f"{cover} (thr {thr}): NONE")
+
+        overlay.update_words(flat)
+        if flat:
+            overlay.set_status("Replay plan — " + "  |  ".join(plan_bits))
+        else:
+            overlay.set_status(
+                "Replay: no killing word for any tier with this rack. "
+                "Scramble or adjust."
+            )
+        run_state["auto"] = False
+
+    def _letter_multiset(s: str) -> dict:
+        d: dict = {}
+        for ch in s:
+            d[ch] = d.get(ch, 0) + 1
+        return d
+
+    def _can_form(word: str, available: dict) -> bool:
+        need = _letter_multiset(word)
+        for ch, k in need.items():
+            if available.get(ch, 0) < k:
+                return False
+        return True
+
+    def _conservation_penalty(word_tiles, upcoming_words: list[str]) -> int:
+        if not upcoming_words:
+            return 0
+        demand: dict = {}
+        for w in upcoming_words:
+            for ch, k in _letter_multiset(w).items():
+                demand[ch] = max(demand.get(ch, 0), k)
+        consumed = _letter_multiset("".join(t.letter for t in word_tiles))
+        penalty = 0
+        for ch, k in consumed.items():
+            if ch in demand:
+                penalty += min(k, demand[ch])
+        return penalty
+
+    def run_sphinx_search(letters: str, gems: str, playable) -> None:
+        phase = int(run_state.get("sphinx_phase", 0))
+        scripted = progress_sphinx_words_for_phase(phase)
+        upcoming = progress_sphinx_upcoming_words(phase)
+        available = _letter_multiset(letters)
+
+        threshold = overlay.get_threshold()
+        charges = overlay.get_charges()
+
+        scripted_word_entry = None
+        if scripted:
+            for word in scripted:
+                if _can_form(word, available):
+                    from engine import Tile as EngTile, ScoredWord as EngScored
+
+                    tiles = [EngTile(letter=ch, gem="none") for ch in scripted]
+                    scripted_word_entry = EngScored(
+                        word=scripted, now=threshold, future=0.0, total=1000.0,
+                        tiles=tiles, n_sims=0, is_kill=True, used_powered=False,
+                    )
+
+        overlay.set_status(
+            f"Sphinx phase {phase + 1}/5 "
+            f"(answer: {scripted or '?'}) — searching..."
+        )
+        overlay.root.update_idletasks()
+
+        try:
+            words = eng.top(
+                letters, gems=gems, n=n_words, horizon=1, max_sims=max_sims,
+                threshold=threshold, terminal=True, charges=charges,
+            )
+        except Exception as e:
+            overlay.set_status(f"Sphinx solve error: {e}")
+            run_state["auto"] = False
+            return
+
+        def sphinx_key(w):
+            pen = _conservation_penalty(w.tiles, upcoming)
+            return (0 if w.is_kill else 1, pen, len(w.tiles))
+
+        words = sorted(words, key=sphinx_key)
+
+        display = []
+        if scripted_word_entry is not None:
+            display.append(scripted_word_entry)
+        for w in words:
+            if scripted_word_entry is not None and w.word == scripted_word_entry.word:
+                continue
+            display.append(w)
+        display = display[: len(overlay.word_labels)]
+
+        overlay.update_words(display)
+        if scripted_word_entry is not None:
+            keep = ", ".join(upcoming) if upcoming else "none"
+            overlay.set_status(
+                f"Sphinx {phase + 1}/5: play '{scripted}' (no counter-damage). "
+                f"Conserve for: {keep}"
+            )
+        elif display:
+            top = display[0]
+            keep = ", ".join(upcoming) if upcoming else "none"
+            overlay.set_status(
+                f"Sphinx {phase + 1}/5: no '{scripted}' in rack. "
+                f"Best: {top.word} (will take counter-damage). Conserve for: {keep}"
+            )
+        else:
+            overlay.set_status(
+                f"Sphinx {phase + 1}/5: no killing word. Scramble or adjust."
+            )
+        run_state["auto"] = False
+
+    def _run_search_for_recs(recs) -> None:
+        """Given finalized recognitions, run the async solve and render."""
+        playable = [r for r in recs if r.status == "normal"]
+        non_normal = [r for r in recs if r.status != "normal"]
+        if non_normal:
+            breakdown = ", ".join(sorted({r.status for r in non_normal}))
+            print(f"Excluding {len(non_normal)} non-playable tiles ({breakdown})")
+
+        if any(not r.letter for r in playable):
+            overlay.set_status("Some playable tiles unknown; skipping search.")
+            run_state["auto"] = False
+            return
+
+        if not playable:
+            overlay.set_status("No playable tiles on rack.")
+            run_state["auto"] = False
+            return
+
+        letters: str = "".join(r.letter for r in playable)
+        gems = "".join(gem_chars.get(r.gem, " ") for r in playable)
+
+        if not manual_chapter_override and progress_is_same_rack_block(prog):
+            run_replay_block_search(letters, gems)
+            return
+
+        if not manual_chapter_override and progress_is_sphinx(prog):
+            run_sphinx_search(letters, gems, playable)
+            return
+
+        overlay.set_status(f"Searching ({letters})...")
+        overlay.root.update_idletasks()
+
+        threshold = overlay.get_threshold()
+        charges = overlay.get_charges()
+        terminal, next_enemy_hp = derive_solve_params()
+
+        future = eng.top_async(
+            letters,
+            gems=gems,
+            n=n_words,
+            horizon=horizon,
+            max_sims=max_sims,
+            threshold=threshold,
+            next_enemy_hp=next_enemy_hp,
+            terminal=terminal,
+            charges=charges,
+        )
+
+        def on_search_done(f, threshold=threshold):
+            try:
+                words = f.result()
+            except Exception as e:
+                overlay.schedule(
+                    0, lambda: overlay.set_status(f"Engine error: {e}")
+                )
+                overlay.schedule(0, lambda: run_state.update(auto=False))
+                return
+            overlay.schedule(0, lambda: render_search_result(words, threshold))
+
+        future.add_done_callback(on_search_done)
 
     def render_search_result(words, threshold) -> None:
         overlay.update_words(words)
@@ -541,6 +748,17 @@ def main() -> int:
                 new_hp = max(0, current_hp - word.now)
                 overlay.set_hp(str(new_hp) if new_hp > 0 else "")
 
+        if not manual_chapter_override and progress_is_sphinx(prog) and word.is_kill:
+            run_state["sphinx_phase"] = int(run_state.get("sphinx_phase", 0)) + 1
+            ph = run_state["sphinx_phase"]
+            if ph < 5:
+                nxt = progress_sphinx_words_for_phase(ph)
+                overlay.set_status(
+                    f"Sphinx: phase {ph}/5 cleared. Next answer: {nxt}. Press R."
+                )
+            else:
+                overlay.set_status("Sphinx: all 5 phases cleared!")
+
         if not run_state["auto"]:
             overlay.set_status(f"Played '{word.word}'. Ready.")
             return
@@ -615,6 +833,7 @@ def main() -> int:
             gems = "".join(gem_chars.get(r.gem, " ") for r in playable)
             threshold = overlay.get_threshold()
             charges = overlay.get_charges()
+            terminal, next_enemy_hp = derive_solve_params()
 
             future_holder["letters"] = letters
             future_holder["gems"] = gems
@@ -626,6 +845,8 @@ def main() -> int:
                 horizon=horizon,
                 max_sims=max_sims,
                 threshold=threshold,
+                next_enemy_hp=next_enemy_hp,
+                terminal=terminal,
                 charges=charges,
             )
 
@@ -770,8 +991,46 @@ def main() -> int:
         run_state["auto"] = True
         refresh()
 
+    def handle_scripted_play(scripted: dict) -> None:
+        word = scripted.get("word", "?")
+        positions = scripted.get("positions", [])
+        if not positions:
+            overlay.set_status(f"Scripted move '{word}' has no positions.")
+            run_state["auto"] = False
+            return
+
+        overlay.set_status(f"Scripted opening: playing '{word}'...")
+        overlay.root.update_idletasks()
+        if focus_click:
+            focus_game_window(pre_play_delay)
+
+        try:
+            play_word(
+                positions,
+                box,
+                click_delay=click_delay,
+                mouse_speed=mouse_move_speed,
+                post_word_delay=post_word_delay,
+                powered=False,
+            )
+        except Exception as e:
+            overlay.set_status(f"Scripted play failed: {e}")
+            import traceback
+
+            traceback.print_exc()
+            run_state["auto"] = False
+            return
+
+        overlay.set_status(f"Scripted '{word}' played. Advancing.")
+        handle_progress_next()
+
     def refresh() -> None:
-        """Trigger just the Read phase."""
+        if not manual_chapter_override:
+            scripted = progress_scripted_opening(prog)
+            if scripted is not None:
+                handle_scripted_play(scripted)
+                return
+
         if focus_click:
             overlay.set_status("Focusing game window...")
             overlay.root.update_idletasks()
@@ -812,11 +1071,18 @@ def main() -> int:
             overlay.set_status("Chapter override in effect; progress disabled.")
             return
         nonlocal prog
+        if progress_is_sphinx(prog) and int(run_state.get("sphinx_phase", 0)) < 5:
+            ph = int(run_state.get("sphinx_phase", 0))
+            overlay.set_status(
+                f"Sphinx: on phase {ph + 1}/5 — staying on 2.4 until all cleared."
+            )
+            return
         new_prog = progress_advance(prog)
         if new_prog == prog:
             overlay.set_status("Already at the final enemy (3.10). Game complete!")
             return
         prog = new_prog
+        run_state["sphinx_phase"] = 0
         save_progress(prog)
         autofill_fields_for_current_enemy()
         push_engine_config_for_progress()
@@ -833,6 +1099,7 @@ def main() -> int:
             overlay.set_status("Already at the first enemy (1.1.1).")
             return
         prog = new_prog
+        run_state["sphinx_phase"] = 0
         save_progress(prog)
         autofill_fields_for_current_enemy()
         push_engine_config_for_progress()
@@ -850,6 +1117,7 @@ def main() -> int:
             return
         nonlocal prog
         prog = Progress(book=book, chapter=chapter, enemy=enemy)
+        run_state["sphinx_phase"] = 0
         save_progress(prog)
         autofill_fields_for_current_enemy()
         push_engine_config_for_progress()
@@ -913,6 +1181,33 @@ def main() -> int:
         overlay._current_words = []
         overlay.set_status("Review complete. Press R to re-score.")
 
+    def handle_scramble() -> None:
+        overlay.set_status("Focusing window to scramble...")
+        overlay.root.update_idletasks()
+        if focus_click:
+            focus_game_window(pre_play_delay)
+
+        if ba_window is not None:
+            wl, wt = ba_window.left, ba_window.top
+        else:
+            wl, wt = box.left - rack_offset_x, box.top - rack_offset_y
+
+        try:
+            import pyautogui
+            pyautogui.click(
+                wl + scramble_x,
+                wt + scramble_y,
+                duration=mouse_move_speed,
+            )
+        except Exception as e:
+            overlay.set_status(f"Scramble click failed: {e}")
+            return
+
+        time.sleep(scramble_settle_delay)
+        overlay.set_status("Scrambled. Re-scanning...")
+        overlay.root.update_idletasks()
+        refresh()
+
     def handle_charges_changed() -> None:
         for lbl in overlay.word_labels:
             lbl.config(text="")
@@ -934,6 +1229,7 @@ def main() -> int:
     overlay.on_clear(handle_clear)
     overlay.on_correct(handle_correct)
     overlay.on_review(handle_review)
+    overlay.on_scramble(handle_scramble)
     overlay.on_charges_changed(handle_charges_changed)
     overlay.on_progress_next(handle_progress_next)
     overlay.on_progress_back(handle_progress_back)

@@ -264,8 +264,99 @@ _NON_PERSIST_CHAPTERS: set[tuple[int, int]] = {
 }
 
 
+FIXED_OPENING_RACKS: dict[tuple[int, int], str | None] = {
+    (0, 1): "ZANYPSAEFNURSITL",
+    (0, 3): None,
+}
+
+
+def has_fixed_opening_rack(p: Progress) -> bool:
+    return (p.book, p.chapter) in FIXED_OPENING_RACKS
+
+
+_SCRIPTED_OPENINGS: dict[tuple[int, int, int], dict] = {
+    (0, 0, 0): {"word": "PLAY", "positions": [4, 13, 2, 11]},
+}
+
+
+def scripted_opening(p: Progress) -> dict | None:
+    return _SCRIPTED_OPENINGS.get((p.book, p.chapter, p.enemy))
+
+
+_SPHINX_LOCATION: tuple[int, int] = (1, 3)  # 2.4
+SPHINX_SCRIPT: list[str] = [
+    ["SKY", "SKIES"],
+    ["WALL", "WALLS"],
+    ["FIST", "FISTS"],
+    ["TRUTH", "TRUTHS"],
+    ["WATER", "WATERS"]
+]
+
+
+def is_sphinx(p: Progress) -> bool:
+    return (p.book, p.chapter) == _SPHINX_LOCATION
+
+
+def sphinx_words_for_phase(phase: int) -> list[str] | None:
+    if 0 <= phase < len(SPHINX_SCRIPT):
+        return SPHINX_SCRIPT[phase]
+    return None
+
+
+def sphinx_upcoming_words(phase: int) -> list[str]:
+    if phase < 0:
+        phase = 0
+    return sum(SPHINX_SCRIPT[phase + 1 :], [])
+
+
+def fixed_opening_rack(p: Progress) -> str | None:
+    return FIXED_OPENING_RACKS.get((p.book, p.chapter))
+
+
+def next_chapter_start(p: Progress) -> Progress:
+    nxt = advance(p)
+    if nxt.chapter != p.chapter or nxt.book != p.book:
+        return nxt
+    if p.chapter + 1 < len(POWER_TABLE[p.book]):
+        return Progress(p.book, p.chapter + 1, 0)
+    if p.book + 1 < len(POWER_TABLE):
+        return Progress(p.book + 1, 0, 0)
+    return p
+
+
 def rack_persists_into_next(p: Progress) -> bool:
     return (p.book, p.chapter) not in _NON_PERSIST_CHAPTERS
+
+
+def is_same_rack_block(p: Progress) -> bool:
+    return (p.book, p.chapter) in _NON_PERSIST_CHAPTERS
+
+
+def same_rack_block_thresholds(p: Progress) -> list[tuple[int, int]]:
+    if not is_same_rack_block(p):
+        return []
+    out: list[tuple[int, int]] = []
+    row = MONSTER_TABLE[p.book][p.chapter]
+    for e, (hp, armour) in enumerate(row):
+        out.append((e, int(hp) * 4 + int(armour)))
+    return out
+
+
+def is_chapter_final(p: Progress) -> bool:
+    return p.enemy == len(POWER_TABLE[p.book][p.chapter]) - 1
+
+
+def is_terminal_kill(p: Progress) -> bool:
+    if is_terminal(p):
+        return True
+    if not is_chapter_final(p):
+        return False
+    if not rack_persists_into_next(p):
+        return True
+    nxt = next_chapter_start(p)
+    if has_fixed_opening_rack(nxt):
+        return True
+    return False
 
 
 if __name__ == "__main__":

@@ -181,6 +181,101 @@ inline double rolloutValueInto(
     return total;
 }
 
+// --- Overkill gem drop -----------------------------------------------------
+//
+// When a kill overshoots the enemy's remaining HP, a bonus gem is dropped on
+// a random tile in the NEXT rack. The gem tier is a function of the excess
+// damage (damage - threshold). Note this ordering is the game's own balancing
+// table and is NOT the same as the damage-formula gem tiers (e.g. garnet
+// comes before sapphire here).
+//
+//   excess  8-12  -> amethyst
+//   excess 13-20  -> emerald
+//   excess 21-32  -> garnet
+//   excess 33-44  -> sapphire
+//   excess 45-56  -> ruby
+//   excess 57-80  -> crystal
+//   excess  81+   -> diamond
+//   excess  < 8   -> none (no gem)
+inline Gem overkill_gem_for_excess(int excess) noexcept
+{
+    if (excess < 8)   return Gem::NONE;
+    if (excess <= 12) return Gem::AMETHYST;
+    if (excess <= 20) return Gem::EMERALD;
+    if (excess <= 32) return Gem::GARNET;
+    if (excess <= 44) return Gem::SAPPHIRE;
+    if (excess <= 56) return Gem::RUBY;
+    if (excess <= 80) return Gem::CRYSTAL;
+    return Gem::DIAMOND;
+}
+
+// Kill-aware leaf metric.
+//
+// Instead of summing greedy damage over `horizon` turns (which rewards
+// raw accumulation), this scores how reliably/soon the rack can land a
+// single word that meets `next_threshold` -- i.e. kill the enemy that
+// will be faced next turn. Each turn t (0-indexed) contributes
+//
+//     gamma^t * kill_indicator(best_damage_t, next_threshold)
+//
+// where kill_indicator is a margin-smoothed step: 1.0 once damage clears
+// the threshold, ramping up over a small margin band below it so that
+// "almost lethal" racks are valued above hopeless ones. The earliest
+// killing turn dominates via the gamma discount; once a turn kills, we
+// stop (the enemy is dead). If `drop_gem` is set, it is placed on a random
+// tile of the residual before the rollout begins (overkill gem credit).
+inline double rolloutKillValueInto(
+    const Rack& source,
+    Rack& scratch,
+    const Trie<NUM_WORDS>& trie,
+    int horizon,
+    int next_threshold,
+    Gem drop_gem,
+    std::mt19937& rng,
+    BestWordCache& cache,
+    double power = 0.0,
+    bool powered = false,
+    double gamma = 0.7,
+    double margin = 8.0
+)
+{
+    scratch = source;
+    if (drop_gem != Gem::NONE)
+        scratch.dropGemOnRandomTile(drop_gem, rng);
+
+    const double GAMMA = gamma;          // earlier kills weighted higher
+    const double MARGIN = margin;        // smoothing band below threshold
+    const double thr = static_cast<double>(next_threshold);
+
+    double value = 0.0;
+    double discount = 1.0;
+    for (int t = 0; t < horizon; ++t)
+    {
+        const SearchResult sr = cache.lookup(scratch.getTiles(), trie, power, powered);
+        if (sr.tiles.empty())
+            break;
+        const double dmg = static_cast<double>(sr.damage);
+
+        // Margin-smoothed kill indicator in [0, 1].
+        double ind;
+        if (dmg >= thr)
+            ind = 1.0;
+        else if (dmg >= thr - MARGIN)
+            ind = (dmg - (thr - MARGIN)) / MARGIN;  // linear ramp over the band
+        else
+            ind = 0.0;
+
+        value += discount * ind;
+        if (ind >= 1.0)
+            break;  // enemy dead this turn; no need to look further
+
+        Word w(sr.tiles);
+        scratch.playWord(w, rng);
+        discount *= GAMMA;
+    }
+    return value;
+}
+
 
 inline double monteCarloRackValue(
     const Rack& rack,
@@ -193,10 +288,22 @@ inline double monteCarloRackValue(
     BestWordCache& cache,
     int* out_n_sims = nullptr,
     double power = 0.0,
-    bool powered = false
+    bool powered = false,
+    int next_threshold = 0,
+    Gem drop_gem = Gem::NONE,
+    double gamma = 0.7,
+    double margin = 8.0,
+    bool force_plain = false
 )
 {
-    if (horizon <= 1)
+    // Kill-aware leaf metric is gated on a positive next_threshold. When it
+    // is 0 (the default), fall back to the original sum-of-damage rollout so
+    // existing callers and A/B comparisons are unaffected. `force_plain`
+    // overrides this to always use the plain sum-of-damage rollout even when
+    // next_threshold > 0 (used by the A/B harness to compare future metrics).
+    const bool kill_aware = (next_threshold > 0) && !force_plain;
+
+    if (horizon <= 1 && !kill_aware)
     {
         const auto sr = cache.lookup(rack.getTiles(), trie, power, powered);
         if (out_n_sims)
@@ -210,7 +317,10 @@ inline double monteCarloRackValue(
     Rack scratch(rack.size());
     while (n < max_sims)
     {
-        const double v = rolloutValueInto(rack, scratch, trie, horizon, rng, cache, power, powered);
+        const double v = kill_aware
+            ? rolloutKillValueInto(rack, scratch, trie, horizon, next_threshold,
+                                   drop_gem, rng, cache, power, powered, gamma, margin)
+            : rolloutValueInto(rack, scratch, trie, horizon, rng, cache, power, powered);
         ++n;
         const double delta = v - mean;
         mean += delta / n;
@@ -249,7 +359,7 @@ inline void generateDataParallel(
     const GenerateConfig& cfg = {}
 )
 {
-    const int n_threads = cfg.num_threads > 0 ? cfg.num_threads : std::max(1u, std::thread::hardware_concurrency());
+    const int n_threads = cfg.num_threads > 0 ? cfg.num_threads : std::max(1u, std::thread::hardware_concurrency() - 1);
 
     std::ofstream out(output_path, std::ios::app);
     if (!out.is_open())

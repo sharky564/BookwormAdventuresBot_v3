@@ -18,6 +18,8 @@ public:
     [[nodiscard]] bool isGem() const noexcept { return mGem != Gem::NONE; }
     [[nodiscard]] bool isWildcard() const noexcept { return mLetter == WILDCARD_CHAR; }
 
+    void setGem(Gem gem) noexcept { mGem = gem; }
+
     bool operator==(const Tile& other) const noexcept { return mLetter == other.mLetter && mGem == other.mGem; }
 
 private:

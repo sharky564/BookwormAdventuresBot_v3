@@ -188,8 +188,13 @@ class Engine:
         max_sims: int = 300,
         se_target: float = 0.5,
         threshold: int = 0,
+        next_enemy_hp: int = 0,
+        terminal: bool = False,
         alpha: float | None = None,
         beta: float | None = None,
+        overkill_delay_penalty: float | None = None,
+        kill_gamma: float | None = None,
+        kill_margin: float | None = None,
         max_kill_candidates: int | None = None,
         charges: int = 0,
     ) -> list[ScoredWord]:
@@ -206,10 +211,20 @@ class Engine:
             msg["gems"] = gems
         if threshold > 0:
             msg["threshold"] = int(threshold)
+        if next_enemy_hp > 0:
+            msg["next_enemy_hp"] = int(next_enemy_hp)
+        if terminal:
+            msg["terminal"] = True
         if alpha is not None:
             msg["alpha"] = float(alpha)
         if beta is not None:
             msg["beta"] = float(beta)
+        if overkill_delay_penalty is not None:
+            msg["overkill_delay_penalty"] = float(overkill_delay_penalty)
+        if kill_gamma is not None:
+            msg["kill_gamma"] = float(kill_gamma)
+        if kill_margin is not None:
+            msg["kill_margin"] = float(kill_margin)
         if max_kill_candidates is not None:
             msg["max_kill_candidates"] = int(max_kill_candidates)
         if charges > 0:
@@ -241,6 +256,51 @@ class Engine:
         if powered is not None:
             msg["powered"] = bool(powered)
         return self._send(msg)
+
+    def replay(
+        self,
+        rack: str,
+        thresholds: list[int],
+        gems: str | None = None,
+        *,
+        per_threshold: int = 3,
+        max_candidates: int = 500,
+    ) -> list[dict]:
+        msg = {
+            "op": "replay",
+            "rack": rack,
+            "thresholds": [int(t) for t in thresholds],
+            "per_threshold": int(per_threshold),
+            "max_candidates": int(max_candidates),
+        }
+        if gems:
+            msg["gems"] = gems
+        r = self._send(msg)
+        results: list[dict] = []
+        for tier in r.get("results", []):
+            words = [
+                ScoredWord(
+                    word=w["word"],
+                    now=int(w["now"]),
+                    future=0.0,
+                    total=-float(w.get("overkill", 0)),
+                    tiles=self._parse_tiles(w.get("tiles", [])),
+                    n_sims=0,
+                    is_kill=bool(w.get("is_kill", True)),
+                    used_powered=bool(w.get("used_powered", False)),
+                )
+                for w in tier.get("words", [])
+            ]
+            results.append({"threshold": int(tier["threshold"]), "words": words})
+        return results
+
+    def step(self, rack: str, word: str, gems: str | None = None,
+             *, seed: int = 0) -> tuple[str, str]:
+        msg = {"op": "step", "rack": rack, "word": word, "seed": int(seed)}
+        if gems:
+            msg["gems"] = gems
+        r = self._send(msg)
+        return r.get("rack", ""), r.get("gems", "")
 
     def close(self) -> None:
         self._executor.shutdown(wait=True)

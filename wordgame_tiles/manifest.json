@@ -5562,6 +5562,276 @@
       "letter": "E",
       "gem": "amethyst",
       "status": "normal"
+    },
+    {
+      "id": "E_0036",
+      "letter": "E",
+      "gem": "none",
+      "status": "smashed"
+    },
+    {
+      "id": "P_0030",
+      "letter": "P",
+      "gem": "none",
+      "status": "smashed"
+    },
+    {
+      "id": "L_0037",
+      "letter": "L",
+      "gem": "none",
+      "status": "smashed"
+    },
+    {
+      "id": "Y_0053",
+      "letter": "Y",
+      "gem": "none",
+      "status": "smashed"
+    },
+    {
+      "id": "A_0028",
+      "letter": "A",
+      "gem": "none",
+      "status": "smashed"
+    },
+    {
+      "id": "G_0026",
+      "letter": "G",
+      "gem": "none",
+      "status": "locked"
+    },
+    {
+      "id": "N_0033",
+      "letter": "N",
+      "gem": "none",
+      "status": "plague"
+    },
+    {
+      "id": "I_0031",
+      "letter": "I",
+      "gem": "none",
+      "status": "smashed"
+    },
+    {
+      "id": "G_0027",
+      "letter": "G",
+      "gem": "none",
+      "status": "smashed"
+    },
+    {
+      "id": "E_0037",
+      "letter": "E",
+      "gem": "none",
+      "status": "locked"
+    },
+    {
+      "id": "U_0046",
+      "letter": "U",
+      "gem": "none",
+      "status": "smashed"
+    },
+    {
+      "id": "T_0044",
+      "letter": "T",
+      "gem": "none",
+      "status": "smashed"
+    },
+    {
+      "id": "A_0029",
+      "letter": "A",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "A_0030",
+      "letter": "A",
+      "gem": "none",
+      "status": "plague"
+    },
+    {
+      "id": "O_0031",
+      "letter": "O",
+      "gem": "none",
+      "status": "smashed"
+    },
+    {
+      "id": "R_0023",
+      "letter": "R",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "R_0024",
+      "letter": "R",
+      "gem": "none",
+      "status": "plague"
+    },
+    {
+      "id": "I_0032",
+      "letter": "I",
+      "gem": "none",
+      "status": "locked"
+    },
+    {
+      "id": "L_0038",
+      "letter": "L",
+      "gem": "none",
+      "status": "smashed"
+    },
+    {
+      "id": "D_0029",
+      "letter": "D",
+      "gem": "none",
+      "status": "locked"
+    },
+    {
+      "id": "E_0038",
+      "letter": "E",
+      "gem": "none",
+      "status": "smashed"
+    },
+    {
+      "id": "V_0039",
+      "letter": "V",
+      "gem": "none",
+      "status": "locked"
+    },
+    {
+      "id": "E_0039",
+      "letter": "E",
+      "gem": "none",
+      "status": "smashed"
+    },
+    {
+      "id": "O_0032",
+      "letter": "O",
+      "gem": "none",
+      "status": "locked"
+    },
+    {
+      "id": "T_0045",
+      "letter": "T",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "T_0046",
+      "letter": "T",
+      "gem": "none",
+      "status": "plague"
+    },
+    {
+      "id": "O_0033",
+      "letter": "O",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "O_0034",
+      "letter": "O",
+      "gem": "none",
+      "status": "plague"
+    },
+    {
+      "id": "O_0035",
+      "letter": "O",
+      "gem": "none",
+      "status": "plague"
+    },
+    {
+      "id": "O_0036",
+      "letter": "O",
+      "gem": "none",
+      "status": "plague"
+    },
+    {
+      "id": "E_0040",
+      "letter": "E",
+      "gem": "none",
+      "status": "plague"
+    },
+    {
+      "id": "N_0034",
+      "letter": "N",
+      "gem": "none",
+      "status": "smashed"
+    },
+    {
+      "id": "I_0033",
+      "letter": "I",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "I_0034",
+      "letter": "I",
+      "gem": "none",
+      "status": "plague"
+    },
+    {
+      "id": "N_0035",
+      "letter": "N",
+      "gem": "none",
+      "status": "locked"
+    },
+    {
+      "id": "R_0025",
+      "letter": "R",
+      "gem": "none",
+      "status": "locked"
+    },
+    {
+      "id": "U_0047",
+      "letter": "U",
+      "gem": "none",
+      "status": "locked"
+    },
+    {
+      "id": "G_0028",
+      "letter": "G",
+      "gem": "none",
+      "status": "plague"
+    },
+    {
+      "id": "W_0030",
+      "letter": "W",
+      "gem": "none",
+      "status": "locked"
+    },
+    {
+      "id": "I_0035",
+      "letter": "I",
+      "gem": "none",
+      "status": "plague"
+    },
+    {
+      "id": "A_0031",
+      "letter": "A",
+      "gem": "none",
+      "status": "locked"
+    },
+    {
+      "id": "U_0048",
+      "letter": "U",
+      "gem": "none",
+      "status": "plague"
+    },
+    {
+      "id": "J_0038",
+      "letter": "J",
+      "gem": "none",
+      "status": "locked"
+    },
+    {
+      "id": "L_0039",
+      "letter": "L",
+      "gem": "emerald",
+      "status": "normal"
+    },
+    {
+      "id": "L_0040",
+      "letter": "L",
+      "gem": "none",
+      "status": "plague"
     }
   ]
 }

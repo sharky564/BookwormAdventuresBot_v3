@@ -38,6 +38,8 @@ public:
     void regenerateTiles(Gem gem, bool wildcard, std::mt19937& rng);
     void regenerateTilesCRN(Gem gem, bool wildcard, const int* draws);
 
+    void dropGemOnRandomTile(Gem gem, std::mt19937& rng);
+
     void playWord(const Word& word);
     void playWord(const Word& word, std::mt19937& rng);
 
